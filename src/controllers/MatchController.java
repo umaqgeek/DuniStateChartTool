@@ -29,7 +29,7 @@ public class MatchController {
         return listDetail;
     }
     
-    public static boolean setMatch() {
+    public static boolean setMatch(String type) {
         boolean status = true;
         try {
             
@@ -37,13 +37,12 @@ public class MatchController {
             for (int index = 0; index < FMController.dataList.size(); index++) {
                 for (int jndex = 0; jndex < UMLController.dataList.size(); jndex++) {
                     ArrayList<String> dataDetail = getMatchList(count, FMController.dataList.get(index).get(0), UMLController.dataList.get(jndex).get(0), UMLController.dataList.get(jndex).get(1));
-                    if (dataDetail.size() == 4) {
+                    if (dataDetail.size() == 4 && type.toLowerCase().contains(UMLController.dataList.get(jndex).get(1).toLowerCase())) {
                         count++;
                         MatchController.dataList.add(dataDetail);
                     }
                 }
             }
-            System.out.println(MatchController.dataList);
             
             int numCol = 4;
             String data[][] = new String[MatchController.dataList.size()][numCol];

@@ -37,7 +37,8 @@ public class MainPage extends javax.swing.JFrame {
     public static void initPage() {
         jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         btnChooseFm.setEnabled(false);
-        btnMatching.setEnabled(false);
+        btnTraceState.setEnabled(false);
+        btnTraceTransition.setEnabled(false);
         btnViewUml.setEnabled(false);
         btnViewFm.setEnabled(false);
     }
@@ -60,7 +61,7 @@ public class MainPage extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnChooseUml = new javax.swing.JButton();
         btnChooseFm = new javax.swing.JButton();
-        btnMatching = new javax.swing.JButton();
+        btnTraceState = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblList = new javax.swing.JTable();
@@ -69,6 +70,7 @@ public class MainPage extends javax.swing.JFrame {
         btnViewFm = new javax.swing.JButton();
         lblTitle = new javax.swing.JLabel();
         btnPrint = new javax.swing.JButton();
+        btnTraceTransition = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Feature Model State Chart Tool");
@@ -91,10 +93,10 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
-        btnMatching.setText("Trace");
-        btnMatching.addActionListener(new java.awt.event.ActionListener() {
+        btnTraceState.setText("Trace State");
+        btnTraceState.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMatchingActionPerformed(evt);
+                btnTraceStateActionPerformed(evt);
             }
         });
 
@@ -153,40 +155,49 @@ public class MainPage extends javax.swing.JFrame {
             }
         });
 
+        btnTraceTransition.setText("Trace Transition");
+        btnTraceTransition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTraceTransitionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnViewUml, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnViewFm, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblTitle))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblTitle)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnViewUml, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnViewFm, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnTraceTransition, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(203, 203, 203)
+                        .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(203, 203, 203)
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnChooseUml, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnChooseFm, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnMatching, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
-                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnChooseUml, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnChooseFm, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnTraceState, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                                .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -198,13 +209,14 @@ public class MainPage extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnChooseUml, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnChooseFm, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMatching, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTraceState, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnViewUml, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnViewFm, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnPrint, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTraceTransition, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -238,7 +250,8 @@ public class MainPage extends javax.swing.JFrame {
     private void btnChooseUmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseUmlActionPerformed
         // TODO add your handling code here:
         btnChooseFm.setEnabled(false);
-        btnMatching.setEnabled(false);
+        btnTraceState.setEnabled(false);
+        btnTraceTransition.setEnabled(false);
         btnViewUml.setEnabled(false);
         btnViewFm.setEnabled(false);
         lblTitle.setText("View STATEs and TRANSITIONs");
@@ -252,13 +265,15 @@ public class MainPage extends javax.swing.JFrame {
             if (status == true && UMLController.dataList.size() > 0) {
                 FileUML = selectedFile.getAbsolutePath();
                 btnChooseFm.setEnabled(true);
-                btnMatching.setEnabled(true);
+                btnTraceState.setEnabled(true);
+                btnTraceTransition.setEnabled(true);
                 btnViewUml.setEnabled(true);
                 btnViewFm.setEnabled(true);
             } else {
                 FileUML = "";
                 btnChooseFm.setEnabled(false);
-                btnMatching.setEnabled(false);
+                btnTraceState.setEnabled(false);
+                btnTraceTransition.setEnabled(false);
                 btnViewUml.setEnabled(false);
                 btnViewFm.setEnabled(false);
                 JOptionPane.showMessageDialog(null, "No state model selected!", "No State Model", 0);
@@ -273,7 +288,8 @@ public class MainPage extends javax.swing.JFrame {
 
     private void btnViewUmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewUmlActionPerformed
         // TODO add your handling code here:
-        btnMatching.setEnabled(false);
+        btnTraceState.setEnabled(false);
+        btnTraceTransition.setEnabled(false);
         btnChooseFm.setEnabled(false);
         lblTitle.setText("View STATEs and TRANSITIONs");
         UMLController.dataList.removeAll(UMLController.dataList);
@@ -281,11 +297,13 @@ public class MainPage extends javax.swing.JFrame {
             boolean status = UMLController.setData(FileUML);
             if (status == true && UMLController.dataList.size() > 0) {
                 btnChooseFm.setEnabled(true);
-                btnMatching.setEnabled(true);
+                btnTraceState.setEnabled(true);
+                btnTraceTransition.setEnabled(true);
             } else {
                 FileUML = "";
                 btnChooseFm.setEnabled(false);
-                btnMatching.setEnabled(false);
+                btnTraceState.setEnabled(false);
+                btnTraceTransition.setEnabled(false);
                 JOptionPane.showMessageDialog(null, "No state model selected!", "No State Model", 0);
             }
         }
@@ -293,7 +311,8 @@ public class MainPage extends javax.swing.JFrame {
 
     private void btnChooseFmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseFmActionPerformed
         // TODO add your handling code here:
-        btnMatching.setEnabled(false);
+        btnTraceState.setEnabled(false);
+        btnTraceTransition.setEnabled(false);
         btnViewFm.setEnabled(false);
         lblTitle.setText("View FEATURE MODELs");
         FMController.dataList.removeAll(FMController.dataList);
@@ -305,47 +324,52 @@ public class MainPage extends javax.swing.JFrame {
             boolean status = FMController.setData(selectedFile.getAbsolutePath());
             if (status == true && FMController.dataList.size() > 0) {
                 FileFM = selectedFile.getAbsolutePath();
-                btnMatching.setEnabled(true);
+                btnTraceState.setEnabled(true);
+                btnTraceTransition.setEnabled(true);
                 btnViewFm.setEnabled(true);
             } else {
                 FileUML = "";
-                btnMatching.setEnabled(false);
+                btnTraceState.setEnabled(false);
+                btnTraceTransition.setEnabled(false);
                 btnViewFm.setEnabled(false);
                 JOptionPane.showMessageDialog(null, "No feature model selected!", "No Feature Model", 0);
             }
         }
     }//GEN-LAST:event_btnChooseFmActionPerformed
 
-    private void btnMatchingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatchingActionPerformed
+    private void btnTraceStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraceStateActionPerformed
         // TODO add your handling code here:
-        lblTitle.setText("View MATCHED Features");
+        lblTitle.setText("View MATCHED Features (STATE)");
         MatchController.dataList.removeAll(MatchController.dataList);
         if (FileFM == null || FileFM.length() <= 0 || FMController.dataList.size() <= 0) {
             JOptionPane.showMessageDialog(null, "No feature model selected!", "No Feature Model", 0);
         } else if (FileUML == null || FileUML.length() <= 0 || UMLController.dataList.size() <= 0) {
             JOptionPane.showMessageDialog(null, "No state model selected!", "No State Model", 0);
         } else {
-            boolean status = MatchController.setMatch();
+            boolean status = MatchController.setMatch("STATE");
             if (status == true) {
             } else {
                 clearTable();
                 JOptionPane.showMessageDialog(null, "No model matched!", "No Model Matched", 0);
             }
         }
-    }//GEN-LAST:event_btnMatchingActionPerformed
+    }//GEN-LAST:event_btnTraceStateActionPerformed
 
     private void btnViewFmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewFmActionPerformed
         // TODO add your handling code here:
-        btnMatching.setEnabled(false);
+        btnTraceState.setEnabled(false);
+        btnTraceTransition.setEnabled(false);
         lblTitle.setText("View FEATURE MODELs");
         FMController.dataList.removeAll(FMController.dataList);
         if (FileFM != null && FileFM.length() > 0) {
             boolean status = FMController.setData(FileFM);
             if (status == true && FMController.dataList.size() > 0) {
-                btnMatching.setEnabled(true);
+                btnTraceState.setEnabled(true);
+                btnTraceTransition.setEnabled(true);
             } else {
                 FileFM = "";
-                btnMatching.setEnabled(false);
+                btnTraceState.setEnabled(false);
+                btnTraceTransition.setEnabled(false);
                 JOptionPane.showMessageDialog(null, "No feature model selected!", "No Feature Model", 0);
             }
         }
@@ -355,6 +379,24 @@ public class MainPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         Func.setPrint();
     }//GEN-LAST:event_btnPrintActionPerformed
+
+    private void btnTraceTransitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTraceTransitionActionPerformed
+        // TODO add your handling code here:
+        lblTitle.setText("View MATCHED Features (TRANSITION)");
+        MatchController.dataList.removeAll(MatchController.dataList);
+        if (FileFM == null || FileFM.length() <= 0 || FMController.dataList.size() <= 0) {
+            JOptionPane.showMessageDialog(null, "No feature model selected!", "No Feature Model", 0);
+        } else if (FileUML == null || FileUML.length() <= 0 || UMLController.dataList.size() <= 0) {
+            JOptionPane.showMessageDialog(null, "No state model selected!", "No State Model", 0);
+        } else {
+            boolean status = MatchController.setMatch("TRANSITION");
+            if (status == true) {
+            } else {
+                clearTable();
+                JOptionPane.showMessageDialog(null, "No model matched!", "No Model Matched", 0);
+            }
+        }
+    }//GEN-LAST:event_btnTraceTransitionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -394,9 +436,10 @@ public class MainPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnChooseFm;
     public static javax.swing.JButton btnChooseUml;
-    public static javax.swing.JButton btnMatching;
     public static javax.swing.JButton btnPrint;
     public static javax.swing.JButton btnQuit;
+    public static javax.swing.JButton btnTraceState;
+    public static javax.swing.JButton btnTraceTransition;
     public static javax.swing.JButton btnViewFm;
     public static javax.swing.JButton btnViewUml;
     private javax.swing.JLabel jLabel1;

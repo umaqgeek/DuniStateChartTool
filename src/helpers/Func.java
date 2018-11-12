@@ -43,10 +43,13 @@ public class Func {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet(MainPage.lblTitle.getText());
         
-        Object[][] dataPrint = new Object[MainPage.tblList.getRowCount()][MainPage.tblList.getColumnCount()];
-        for (int index = 0; index < MainPage.tblList.getRowCount(); index++) {
+        Object[][] dataPrint = new Object[MainPage.tblList.getRowCount()+1][MainPage.tblList.getColumnCount()];
+        for (int index = 0; index < MainPage.tblList.getColumnCount(); index++) {
+            dataPrint[0][index] = MainPage.tblList.getColumnName(index);
+        }
+        for (int index = 1; index < MainPage.tblList.getRowCount()+1; index++) {
             for (int jndex = 0; jndex < MainPage.tblList.getColumnCount(); jndex++) {
-                dataPrint[index][jndex] = MainPage.tblList.getValueAt(index, jndex);
+                dataPrint[index][jndex] = MainPage.tblList.getValueAt(index-1, jndex);
             }
         }
 
