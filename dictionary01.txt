@@ -1,0 +1,7 @@
+# READ this first:
+# (1) Separate every synonim with a comma.
+# (2) Separate every other words with a new line.
+# (3) Every word must a lowercase letter.
+# (4) Type `#` at the first column of a line for a comment.
+voicemessage,calls,call,panggilan,mobilecall,mobilecalls
+snap,camera,snapimage,snappicture,camerasnap

@@ -25,6 +25,19 @@ public class MatchController {
             listDetail.add(element);
             listDetail.add(elementList);
             listDetail.add(type);
+        } else {
+//            int foundIndex = -1;
+            for (int jndex = 0; jndex < DictionaryController.dataList.size(); jndex++) {
+                if (DictionaryController.dataList.get(jndex).contains(element.toLowerCase()) 
+                        && DictionaryController.dataList.get(jndex).contains(elementList.toLowerCase())) {
+//                    foundIndex = jndex;
+                    listDetail.add((index + 1) + ".");
+                    listDetail.add(element);
+                    listDetail.add(elementList);
+                    listDetail.add(type);
+                    break;
+                }
+            }
         }
         return listDetail;
     }

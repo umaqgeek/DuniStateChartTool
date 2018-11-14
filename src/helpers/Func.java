@@ -81,8 +81,8 @@ public class Func {
             e.printStackTrace();
         }
 
-        System.out.println("Done");
-        JOptionPane.showMessageDialog(null, "Excel has been exported.", "Success Export", 1);
+//        System.out.println("Done");
+//        JOptionPane.showMessageDialog(null, "Excel has been exported.", "Success Export", 1);
         
         try {
             File file = new File(FILE_NAME);
