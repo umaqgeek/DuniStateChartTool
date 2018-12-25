@@ -53,7 +53,7 @@ public class FMController {
                                 String[] outputs3 = output2.split("r |m |g |o | ");
                                 output = (null != outputs3[1]) ? (outputs3[1]) : ("-");
                             } catch (Exception e) {
-                                e.printStackTrace();
+//                                e.printStackTrace();
                                 output = "-";
                             }
                             ArrayList<String> dataDetail = new ArrayList<String>();

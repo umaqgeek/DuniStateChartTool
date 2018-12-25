@@ -25,15 +25,15 @@ import views.MainPage;
  * @author umarmukhtar
  */
 public class UMLController {
-    
+
     public static ArrayList<ArrayList<String>> dataList = new ArrayList<ArrayList<String>>();
-    
+
     public static boolean setData(String file) {
         boolean status = true;
         try {
-            
+
             BufferedReader in = new BufferedReader(new FileReader(file));
-            
+
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -42,6 +42,7 @@ public class UMLController {
             int num1 = nList1.getLength();
             int num2 = nList2.getLength();
 
+            MainPage.totalVertices = 0;
             for (int l = 0; l < num1; l++) {
                 Element node1 = (Element) nList1.item(l);
                 NamedNodeMap attributes = node1.getAttributes();
@@ -56,10 +57,13 @@ public class UMLController {
                         dataDetail.add(attrValue);
                         dataDetail.add("STATE");
                         dataList.add(dataDetail);
+                        
+                        MainPage.totalVertices += 1;
                     }
                 }
             }
-            
+
+            MainPage.totalEdges = 0;
             for (int m = 0; m < num2; m++) {
                 Element node2 = (Element) nList2.item(m);
                 NamedNodeMap attributes = node2.getAttributes();
@@ -74,20 +78,24 @@ public class UMLController {
                         dataDetail.add(attrValue);
                         dataDetail.add("TRANSITION");
                         dataList.add(dataDetail);
+                        
+                        MainPage.totalEdges += 1;
                     }
-
                 }
             }
-            
+
             String data[][] = new String[dataList.size()][3];
             for (int index = 0; index < dataList.size(); index++) {
-                data[index][0] = (index+1) + ".";
+                data[index][0] = (index + 1) + ".";
                 data[index][1] = dataList.get(index).get(0);
                 data[index][2] = dataList.get(index).get(1);
             }
             String columns[] = {"No.", "Name", "Type"};
             Func.setTable(columns, data);
             
+            MainPage.lblTotalStates.setText("Total States / Vertices: " + MainPage.totalVertices);
+            MainPage.lblTotalTransition.setText("Total Transitions / Edges: " + MainPage.totalEdges);
+
         } catch (Exception ex) {
             status = false;
             ex.printStackTrace();
