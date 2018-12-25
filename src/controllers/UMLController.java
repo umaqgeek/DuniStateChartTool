@@ -27,10 +27,15 @@ import views.MainPage;
 public class UMLController {
 
     public static ArrayList<ArrayList<String>> dataList = new ArrayList<ArrayList<String>>();
+    public static ArrayList<ArrayList<String>> dataListStates = new ArrayList<ArrayList<String>>();
+    public static ArrayList<ArrayList<String>> dataListTransitions = new ArrayList<ArrayList<String>>();
 
     public static boolean setData(String file) {
         boolean status = true;
         try {
+            
+            dataListStates.removeAll(dataListStates);
+            dataListTransitions.removeAll(dataListTransitions);
 
             BufferedReader in = new BufferedReader(new FileReader(file));
 
@@ -43,6 +48,7 @@ public class UMLController {
             int num2 = nList2.getLength();
 
             MainPage.totalVertices = 0;
+            int stateCodeCount = 1;
             for (int l = 0; l < num1; l++) {
                 Element node1 = (Element) nList1.item(l);
                 NamedNodeMap attributes = node1.getAttributes();
@@ -56,7 +62,10 @@ public class UMLController {
                         ArrayList<String> dataDetail = new ArrayList<String>();
                         dataDetail.add(attrValue);
                         dataDetail.add("STATE");
+                        dataDetail.add("s"+(stateCodeCount++));
                         dataList.add(dataDetail);
+                        
+                        dataListStates.add(dataDetail);
                         
                         MainPage.totalVertices += 1;
                     }
@@ -64,6 +73,7 @@ public class UMLController {
             }
 
             MainPage.totalEdges = 0;
+            int transitionCodeCount = 1;
             for (int m = 0; m < num2; m++) {
                 Element node2 = (Element) nList2.item(m);
                 NamedNodeMap attributes = node2.getAttributes();
@@ -77,20 +87,24 @@ public class UMLController {
                         ArrayList<String> dataDetail = new ArrayList<String>();
                         dataDetail.add(attrValue);
                         dataDetail.add("TRANSITION");
+                        dataDetail.add("t"+(transitionCodeCount++));
                         dataList.add(dataDetail);
+                        
+                        dataListTransitions.add(dataDetail);
                         
                         MainPage.totalEdges += 1;
                     }
                 }
             }
 
-            String data[][] = new String[dataList.size()][3];
+            String data[][] = new String[dataList.size()][4];
             for (int index = 0; index < dataList.size(); index++) {
                 data[index][0] = (index + 1) + ".";
-                data[index][1] = dataList.get(index).get(0);
-                data[index][2] = dataList.get(index).get(1);
+                data[index][1] = dataList.get(index).get(2);
+                data[index][2] = dataList.get(index).get(0);
+                data[index][3] = dataList.get(index).get(1);
             }
-            String columns[] = {"No.", "Name", "Type"};
+            String columns[] = {"No.", "Code", "Name", "Type"};
             Func.setTable(columns, data);
             
             MainPage.lblTotalStates.setText("Total States / Vertices: " + MainPage.totalVertices);
