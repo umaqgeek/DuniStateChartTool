@@ -15,9 +15,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.lang.ArrayUtils;
 import views.MainPage;
 
 /**
@@ -27,6 +31,7 @@ import views.MainPage;
 public class Func {
     
     private static String FILE_NAME = "exportStateChartTool.xlsx";
+    public static boolean DEBUG = true;
     
     public static void setTable(String[] columns, String[][] data) {
         DefaultTableModel model = new DefaultTableModel();
@@ -99,5 +104,10 @@ public class Func {
             JOptionPane.showMessageDialog(null, "File cannot be opened!", "Error Open File", 0);
             e.printStackTrace();
         }
+    }
+    
+    public static int getMinimumInteger(int arr[]) {
+        List b = Arrays.asList(ArrayUtils.toObject(arr));
+        return (int) Collections.min(b);
     }
 }

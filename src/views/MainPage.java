@@ -84,6 +84,7 @@ public class MainPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Feature Model State Chart Tool");
+        setAlwaysOnTop(true);
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -485,7 +486,7 @@ public class MainPage extends javax.swing.JFrame {
     private void btnToTCGPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnToTCGPageActionPerformed
         // TODO add your handling code here:
         if (MainPage.totalVertices > 0 && MainPage.totalEdges > 0 && UMLController.dataListStates.size() > 0) {
-            new TestCaseGenerationPage().setVisible(true);
+            new TestCaseGeneration02Page().setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Please import STATES and TRANSITION first.", "Missing Vertices and Edges", 1);
         }

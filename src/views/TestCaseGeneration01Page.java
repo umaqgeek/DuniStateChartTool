@@ -15,11 +15,11 @@ import models.ComboItem;
  *
  * @author umar
  */
-public class TestCaseGenerationPage extends javax.swing.JFrame {
+public class TestCaseGeneration01Page extends javax.swing.JFrame {
 
     public static String edges[][];
     
-    public TestCaseGenerationPage() {
+    public TestCaseGeneration01Page() {
         initComponents();
         
         initMatrixes();
@@ -266,20 +266,21 @@ public class TestCaseGenerationPage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TestCaseGenerationPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TestCaseGeneration01Page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TestCaseGenerationPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TestCaseGeneration01Page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TestCaseGenerationPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TestCaseGeneration01Page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TestCaseGenerationPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TestCaseGeneration01Page.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TestCaseGenerationPage().setVisible(true);
+                new TestCaseGeneration01Page().setVisible(true);
             }
         });
     }
