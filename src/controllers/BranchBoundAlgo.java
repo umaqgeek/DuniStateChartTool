@@ -7,6 +7,7 @@ package controllers;
 
 import helpers.Func;
 import java.util.ArrayList;
+import java.util.Random;
 import views.TestCaseGeneration02Page;
 
 /**
@@ -32,15 +33,13 @@ public class BranchBoundAlgo {
         }
     }
     
-    public static void calcBBA01() {
+    public static void calcBBA01(int numberOfPath) {
         
         initMatrix();
         
         try {
             
             int matrixTemp[][] = new int[totalVertices][totalVertices];
-            
-            TestCaseGeneration02Page.viewMatrix();
             
             // reduce row
             int totalRowMin = 0;
@@ -65,8 +64,6 @@ public class BranchBoundAlgo {
                 totalRowMin += min;
             }
             
-            TestCaseGeneration02Page.viewMatrix(matrixTemp);
-            
             // reduce column
             int totalColumnMin = 0;
             for (int j = 0; j < totalVertices; j++) {
@@ -88,30 +85,103 @@ public class BranchBoundAlgo {
                 totalColumnMin += min;
             }
             
-            TestCaseGeneration02Page.viewMatrix(matrixTemp);
-            
             // total reduced
-            int totalReduced = totalRowMin + totalColumnMin;
+            int oriTotalReduced = totalRowMin + totalColumnMin;
             
             ArrayList<Integer> storage = new ArrayList<Integer>();
-            storage.add(0);
+            storage.add(1);
             
             BranchBoundAlgo bba = new BranchBoundAlgo();
-            bba.getCost(matrixTemp, totalReduced, storage);
+            int newTotalReduced = bba.getCost(matrixTemp, oriTotalReduced, storage);
+            
+            TestCaseGeneration02Page.viewPath(false, "[The Best BBA]", storage, newTotalReduced);
+            
+            TestCaseGeneration02Page.viewMatrix(false, matrixTemp);
+            
+            // generate number random path from node 1 to node n.
+            bba.generateRandomPath(numberOfPath, matrixTemp, newTotalReduced);
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
+    public void generateRandomPath(int numPath, int matrx[][], int startReduced) {
+        
+        int startNode = 1;
+        int endNode = totalVertices;
+        
+        for (int index = 0; index < numPath; index++) {
+            
+            ArrayList<Integer> paths = new ArrayList<Integer>();
+            paths.add(startNode);
+            
+            BranchBoundAlgo bba = new BranchBoundAlgo();
+            paths = bba.searchDeep(matrx, paths, endNode);
+            
+            int totalCost = bba.calcPathCost(matrx, paths);
+            
+            TestCaseGeneration02Page.viewPathMany(false, "#"+Func.getFormatInteger((index+1)+"", (numPath+"").length()), paths, totalCost);
+        }
+    }
+    
+    public int calcPathCost(int matrx[][], ArrayList<Integer> pathNodes) {
+        int totalCost = 0;
+        try {
+            for (int index = 0; index < pathNodes.size() - 1; index++) {
+                int currNode = pathNodes.get(index);
+                int nextNode = pathNodes.get(index + 1);
+                totalCost += (matrx[currNode-1][nextNode-1]);
+            }
+        } catch (Exception e) {
+            if (Func.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        return totalCost;
+    }
+    
+    public ArrayList<Integer> searchDeep(int matrx[][], ArrayList<Integer> pathNodes, int endNode) {
+        
+        Random rand = new Random();
+        int randomNode;
+        int countStop = 100;
+        do {
+            randomNode = rand.nextInt(totalVertices) + 1;
+            if (pathNodes.contains(randomNode)) {
+                continue;
+            } else if (randomNode == endNode) {
+                pathNodes.add(randomNode);
+                break;
+            } else if (countStop <= 0) {
+                break;
+            } else if (matrix[pathNodes.get(pathNodes.size()-1)-1][randomNode-1] == posINF) {
+                countStop--;
+                continue;
+            } else {
+                pathNodes.add(randomNode);
+                break;
+            }
+        } while (true);
+        if (countStop <= 0 || randomNode == endNode) {
+            return pathNodes;
+        } else {
+            BranchBoundAlgo bba = new BranchBoundAlgo();
+            pathNodes = bba.searchDeep(matrx, pathNodes, endNode);
+        }
+        return pathNodes;
+    }
+    
     public int getCost(int box[][], int reducedCost, ArrayList<Integer> storage) {
         
         int matrixTemp[][] = new int[totalVertices][totalVertices];
+        int theBestMatrix[][] = new int[totalVertices][totalVertices];
         int theBestCost = posINF;
-        int theBestNode = storage.get(storage.size()-1);
+        int theBestNode = storage.get(storage.size()-1)-1;
         for (int i = 0; i < totalVertices; i++) {
             
-            if (storage.contains(i)) {
+            // ignore the node if already gone through it.
+            if (storage.contains(i+1)) {
                 continue;
             }
             
@@ -123,7 +193,7 @@ public class BranchBoundAlgo {
             }
             
             // make all cells of row of last storage index into INF.
-            int lastNode = storage.get(storage.size()-1);
+            int lastNode = storage.get(storage.size()-1)-1;
             for (int j = 0; j < totalVertices; j++) {
                 matrixTemp[lastNode][j] = posINF;
             }
@@ -178,12 +248,34 @@ public class BranchBoundAlgo {
             if (totalReduced < theBestCost) {
                 theBestCost = totalReduced;
                 theBestNode = i;
+                for (int j = 0; j < totalVertices; j++) {
+                    for (int k = 0; k < totalVertices; k++) {
+                        theBestMatrix[j][k] = matrixTemp[j][k];
+                    }
+                }
             }
         }
         
-        storage.add(theBestNode);
+        storage.add(theBestNode+1);
+        
+        // to stop the recursive loop if already go through all nodes.
+        if (storage.size() == totalVertices) {
+            return theBestCost;
+        }
+        
+        // to stop the recursive loop if looping on the same node.
+        if (storage.size() > 1) {
+            if (storage.get(storage.size()-1) == storage.get(storage.size()-2)) {
+                theBestCost = reducedCost;
+                storage.remove(storage.size()-1);
+                return theBestCost;
+            }
+        }
+        
+        TestCaseGeneration02Page.viewMatrix(true, matrixTemp);
+        
         BranchBoundAlgo bba = new BranchBoundAlgo();
-        theBestCost = bba.getCost(matrixTemp, theBestCost, storage);
+        theBestCost = bba.getCost(theBestMatrix, theBestCost, storage);
         
         return theBestCost;
     }

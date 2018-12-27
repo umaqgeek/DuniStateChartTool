@@ -82,6 +82,6 @@ public class FloydWarshallAlgo {
             }
         }
         
-        TestCaseGeneration02Page.viewMatrix();
+        TestCaseGeneration02Page.viewMatrix(true);
     }
 }

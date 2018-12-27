@@ -33,6 +33,20 @@ public class Func {
     private static String FILE_NAME = "exportStateChartTool.xlsx";
     public static boolean DEBUG = true;
     
+    public static String getFormatInteger(String number, int numDigit) {
+        String outNumber = "";
+        try {
+            int balanceDigit = (numDigit <= number.length()) ? (0) : (numDigit - number.length());
+            for (int i = 0; i < balanceDigit; i++) {
+                outNumber += "0";
+            }
+            outNumber += number;
+        } catch (Exception e) {
+            outNumber = number;
+        }
+        return outNumber;
+    }
+    
     public static void setTable(String[] columns, String[][] data) {
         DefaultTableModel model = new DefaultTableModel();
         for (int index = 0; index < columns.length; index++) {
