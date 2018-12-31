@@ -16,7 +16,7 @@ import views.TestCaseGeneration02Page;
  */
 public class BranchBoundAlgo {
     
-    public static int totalVertices = UMLController.dataListStates.size() + 2;
+    public static int totalVertices = UMLController.dataListStates.size();
     public static int matrix[][] = new int[totalVertices][totalVertices];
     public static int posINF = 99999; //Integer.MAX_VALUE;
     public static int negINF = -99999; //Integer.MIN_VALUE;

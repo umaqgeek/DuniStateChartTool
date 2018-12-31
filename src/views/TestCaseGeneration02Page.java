@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class TestCaseGeneration02Page extends javax.swing.JFrame {
     
-    public static int totalVertices = UMLController.dataListStates.size() + 2;
+    public static int totalVertices = UMLController.dataListStates.size();
 //    public static int totalVertices = 5;
     public static int matrix[][] = new int[totalVertices][totalVertices];
     public static final int posINF = 99999; //Integer.MAX_VALUE;
@@ -36,6 +36,24 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     public static void initPage() {
         
         btnBBAlgo.setEnabled(false);
+        
+        resetPreMatrix();
+    }
+    
+    public static void resetPreMatrix() {
+        String preMatrix = "";
+        for (int i = 0; i < UMLController.preMatrix.size(); i++) {
+            for (int j = 0; j < UMLController.preMatrix.get(i).size(); j++) {
+                preMatrix += UMLController.preMatrix.get(i).get(j);
+                if (j != (UMLController.preMatrix.get(i).size() - 1)) {
+                    preMatrix += ", ";
+                }
+            }
+            if (i != (UMLController.preMatrix.size() - 1)) {
+                preMatrix += ";\n";
+            }
+        }
+        txtMatrix.setText(preMatrix);
     }
     
     public static void viewPathMany(boolean isClear, String name, ArrayList<Integer> arr, int totalReduced) {
@@ -47,7 +65,9 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             String strTotalReduced = (totalReduced >= posINF) ? ("INF") : (totalReduced + "");
             outview += "Path " + name + ": [";
             for (int i = 0; i < arr.size(); i++) {
-                outview += arr.get(i);
+                String code = "s" + arr.get(i);
+                String stateName = UMLController.getStateName(code);
+                outview += stateName;
                 if (i != arr.size() - 1) {
                     outview += ", ";
                 }
@@ -80,7 +100,9 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             outview += "Total Cost: " + strTotalReduced + "\n";
             outview += "Path " + name + ": [";
             for (int i = 0; i < arr.size(); i++) {
-                outview += arr.get(i);
+                String code = "s" + arr.get(i);
+                String stateName = UMLController.getStateName(code);
+                outview += stateName;
                 if (i != arr.size() - 1) {
                     outview += ", ";
                 }
@@ -208,6 +230,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         btnQuit = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtNumberPath = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Floyd Warshall Algorithm");
@@ -263,6 +286,13 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
 
         txtNumberPath.setText("10");
 
+        jButton3.setText("Reset");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -301,7 +331,8 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnQuit, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                     .addComponent(jLabel4)
-                    .addComponent(txtNumberPath))
+                    .addComponent(txtNumberPath)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -314,24 +345,24 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnBBAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtNumberPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(153, 153, 153)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBBAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -399,6 +430,11 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnQuitActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        resetPreMatrix();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -446,6 +482,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     public static javax.swing.JButton btnQuit;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -30,6 +30,9 @@ public class UMLController {
     public static ArrayList<ArrayList<String>> dataList = new ArrayList<ArrayList<String>>();
     public static ArrayList<ArrayList<String>> dataListStates = new ArrayList<ArrayList<String>>();
     public static ArrayList<ArrayList<String>> dataListTransitions = new ArrayList<ArrayList<String>>();
+    
+    public static ArrayList<ArrayList<String>> transitions = new ArrayList<ArrayList<String>>();
+    public static ArrayList<ArrayList<String>> preMatrix = new ArrayList<ArrayList<String>>();
 
     public static boolean setData(String file) {
         boolean status = true;
@@ -149,14 +152,22 @@ public class UMLController {
                 dataListStates.set(i-1, temp);
             }
 
-            System.out.println("TRANSITIONS:");
             MainPage.totalEdges = 0;
             int transitionCodeCount = 1;
             for (int m = 0; m < num2; m++) {
+                
+                String transName = "-";
+                String transCode = "-";
+                String sourceId = "-";
+                String destinationId = "-";
+                String weight = "0";
+                boolean foundName = false;
+                boolean foundSource = false;
+                boolean foundDestination = false;
+                
                 Element node2 = (Element) nList2.item(m);
                 NamedNodeMap attributes = node2.getAttributes();
                 
-                String weight = "0";
                 try {
                     NodeList node2Child = node2.getElementsByTagName("UML:BooleanExpression");
                     for (int i = 0; i < node2Child.getLength(); i++) {
@@ -176,28 +187,54 @@ public class UMLController {
                     String attrName = attr.getNodeName();
                     String attrValue = attr.getNodeValue();
                     if (attrName.equals("name")) {
-                        // attrValue - list of transitions
-                        ArrayList<String> dataDetail = new ArrayList<String>();
-                        dataDetail.add(attrValue);
-                        dataDetail.add("TRANSITION");
-                        dataDetail.add("t"+(transitionCodeCount++));
-                        dataList.add(dataDetail);
-                        
-                        dataListTransitions.add(dataDetail);
-                        
-                        MainPage.totalEdges += 1;
-                        
-                        System.out.println("transition: " + attrValue);
+                        foundName = true;
+                        transName = attrValue;
+                        transCode = "t"+ (transitionCodeCount);
                     }
                     if (attrName.equals("source")) {
-                        System.out.println("source id: " + attrValue);
+                        foundSource = true;
+                        sourceId = attrValue;
                     }
                     if (attrName.equals("target")) {
-                        System.out.println("target id: " + attrValue);
+                        foundDestination = true;
+                        destinationId = attrValue;
                     }
                 }
-                System.out.println("weight: "+weight);
-                System.out.println("");
+                
+                if (foundName && foundSource && foundDestination) {
+                    ArrayList<String> dataDetail = new ArrayList<String>();
+                    dataDetail.add(transName);
+                    dataDetail.add("TRANSITION");
+                    dataDetail.add(transCode);
+                    dataDetail.add(sourceId);
+                    dataDetail.add(destinationId);
+                    dataDetail.add(weight);
+                    
+                    dataList.add(dataDetail);
+                    dataListTransitions.add(dataDetail);
+
+                    transitionCodeCount += 1;
+                    MainPage.totalEdges += 1;
+                }
+            }
+            
+            // match all vertices with their edges and put into a matrix form.
+            int numVertices = dataListStates.size();
+            for (int i = 0; i < numVertices; i++) {
+                ArrayList<String> preRow = new ArrayList<String>();
+                for (int j = 0; j < numVertices; j++) {
+                    if (i == j) {
+                        preRow.add("0");
+                    } else {
+                        String sourceCode = "s" + (i + 1);
+                        String destinationCode = "s" + (j + 1);
+                        String sourceId = getStateId(sourceCode);
+                        String destinationId = getStateId(destinationCode);
+                        String weight = getWeightTransition(sourceId, destinationId);
+                        preRow.add(weight);
+                    }
+                }
+                preMatrix.add(preRow);
             }
 
             String data[][] = new String[dataList.size()][4];
@@ -218,5 +255,62 @@ public class UMLController {
             ex.printStackTrace();
         }
         return status;
+    }
+    
+    public static String getWeightTransition(String sourceId, String destinationId) {
+        String str = "INF";
+        try {
+            for (int i = 0; i < dataListTransitions.size(); i++) {
+                if (dataListTransitions.get(i).get(3).toLowerCase().equals(sourceId.toLowerCase()) 
+                        && dataListTransitions.get(i).get(4).toLowerCase().equals(destinationId.toLowerCase())) {
+                    str = dataListTransitions.get(i).get(5);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return str;
+    }
+    
+    public static String getStateId(String code) {
+        String str = "-";
+        try {
+            for (int i = 0; i < dataListStates.size(); i++) {
+                if (dataListStates.get(i).get(2).toLowerCase().equals(code.toLowerCase())) {
+                    str = dataListStates.get(i).get(3);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return str;
+    }
+    
+    public static String getStateName(String code) {
+        String str = "-";
+        try {
+            for (int i = 0; i < dataListStates.size(); i++) {
+                if (dataListStates.get(i).get(2).toLowerCase().equals(code.toLowerCase())) {
+                    str = dataListStates.get(i).get(0);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return str;
+    }
+    
+    public static String getStateCode(String id) {
+        String str = "-";
+        try {
+            for (int i = 0; i < dataListStates.size(); i++) {
+                if (dataListStates.get(i).get(3).toLowerCase().equals(id.toLowerCase())) {
+                    str = dataListStates.get(i).get(2);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return str;
     }
 }
