@@ -17,6 +17,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import views.MainPage;
 
@@ -42,41 +43,133 @@ public class UMLController {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
+            NodeList nList0 = doc.getElementsByTagName("UML:PseudoState");
             NodeList nList1 = doc.getElementsByTagName("UML:SimpleState");
             NodeList nList2 = doc.getElementsByTagName("UML:Transition");
+            int num0 = nList0.getLength();
             int num1 = nList1.getLength();
             int num2 = nList2.getLength();
-
+            
             MainPage.totalVertices = 0;
             int stateCodeCount = 1;
             for (int l = 0; l < num1; l++) {
                 Element node1 = (Element) nList1.item(l);
                 NamedNodeMap attributes = node1.getAttributes();
                 int numAttrs = attributes.getLength();
+                
+                String name = "-";
+                String code = "-";
+                String id = "-";
+                boolean foundName = false;
+                boolean foundId = false;
+                
                 for (int i = 0; i < numAttrs; i++) {
                     Attr attr = (Attr) attributes.item(i);
                     String attrName = attr.getNodeName();
                     String attrValue = attr.getNodeValue();
                     if (attrName.equals("name")) {
-                        // attrName - list of states
-                        ArrayList<String> dataDetail = new ArrayList<String>();
-                        dataDetail.add(attrValue);
-                        dataDetail.add("STATE");
-                        dataDetail.add("s"+(stateCodeCount++));
-                        dataList.add(dataDetail);
-                        
-                        dataListStates.add(dataDetail);
-                        
-                        MainPage.totalVertices += 1;
+                        foundName = true;
+                        name = attrValue;
+                        code = "s" + (stateCodeCount + 1);
+                    }
+                    if (attrName.equals("xmi.id")) {
+                        foundId = true;
+                        id = attrValue;
                     }
                 }
+                
+                if (foundName && foundId) {
+                    ArrayList<String> dataDetail = new ArrayList<String>();
+                    dataDetail.add(name);
+                    dataDetail.add("STATE");
+                    dataDetail.add(code);
+                    dataDetail.add(id);
+
+                    dataList.add(dataDetail);
+                    dataListStates.add(dataDetail);
+                    
+                    stateCodeCount += 1;
+                    MainPage.totalVertices += 1;
+                }
+            }
+            
+            int pseudostateCodeCount = stateCodeCount + 1;
+            for (int l = 0; l < num0; l++) {
+                Element node0 = (Element) nList0.item(l);
+                NamedNodeMap attributes = node0.getAttributes();
+                int numAttrs = attributes.getLength();
+                
+                String name = "-";
+                String code = "-";
+                String id = "-";
+                boolean foundName = false;
+                boolean foundId = false;
+                
+                for (int i = 0; i < numAttrs; i++) {
+                    Attr attr = (Attr) attributes.item(i);
+                    String attrName = attr.getNodeName();
+                    String attrValue = attr.getNodeValue();
+                    if (attrName.equals("name")) {
+                        foundName = true;
+                        name = attrValue;
+                        if (name.toLowerCase().equals("start")) {
+                            code = "s1";
+                        } else if (name.toLowerCase().equals("final")) {
+                            code = "s" + pseudostateCodeCount;
+                        }
+                    }
+                    if (attrName.equals("xmi.id")) {
+                        foundId = true;
+                        id = attrValue;
+                    }
+                }
+                
+                if (foundName && foundId) {
+                    ArrayList<String> dataDetail = new ArrayList<String>();
+                    dataDetail.add(name);
+                    dataDetail.add("STATE");
+                    dataDetail.add(code);
+                    dataDetail.add(id);
+
+                    dataList.add(dataDetail);
+                    dataListStates.add(dataDetail);
+                }
+            }
+            
+            // re-arrange Start to be the first states in the states list.
+            int startIndex = 0;
+            for (int i = 0; i < dataListStates.size(); i++) {
+                if (dataListStates.get(i).get(2).toLowerCase().equals("s1")) {
+                    startIndex = i;
+                }
+            }
+            for (int i = startIndex; i >= 1; i--) {
+                ArrayList<String> temp = dataListStates.get(i);
+                dataListStates.set(i, dataListStates.get(i-1));
+                dataListStates.set(i-1, temp);
             }
 
+            System.out.println("TRANSITIONS:");
             MainPage.totalEdges = 0;
             int transitionCodeCount = 1;
             for (int m = 0; m < num2; m++) {
                 Element node2 = (Element) nList2.item(m);
                 NamedNodeMap attributes = node2.getAttributes();
+                
+                String weight = "0";
+                try {
+                    NodeList node2Child = node2.getElementsByTagName("UML:BooleanExpression");
+                    for (int i = 0; i < node2Child.getLength(); i++) {
+                        Node node = node2Child.item(i);
+                        for (int j = 0; j < node.getAttributes().getLength(); j++) {
+                            if (node.getAttributes().item(j).getNodeName().equals("body")) {
+                                weight = node.getAttributes().item(j).getNodeValue();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                }
+                
                 int numAttrs2 = attributes.getLength();
                 for (int n = 0; n < numAttrs2; n++) {
                     Attr attr = (Attr) attributes.item(n);
@@ -93,8 +186,18 @@ public class UMLController {
                         dataListTransitions.add(dataDetail);
                         
                         MainPage.totalEdges += 1;
+                        
+                        System.out.println("transition: " + attrValue);
+                    }
+                    if (attrName.equals("source")) {
+                        System.out.println("source id: " + attrValue);
+                    }
+                    if (attrName.equals("target")) {
+                        System.out.println("target id: " + attrValue);
                     }
                 }
+                System.out.println("weight: "+weight);
+                System.out.println("");
             }
 
             String data[][] = new String[dataList.size()][4];
