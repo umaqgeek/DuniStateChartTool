@@ -218,6 +218,9 @@ public class UMLController {
                 }
             }
             
+            // reset and clear the pre-matrix
+            preMatrix.removeAll(preMatrix);
+            
             // match all vertices with their edges and put into a matrix form.
             int numVertices = dataListStates.size();
             for (int i = 0; i < numVertices; i++) {
