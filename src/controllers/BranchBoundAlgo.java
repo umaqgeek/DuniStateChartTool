@@ -94,9 +94,9 @@ public class BranchBoundAlgo {
             BranchBoundAlgo bba = new BranchBoundAlgo();
             int newTotalReduced = bba.getCost(matrixTemp, oriTotalReduced, storage);
             
-            TestCaseGeneration02Page.viewPath(false, "[The Best BBA]", storage, newTotalReduced);
+            TestCaseGeneration02Page.viewPath(2, false, "[The Best BBA]", storage, newTotalReduced);
             
-            TestCaseGeneration02Page.viewMatrix(false, matrixTemp);
+            TestCaseGeneration02Page.viewMatrix(2, false, matrixTemp);
             
             // generate number random path from node 1 to node n.
             bba.generateRandomPath(numberOfPath, matrixTemp, newTotalReduced);
@@ -121,7 +121,7 @@ public class BranchBoundAlgo {
             
             int totalCost = bba.calcPathCost(matrx, paths);
             
-            TestCaseGeneration02Page.viewPathMany(false, "#"+Func.getFormatInteger((index+1)+"", (numPath+"").length()), paths, totalCost);
+            TestCaseGeneration02Page.viewPathMany(2, false, "#"+Func.getFormatInteger((index+1)+"", (numPath+"").length()), paths, totalCost);
         }
     }
     
@@ -272,7 +272,7 @@ public class BranchBoundAlgo {
             }
         }
         
-        TestCaseGeneration02Page.viewMatrix(true, matrixTemp);
+        TestCaseGeneration02Page.viewMatrix(2, true, matrixTemp);
         
         BranchBoundAlgo bba = new BranchBoundAlgo();
         theBestCost = bba.getCost(theBestMatrix, theBestCost, storage);

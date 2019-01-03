@@ -56,7 +56,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         txtMatrix.setText(preMatrix);
     }
     
-    public static void viewPathMany(boolean isClear, String name, ArrayList<Integer> arr, int totalReduced) {
+    public static void viewPathMany(int box, boolean isClear, String name, ArrayList<Integer> arr, int totalReduced) {
         
         try {
             
@@ -77,11 +77,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             if (Func.DEBUG) {
                 System.out.println(outview);
             }
-            if (isClear) {
-                TestCaseGeneration02Page.txtResults.setText(outview);
-            } else {
-                TestCaseGeneration02Page.txtResults.setText(TestCaseGeneration02Page.txtResults.getText() + "\n" + outview);
-            }
+            setBox(box, isClear, outview);
             
         } catch (Exception e) {
             if (Func.DEBUG) {
@@ -90,7 +86,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         }
     }
     
-    public static void viewPath(boolean isClear, String name, ArrayList<Integer> arr, int totalReduced) {
+    public static void viewPath(int box, boolean isClear, String name, ArrayList<Integer> arr, int totalReduced) {
         
         try {
             
@@ -112,11 +108,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             if (Func.DEBUG) {
                 System.out.println(outview);
             }
-            if (isClear) {
-                TestCaseGeneration02Page.txtResults.setText(outview);
-            } else {
-                TestCaseGeneration02Page.txtResults.setText(TestCaseGeneration02Page.txtResults.getText() + "\n" + outview);
-            }
+            setBox(box, isClear, outview);
             
         } catch (Exception e) {
             if (Func.DEBUG) {
@@ -125,7 +117,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         }
     }
     
-    public static void viewMatrix(boolean isClear) {
+    public static void viewMatrix(int box, boolean isClear) {
 
         try {
 
@@ -154,11 +146,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             if (Func.DEBUG) {
                 System.out.println(outview);
             }
-            if (isClear) {
-                TestCaseGeneration02Page.txtResults.setText(outview);
-            } else {
-                TestCaseGeneration02Page.txtResults.setText(TestCaseGeneration02Page.txtResults.getText() + "\n" + outview);
-            }
+            setBox(box, isClear, outview);
 
         } catch (Exception e) {
             if (Func.DEBUG) {
@@ -167,7 +155,36 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         }
     }
     
-    public static void viewMatrix(boolean isClear, int mat[][]) {
+    public static void setBox(int box, boolean isClear, String output) {
+        switch (box) {
+            case 1:
+                if (isClear) {
+                    TestCaseGeneration02Page.txtResultsFWA.setText(output);
+                } else {
+                    TestCaseGeneration02Page.txtResultsFWA.setText(TestCaseGeneration02Page.txtResultsFWA.getText() + "\n" + output);
+                }
+                break;
+            case 2:
+                if (isClear) {
+                    TestCaseGeneration02Page.txtResultsBBA.setText(output);
+                } else {
+                    TestCaseGeneration02Page.txtResultsBBA.setText(TestCaseGeneration02Page.txtResultsBBA.getText() + "\n" + output);
+                }
+                break;
+            case 3:
+                if (isClear) {
+                    TestCaseGeneration02Page.txtResultsBodo.setText(output);
+                } else {
+                    TestCaseGeneration02Page.txtResultsBodo.setText(TestCaseGeneration02Page.txtResultsBodo.getText() + "\n" + output);
+                }
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Cannot decide which result box need to be output!", "Invalid Output Box", 0);
+                break;
+        }
+    }
+    
+    public static void viewMatrix(int box, boolean isClear, int mat[][]) {
 
         try {
 
@@ -196,11 +213,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             if (Func.DEBUG) {
                 System.out.println(outview);
             }
-            if (isClear) {
-                TestCaseGeneration02Page.txtResults.setText(outview);
-            } else {
-                TestCaseGeneration02Page.txtResults.setText(TestCaseGeneration02Page.txtResults.getText() + "\n" + outview);
-            }
+            setBox(box, isClear, outview);
 
         } catch (Exception e) {
         }
@@ -224,13 +237,18 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtResults = new javax.swing.JTextArea();
+        txtResultsFWA = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
         btnBBAlgo = new javax.swing.JButton();
         btnQuit = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtNumberPath = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtResultsBBA = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtResultsBodo = new javax.swing.JTextArea();
+        btnBodoAlgo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Floyd Warshall Algorithm");
@@ -256,9 +274,9 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
 
         jLabel3.setText("Results:");
 
-        txtResults.setColumns(20);
-        txtResults.setRows(5);
-        jScrollPane2.setViewportView(txtResults);
+        txtResultsFWA.setColumns(20);
+        txtResultsFWA.setRows(5);
+        jScrollPane2.setViewportView(txtResultsFWA);
 
         jButton2.setText("Clear");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -292,47 +310,66 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             }
         });
 
+        txtResultsBBA.setColumns(20);
+        txtResultsBBA.setRows(5);
+        jScrollPane3.setViewportView(txtResultsBBA);
+
+        txtResultsBodo.setColumns(20);
+        txtResultsBodo.setRows(5);
+        jScrollPane4.setViewportView(txtResultsBodo);
+
+        btnBodoAlgo.setText("Generate Random");
+        btnBodoAlgo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBodoAlgoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBBAlgo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnBodoAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(308, 308, 308)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel3)))
-                        .addGap(0, 285, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnQuit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNumberPath, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(231, 231, 231))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBBAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnQuit, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtNumberPath)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(494, 494, 494))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(564, 564, 564))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -341,28 +378,36 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNumberPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(153, 153, 153)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnBBAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnBodoAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel4)
+                                .addComponent(txtNumberPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(107, 107, 107)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBBAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -378,8 +423,8 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -401,12 +446,18 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        clearPreMatrix();
         clearPage();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    public static void clearPage() {
+    public static void clearPreMatrix() {
         txtMatrix.setText("");
-        txtResults.setText("");
+    }
+    
+    public static void clearPage() {
+        txtResultsFWA.setText("");
+        txtResultsBBA.setText("");
+        txtResultsBodo.setText("");
         btnBBAlgo.setEnabled(false);
     }
     
@@ -432,7 +483,12 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         resetPreMatrix();
+        clearPage();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnBodoAlgoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBodoAlgoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBodoAlgoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -478,6 +534,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnBBAlgo;
+    public static javax.swing.JButton btnBodoAlgo;
     public static javax.swing.JButton btnQuit;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -489,9 +546,13 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     public static javax.swing.JTextArea txtMatrix;
     public static javax.swing.JTextField txtNumberPath;
-    public static javax.swing.JTextArea txtResults;
+    public static javax.swing.JTextArea txtResultsBBA;
+    public static javax.swing.JTextArea txtResultsBodo;
+    public static javax.swing.JTextArea txtResultsFWA;
     // End of variables declaration//GEN-END:variables
 }
