@@ -24,12 +24,17 @@ public class BranchBoundAlgo {
     private static void initMatrix() {
         
         totalVertices = TestCaseGeneration02Page.totalVertices;
-        matrix = TestCaseGeneration02Page.matrix;
         posINF = TestCaseGeneration02Page.posINF;
         negINF = TestCaseGeneration02Page.negINF;
         
-        for (int i = 0; i < totalVertices; i++) {
-            matrix[i][i] = posINF;
+        for (int i = 0; i < TestCaseGeneration02Page.matrix.length; i++) {
+            for (int j = 0; j < TestCaseGeneration02Page.matrix[i].length; j++) {
+                if (i == j) {
+                    matrix[i][j] = posINF;
+                } else {
+                    matrix[i][j] = TestCaseGeneration02Page.matrix[i][j];
+                }
+            }
         }
     }
     
@@ -96,7 +101,7 @@ public class BranchBoundAlgo {
             
             TestCaseGeneration02Page.viewPath(2, false, "[The Best BBA]", storage, newTotalReduced);
             
-            TestCaseGeneration02Page.viewMatrix(2, false, matrixTemp);
+//            TestCaseGeneration02Page.viewMatrix(2, false, "asd", matrixTemp);
             
             // generate number random path from node 1 to node n.
             bba.generateRandomPath(numberOfPath, matrixTemp, newTotalReduced);
@@ -111,18 +116,57 @@ public class BranchBoundAlgo {
         int startNode = 1;
         int endNode = totalVertices;
         
+        ArrayList<ArrayList<Integer>> allPaths = new ArrayList<ArrayList<Integer>>();
+        allPaths.removeAll(allPaths);
+        
         for (int index = 0; index < numPath; index++) {
             
             ArrayList<Integer> paths = new ArrayList<Integer>();
-            paths.add(startNode);
-            
             BranchBoundAlgo bba = new BranchBoundAlgo();
-            paths = bba.searchDeep(matrx, paths, endNode);
+            
+            do {
+                paths.removeAll(paths);
+
+                paths.add(startNode);
+                paths = bba.searchDeep(matrx, paths, endNode);
+                
+                boolean isMatch = bba.matchPaths(allPaths, paths);
+                if (!isMatch) {
+                    break;
+                }
+            } while (true);
+            
+            allPaths.add(paths);
             
             int totalCost = bba.calcPathCost(matrx, paths);
             
             TestCaseGeneration02Page.viewPathMany(2, false, "#"+Func.getFormatInteger((index+1)+"", (numPath+"").length()), paths, totalCost);
         }
+    }
+    
+    public boolean matchPaths(ArrayList<ArrayList<Integer>> allP, ArrayList<Integer> p) {
+        boolean status = false;
+        try {
+            
+            for (int i = 0; i < allP.size(); i++) {
+                int numTrue = 0;
+                for (int j = 0; j < allP.get(i).size() && j < p.size(); j++) {
+                    if (allP.get(i).get(j) == p.get(j)) {
+                        numTrue += 1;
+                    }
+                }
+                if (numTrue == p.size()) {
+                    status = true;
+                    break;
+                }
+            }
+            
+        } catch (Exception e) {
+            if (Func.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        return status;
     }
     
     public int calcPathCost(int matrx[][], ArrayList<Integer> pathNodes) {
@@ -272,7 +316,7 @@ public class BranchBoundAlgo {
             }
         }
         
-        TestCaseGeneration02Page.viewMatrix(2, true, matrixTemp);
+        TestCaseGeneration02Page.viewMatrix(2, true, "The Deepest Node of The Best Path", matrixTemp);
         
         BranchBoundAlgo bba = new BranchBoundAlgo();
         theBestCost = bba.getCost(theBestMatrix, theBestCost, storage);

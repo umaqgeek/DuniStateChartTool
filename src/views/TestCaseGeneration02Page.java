@@ -7,6 +7,7 @@ package views;
 
 import controllers.BranchBoundAlgo;
 import controllers.FloydWarshallAlgo;
+import controllers.PureRandomAlgo;
 import controllers.UMLController;
 import helpers.Func;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             for (int i = 0; i < arr.size(); i++) {
                 String code = "s" + arr.get(i);
                 String stateName = UMLController.getStateName(code);
-                outview += stateName;
+                outview += code; //**
                 if (i != arr.size() - 1) {
                     outview += ", ";
                 }
@@ -103,7 +104,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
                     outview += ", ";
                 }
             }
-            outview += "]";
+            outview += "]\n";
             
             if (Func.DEBUG) {
                 System.out.println(outview);
@@ -117,13 +118,15 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         }
     }
     
-    public static void viewMatrix(int box, boolean isClear) {
+    public static void viewMatrix(int box, boolean isClear, String title) {
 
         try {
 
             String outview = "";
 
-            outview += "[\n";
+            outview += title;
+            outview += "\n------------------\n";
+            outview += "[";
             for (int i = 0; i < TestCaseGeneration02Page.totalVertices; i++) {
                 outview += "[";
                 for (int j = 0; j < TestCaseGeneration02Page.totalVertices; j++) {
@@ -137,9 +140,9 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
                 }
                 outview += "]";
                 if (i != TestCaseGeneration02Page.totalVertices - 1) {
-                    outview += ", ";
+                    outview += ", \n";
                 }
-                outview += "\n";
+//                outview += "\n";
             }
             outview += "]\n";
 
@@ -152,6 +155,43 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             if (Func.DEBUG) {
                 e.printStackTrace();
             }
+        }
+    }
+    
+    public static void viewMatrix(int box, boolean isClear, String title, int mat[][]) {
+
+        try {
+
+            String outview = "";
+
+            outview += title;
+            outview += "\n------------------\n";
+            outview += "[";
+            for (int i = 0; i < TestCaseGeneration02Page.totalVertices; i++) {
+                outview += "[";
+                for (int j = 0; j < TestCaseGeneration02Page.totalVertices; j++) {
+                    outview += ((mat[i][j] == TestCaseGeneration02Page.posINF 
+                            || mat[i][j] == TestCaseGeneration02Page.negINF)
+                            ? ("INF")
+                            : (mat[i][j]));
+                    if (j != TestCaseGeneration02Page.totalVertices - 1) {
+                        outview += ", ";
+                    }
+                }
+                outview += "]";
+                if (i != TestCaseGeneration02Page.totalVertices - 1) {
+                    outview += ", \n";
+                }
+//                outview += "\n";
+            }
+            outview += "]\n";
+
+            if (Func.DEBUG) {
+                System.out.println(outview);
+            }
+            setBox(box, isClear, outview);
+
+        } catch (Exception e) {
         }
     }
     
@@ -181,41 +221,6 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             default:
                 JOptionPane.showMessageDialog(null, "Cannot decide which result box need to be output!", "Invalid Output Box", 0);
                 break;
-        }
-    }
-    
-    public static void viewMatrix(int box, boolean isClear, int mat[][]) {
-
-        try {
-
-            String outview = "";
-
-            outview += "[\n";
-            for (int i = 0; i < TestCaseGeneration02Page.totalVertices; i++) {
-                outview += "[";
-                for (int j = 0; j < TestCaseGeneration02Page.totalVertices; j++) {
-                    outview += ((mat[i][j] == TestCaseGeneration02Page.posINF 
-                            || mat[i][j] == TestCaseGeneration02Page.negINF)
-                            ? ("INF")
-                            : (mat[i][j]));
-                    if (j != TestCaseGeneration02Page.totalVertices - 1) {
-                        outview += ", ";
-                    }
-                }
-                outview += "]";
-                if (i != TestCaseGeneration02Page.totalVertices - 1) {
-                    outview += ", ";
-                }
-                outview += "\n";
-            }
-            outview += "]\n";
-
-            if (Func.DEBUG) {
-                System.out.println(outview);
-            }
-            setBox(box, isClear, outview);
-
-        } catch (Exception e) {
         }
     }
 
@@ -434,6 +439,10 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
+        runFWA();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public static void runFWA() {
         String matrix = txtMatrix.getText();
         boolean isValidMatrix = new FloydWarshallAlgo().isValidMatrix(matrix);
         if (isValidMatrix) {
@@ -442,8 +451,8 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         } else {
             clearPage();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         clearPreMatrix();
@@ -467,6 +476,10 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         int numberOfPath = 0;
         try {
             
+            // run FWA first
+            runFWA();
+            
+            // then run BBA
             numberOfPath = Integer.parseInt(txtNumberPath.getText());
             BranchBoundAlgo.calcBBA01(numberOfPath);
             
@@ -488,6 +501,17 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
 
     private void btnBodoAlgoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBodoAlgoActionPerformed
         // TODO add your handling code here:
+        
+        String matrix = txtMatrix.getText();
+        boolean isValidMatrix = new PureRandomAlgo().isValidMatrix(matrix);
+        if (isValidMatrix) {
+            
+            int numberOfPath = Integer.parseInt(txtNumberPath.getText());
+            PureRandomAlgo.calcPRA01(numberOfPath);
+            
+        } else {
+            clearPage();
+        }
     }//GEN-LAST:event_btnBodoAlgoActionPerformed
 
     /**

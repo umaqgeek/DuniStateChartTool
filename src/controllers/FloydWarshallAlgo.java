@@ -82,6 +82,6 @@ public class FloydWarshallAlgo {
             }
         }
         
-        TestCaseGeneration02Page.viewMatrix(1, true);
+        TestCaseGeneration02Page.viewMatrix(1, true, "After Warshall Floyd Algo");
     }
 }
