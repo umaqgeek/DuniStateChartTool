@@ -105,7 +105,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             for (int i = 0; i < arr.size(); i++) {
                 String code = "s" + arr.get(i);
                 String stateName = UMLController.getStateName(code);
-                outview += code; //***
+                outview += stateName;
                 if (i != arr.size() - 1) {
                     outview += ", ";
                 }
@@ -138,7 +138,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             for (int i = 0; i < arr.size(); i++) {
                 String code = "s" + arr.get(i);
                 String stateName = UMLController.getStateName(code);
-                outview += code; //***
+                outview += stateName;
                 if (i != arr.size() - 1) {
                     outview += ", ";
                 }
@@ -272,6 +272,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel6 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -293,6 +294,11 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         txtResultsBodo = new javax.swing.JTextArea();
         btnBodoAlgo = new javax.swing.JButton();
+        lblET1 = new javax.swing.JLabel();
+        lblET2 = new javax.swing.JLabel();
+        lblET3 = new javax.swing.JLabel();
+
+        jLabel6.setText("Execution Time: ");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Floyd Warshall Algorithm");
@@ -369,25 +375,38 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             }
         });
 
+        lblET1.setText("Execution Time: ");
+
+        lblET2.setText("Execution Time: ");
+
+        lblET3.setText("Execution Time: ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(494, 494, 494))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(564, 564, 564))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(lblET1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -403,17 +422,16 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtNumberPath, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblET2))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblET3)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(494, 494, 494))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(564, 564, 564))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -451,6 +469,11 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblET1)
+                    .addComponent(lblET2)
+                    .addComponent(lblET3))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -485,7 +508,15 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         String matrix = txtMatrix.getText();
         boolean isValidMatrix = new FloydWarshallAlgo().isValidMatrix(matrix);
         if (isValidMatrix) {
+            
+            long startTime = System.currentTimeMillis();
+            
             FloydWarshallAlgo.calcFWA01();
+            
+            long endTime = System.currentTimeMillis();
+            long diffTime = endTime - startTime;
+            lblET1.setText("Exection Time: " + diffTime + " ms");
+            
             btnBBAlgo.setEnabled(true);
         } else {
             clearPage();
@@ -503,6 +534,9 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     }
     
     public static void clearPage() {
+        lblET1.setText("Execution Time: -");
+        lblET2.setText("Execution Time: -");
+        lblET3.setText("Execution Time: -");
         txtResultsFWA.setText("");
         txtResultsBBA.setText("");
         txtResultsBodo.setText("");
@@ -523,7 +557,14 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             if (numberOfPath <= 0 || numberOfPath >= totalMaximumPath) {
                 throw new Exception();
             } else {
+                
+                long startTime = System.currentTimeMillis();
+
                 BranchBoundAlgo.calcBBA01(numberOfPath);
+                
+                long endTime = System.currentTimeMillis();
+                long diffTime = endTime - startTime;
+                lblET2.setText("Exection Time: " + diffTime + " ms");
             }
             
         } catch (Exception e) {
@@ -550,7 +591,14 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         if (isValidMatrix) {
             
             int numberOfPath = Integer.parseInt(txtNumberPath.getText());
+            
+            long startTime = System.currentTimeMillis();
+
             PureRandomAlgo.calcPRA01(numberOfPath);
+
+            long endTime = System.currentTimeMillis();
+            long diffTime = endTime - startTime;
+            lblET3.setText("Exection Time: " + diffTime + " ms");
             
         } else {
             clearPage();
@@ -610,12 +658,16 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
+    public static javax.swing.JLabel lblET1;
+    public static javax.swing.JLabel lblET2;
+    public static javax.swing.JLabel lblET3;
     public static javax.swing.JTextArea txtMatrix;
     public static javax.swing.JTextField txtNumberPath;
     public static javax.swing.JTextArea txtResultsBBA;

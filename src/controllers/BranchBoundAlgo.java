@@ -195,6 +195,14 @@ public class BranchBoundAlgo {
         return totalCost;
     }
     
+    public int getColumnOfRow(int matrx[]) {
+        int found = 0;
+//        for (int i = 0; i < 10; i++) {
+//            if (matrx[i] )
+//        }
+        return found;
+    }
+    
     public ArrayList<Integer> searchDeep(int matrx[][], ArrayList<Integer> pathNodes, int endNode) {
         
         Random rand = new Random();
@@ -202,6 +210,8 @@ public class BranchBoundAlgo {
         int countStop = 100;
         do {
             randomNode = rand.nextInt(totalVertices) + 1;
+//            BranchBoundAlgo bba = new BranchBoundAlgo();
+//            randomNode = bba.getColumnOfRow(matrix[pathNodes.get(pathNodes.size()-1)-1]);
             
             if (pathNodes.contains(randomNode)) {
                 continue;

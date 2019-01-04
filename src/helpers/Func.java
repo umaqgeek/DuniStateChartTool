@@ -31,7 +31,7 @@ import views.MainPage;
 public class Func {
     
     private static String FILE_NAME = "exportStateChartTool.xlsx";
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     
     public static String getFormatInteger(String number, int numDigit) {
         String outNumber = "";
