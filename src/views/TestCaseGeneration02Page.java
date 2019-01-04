@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
 public class TestCaseGeneration02Page extends javax.swing.JFrame {
     
     public static int totalVertices = UMLController.dataListStates.size();
-//    public static int totalVertices = 5;
+    public static int totalMaximumPath = 1;
     public static int matrix[][] = new int[totalVertices][totalVertices];
     public static final int posINF = 99999; //Integer.MAX_VALUE;
     public static final int negINF = -99999; //Integer.MIN_VALUE;
@@ -37,8 +37,25 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     public static void initPage() {
         
         btnBBAlgo.setEnabled(false);
-        
         resetPreMatrix();
+        totalMaximumPath = getTotalMaximumPath();
+    }
+    
+    public static int getTotalMaximumPath() {
+        long maxTemp = 1;
+        int maxPath = 1;
+        if (totalVertices > 1) {
+            for (int i = 2; i <= totalVertices; i++) {
+                maxTemp = maxTemp * i;
+                if (maxTemp >= Integer.MAX_VALUE) {
+                    maxPath = Integer.MAX_VALUE;
+                    break;
+                } else {
+                    maxPath = (int) maxTemp;
+                }
+            }
+        }
+        return maxPath;
     }
     
     public static void resetPreMatrix() {
@@ -57,6 +74,26 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         txtMatrix.setText(preMatrix);
     }
     
+    public static void viewTitle(int box, boolean isClear, String title) {
+        try {
+
+            String outview = "";
+
+            outview += title;
+            outview += "\n------------------";
+
+            if (Func.DEBUG) {
+                System.out.println(outview);
+            }
+            setBox(box, isClear, outview);
+
+        } catch (Exception e) {
+            if (Func.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     public static void viewPathMany(int box, boolean isClear, String name, ArrayList<Integer> arr, int totalReduced) {
         
         try {
@@ -68,7 +105,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             for (int i = 0; i < arr.size(); i++) {
                 String code = "s" + arr.get(i);
                 String stateName = UMLController.getStateName(code);
-                outview += code; //**
+                outview += code; //***
                 if (i != arr.size() - 1) {
                     outview += ", ";
                 }
@@ -87,19 +124,21 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         }
     }
     
-    public static void viewPath(int box, boolean isClear, String name, ArrayList<Integer> arr, int totalReduced) {
+    public static void viewPath(int box, boolean isClear, String title, String name, ArrayList<Integer> arr, int totalReduced) {
         
         try {
             
             String outview = "";
             
             String strTotalReduced = (totalReduced >= posINF) ? ("INF") : (totalReduced + "");
+            outview += title;
+            outview += "\n------------------\n";
             outview += "Total Cost: " + strTotalReduced + "\n";
             outview += "Path " + name + ": [";
             for (int i = 0; i < arr.size(); i++) {
                 String code = "s" + arr.get(i);
                 String stateName = UMLController.getStateName(code);
-                outview += stateName;
+                outview += code; //***
                 if (i != arr.size() - 1) {
                     outview += ", ";
                 }
@@ -481,7 +520,11 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             
             // then run BBA
             numberOfPath = Integer.parseInt(txtNumberPath.getText());
-            BranchBoundAlgo.calcBBA01(numberOfPath);
+            if (numberOfPath <= 0 || numberOfPath >= totalMaximumPath) {
+                throw new Exception();
+            } else {
+                BranchBoundAlgo.calcBBA01(numberOfPath);
+            }
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Invalid number of path!", "Invalid Number of Path", 0);

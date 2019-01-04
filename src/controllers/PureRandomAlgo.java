@@ -7,6 +7,8 @@ package controllers;
 
 import helpers.Func;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import views.TestCaseGeneration02Page;
@@ -103,16 +105,17 @@ public class PureRandomAlgo {
         int countStop = 100;
         do {
             randomNode = rand.nextInt(totalVertices) + 1;
+            
             if (pathNodes.contains(randomNode)) {
                 continue;
+            } else if (countStop <= 0) {
+                break;
+//***            } else if (matrix[pathNodes.get(pathNodes.size()-1)-1][randomNode-1] == posINF) {
+//                countStop--;
+//                continue;
             } else if (randomNode == endNode) {
                 pathNodes.add(randomNode);
                 break;
-            } else if (countStop <= 0) {
-                break;
-            } else if (matrix[pathNodes.get(pathNodes.size()-1)-1][randomNode-1] == posINF) {
-//**                countStop--;
-                continue;
             } else {
                 pathNodes.add(randomNode);
                 break;
@@ -135,10 +138,11 @@ public class PureRandomAlgo {
         ArrayList<ArrayList<Integer>> allPaths = new ArrayList<ArrayList<Integer>>();
         allPaths.removeAll(allPaths);
         
+        PureRandomAlgo pra = new PureRandomAlgo();
+        
         for (int index = 0; index < numPath; index++) {
             
             ArrayList<Integer> paths = new ArrayList<Integer>();
-            PureRandomAlgo pra = new PureRandomAlgo();
             
             do {
                 paths.removeAll(paths);
@@ -153,11 +157,20 @@ public class PureRandomAlgo {
             } while (true);
             
             allPaths.add(paths);
-            
-            int totalCost = pra.calcPathCost(matrx, paths);
-            
-            boolean isClear = (index == 0);
-            TestCaseGeneration02Page.viewPathMany(3, isClear, "#"+Func.getFormatInteger((index+1)+"", (numPath+"").length()), paths, totalCost);
+        }
+        
+        Collections.sort(allPaths, new Comparator<ArrayList<Integer>>() {
+            @Override
+            public int compare(ArrayList<Integer> one, ArrayList<Integer> two) {
+                return (one.size() - two.size());
+            }
+        });
+        
+        TestCaseGeneration02Page.viewTitle(3, true, "Generate Random Path Before Floyd Warshall");
+        
+        for (int index = 0; index < allPaths.size(); index++) {
+            int totalCost = pra.calcPathCost(matrx, allPaths.get(index));
+            TestCaseGeneration02Page.viewPathMany(3, false, "#"+Func.getFormatInteger((index+1)+"", (numPath+"").length()), allPaths.get(index), totalCost);
         }
     }
     
