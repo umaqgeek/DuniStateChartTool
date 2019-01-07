@@ -41,6 +41,10 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         btnBBAlgo.setEnabled(false);
         resetPreMatrix();
         totalMaximumPath = getTotalMaximumPath();
+        
+        int initDefaultPath = 10;
+        int defaultPath = (totalMaximumPath > initDefaultPath) ? (initDefaultPath) : (totalMaximumPath - 1);
+        txtNumberPath.setText(defaultPath+"");
     }
     
     public static int getTotalMaximumPath() {
