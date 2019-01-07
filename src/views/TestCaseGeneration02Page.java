@@ -36,6 +36,8 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     
     public static void initPage() {
         
+        totalVertices = UMLController.dataListStates.size();
+        matrix = new int[totalVertices][totalVertices];
         btnBBAlgo.setEnabled(false);
         resetPreMatrix();
         totalMaximumPath = getTotalMaximumPath();
@@ -45,7 +47,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         long maxTemp = 1;
         int maxPath = 1;
         if (totalVertices > 1) {
-            for (int i = 2; i <= totalVertices; i++) {
+            for (int i = 2; i <= totalVertices-2; i++) {
                 maxTemp = maxTemp * i;
                 if (maxTemp >= Integer.MAX_VALUE) {
                     maxPath = Integer.MAX_VALUE;
@@ -552,6 +554,8 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
             // run FWA first
             runFWA();
             
+            System.out.println("totalMaximumPath: "+totalMaximumPath);
+            
             // then run BBA
             numberOfPath = Integer.parseInt(txtNumberPath.getText());
             if (numberOfPath <= 0 || numberOfPath >= totalMaximumPath) {
@@ -586,22 +590,33 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
     private void btnBodoAlgoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBodoAlgoActionPerformed
         // TODO add your handling code here:
         
-        String matrix = txtMatrix.getText();
-        boolean isValidMatrix = new PureRandomAlgo().isValidMatrix(matrix);
-        if (isValidMatrix) {
+        int numberOfPath = 0;
+        try {
             
-            int numberOfPath = Integer.parseInt(txtNumberPath.getText());
-            
-            long startTime = System.currentTimeMillis();
+            String matrix = txtMatrix.getText();
+            boolean isValidMatrix = new PureRandomAlgo().isValidMatrix(matrix);
+            if (isValidMatrix) {
 
-            PureRandomAlgo.calcPRA01(numberOfPath);
+                numberOfPath = Integer.parseInt(txtNumberPath.getText());
+                if (numberOfPath <= 0 || numberOfPath >= totalMaximumPath) {
+                    throw new Exception();
+                } else {
+                    
+                    long startTime = System.currentTimeMillis();
 
-            long endTime = System.currentTimeMillis();
-            long diffTime = endTime - startTime;
-            lblET3.setText("Exection Time: " + diffTime + " ms");
+                    PureRandomAlgo.calcPRA01(numberOfPath);
+
+                    long endTime = System.currentTimeMillis();
+                    long diffTime = endTime - startTime;
+                    lblET3.setText("Exection Time: " + diffTime + " ms");
+                }
+
+            } else {
+                clearPage();
+            }
             
-        } else {
-            clearPage();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Invalid number of path!", "Invalid Number of Path", 0);
         }
     }//GEN-LAST:event_btnBodoAlgoActionPerformed
 

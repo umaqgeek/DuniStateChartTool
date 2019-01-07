@@ -323,11 +323,6 @@ public class BranchBoundAlgo {
         
         storage.add(theBestNode+1);
         
-        // to stop the recursive loop if already go through all nodes.
-        if (storage.size() == totalVertices) {
-            return storage;
-        }
-        
         // to stop the recursive loop if looping on the same node.
         if (storage.size() > 1) {
             if (storage.get(storage.size()-1) == storage.get(storage.size()-2)) {
@@ -335,6 +330,11 @@ public class BranchBoundAlgo {
                 storage.remove(storage.size()-1);
                 return storage;
             }
+        }
+        
+        // to stop the recursive loop if already go through all nodes.
+        if (storage.size() == totalVertices) {
+            return storage;
         }
         
         BranchBoundAlgo bba = new BranchBoundAlgo();
