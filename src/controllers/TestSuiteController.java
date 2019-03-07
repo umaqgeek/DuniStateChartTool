@@ -124,7 +124,7 @@ public class TestSuiteController {
             for (int i = 0; i < matrix.length; i++) {
                 int pairs = 0;
                 for (int j = 0; j < matrix[i].length; j++) {
-                    if (matrix[i][j] != posINF && matrix[i][j] != negINF && i != j && matrix[i][j] != 0) {
+                    if (matrix[i][j] != posINF && matrix[i][j] != negINF && i != j) {
                         pairs += 1;
                     }
                 }
@@ -167,15 +167,11 @@ public class TestSuiteController {
                     break;
                 }
             } while (true && limit-- > 0);
-            
-//            if (paths.get(paths.size()-1) == endNode) {
-//                allPaths.add(paths);
-//            }
 
             if (!isMatch) {
-                if (paths.get(paths.size()-1) == endNode) {
+//                if (paths.get(paths.size()-1) == endNode) {
                     allPaths.add(paths);
-                }
+//                }
             }
         }
         

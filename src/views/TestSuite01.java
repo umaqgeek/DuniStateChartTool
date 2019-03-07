@@ -334,7 +334,7 @@ public class TestSuite01 extends javax.swing.JFrame {
                             
                             float A1 = Float.parseFloat((String) props.getProperty(Func.TOTAL_ALL_TRANSITIONS));
                             float A2 = Float.parseFloat((String) props.getProperty(Func.TOTAL_TRANSITIONS_PATH));
-                            float X = (A2 * 1.0f / A1) * 100.0f;
+                            float X = (A2 > 0.0f && A1 > 0.0f) ? (A2 * 1.0f / A1) * 100.0f : 0.0f;
                             
                             viewText(false, "Total All Transitions: " + props.getProperty(Func.TOTAL_ALL_TRANSITIONS));
                             viewText(false, "Total Transitions in Path: " + props.getProperty(Func.TOTAL_TRANSITIONS_PATH));
@@ -342,7 +342,7 @@ public class TestSuite01 extends javax.swing.JFrame {
                             
                             float B1 = Float.parseFloat((String) props.getProperty(Func.TOTAL_ALL_PAIRS));
                             float B2 = Float.parseFloat((String) props.getProperty(Func.TOTAL_PAIRS_PATH));
-                            float Y = (B2 * 1.0f / B1) * 100.0f;
+                            float Y = (B2 > 0.0f && B1 > 0.0f) ? (B2 * 1.0f / B1) * 100.0f : 0.0f;
                             
                             viewText(false, "Total All Pairs: " + props.getProperty(Func.TOTAL_ALL_PAIRS));
                             viewText(false, "Total Pairs in Path: " + props.getProperty(Func.TOTAL_PAIRS_PATH));
