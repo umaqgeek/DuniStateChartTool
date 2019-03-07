@@ -9,6 +9,7 @@ import helpers.Func;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Random;
 import javax.swing.JOptionPane;
@@ -22,11 +23,13 @@ import views.TestSuite01;
 public class TestSuiteController {
     
     public static int totalVertices = UMLController.dataListStates.size();
-    public static String prevMatrix;
     public static int totalMaximumPath = 1;
     public static int posINF = 99999; //Integer.MAX_VALUE;
     public static int negINF = -99999; //Integer.MIN_VALUE;
     public static int matrix[][] = new int[totalVertices][totalVertices];
+    
+    public static String prevMatrix;
+    public static int totalTransitions = UMLController.dataListTransitions.size();
     
     public TestSuiteController(String matrix) {
         prevMatrix = matrix;
@@ -149,7 +152,9 @@ public class TestSuiteController {
                 }
             } while (true);
             
-            allPaths.add(paths);
+            if (paths.get(paths.size()-1) == endNode) {
+                allPaths.add(paths);
+            }
         }
         
         Collections.sort(allPaths, new Comparator<ArrayList<Integer>>() {
@@ -159,18 +164,31 @@ public class TestSuiteController {
             }
         });
         
-//        TestSuite01.viewTitle(false, "Generate Parent");
+        ArrayList<String> transA2 = new ArrayList<String>();
         
         for (int index = 0; index < allPaths.size(); index++) {
+            
             int totalCost = ts.calcPathCost(matrx, allPaths.get(index));
+            
             TestSuite01.viewPathMany(false, 
                     "#"+Func.getFormatInteger((index+1)+"", (numPath+"").length()), 
                     allPaths.get(index), 
                     totalCost);
+            
+            // collect all transitions in each path.
+            for (int i = 0; i < allPaths.get(index).size()-1; i++) {
+                String temp = allPaths.get(index).get(i)+","+allPaths.get(index).get(i+1);
+                transA2.add(temp);
+            }
         }
+        
+        // remove redundant transition.
+        transA2 = new ArrayList<String>(new LinkedHashSet<String>(transA2));
         
         Properties props = new Properties();
         props.setProperty(Func.TOTAL_NUMBER_PATH, ""+allPaths.size());
+        props.setProperty(Func.TOTAL_ALL_TRANSITIONS, ""+totalTransitions);
+        props.setProperty(Func.TOTAL_TRANSITIONS_PATH, ""+transA2.size());
         
         return props;
     }
@@ -228,9 +246,9 @@ public class TestSuiteController {
                 continue;
             } else if (countStop <= 0) {
                 break;
-//***            } else if (matrix[pathNodes.get(pathNodes.size()-1)-1][randomNode-1] == posINF) {
-//                countStop--;
-//                continue;
+            } else if (matrix[pathNodes.get(pathNodes.size()-1)-1][randomNode-1] == posINF) {
+                countStop--;
+                continue;
             } else if (randomNode == endNode) {
                 pathNodes.add(randomNode);
                 break;
@@ -248,10 +266,121 @@ public class TestSuiteController {
         return pathNodes;
     }
     
+    public ArrayList<Integer> getCost(int box[][], int reducedCost, ArrayList<Integer> storage) {
+        
+        int matrixTemp[][] = new int[totalVertices][totalVertices];
+        int theBestMatrix[][] = new int[totalVertices][totalVertices];
+        int theBestCost = posINF;
+        int theBestNode = storage.get(storage.size()-1)-1;
+        for (int i = 0; i < totalVertices; i++) {
+            
+            // ignore the node if already gone through it.
+            if (storage.contains(i+1)) {
+                continue;
+            }
+            
+            // copy matrix into the new one.
+            for (int j = 0; j < totalVertices; j++) {
+                for (int k = 0; k < totalVertices; k++) {
+                    matrixTemp[j][k] = box[j][k];
+                }
+            }
+            
+            // make all cells of row of last storage index into INF.
+            int lastNode = storage.get(storage.size()-1)-1;
+            for (int j = 0; j < totalVertices; j++) {
+                matrixTemp[lastNode][j] = posINF;
+            }
+            
+            // make all cells of column of i index into INF.
+            for (int j = 0; j < totalVertices; j++) {
+                matrixTemp[j][i] = posINF;
+            }
+            
+            // reduced row
+            int totalRowMin = 0;
+            for (int j = 0; j < totalVertices; j++) {
+                int min = Func.getMinimumInteger(matrixTemp[j]);
+                if (min != 0 && min != posINF) {
+                    for (int k = 0; k < totalVertices; k++) {
+                        if (matrixTemp[j][k] != posINF) {
+                            matrixTemp[j][k] -= min;
+                        }
+                    }
+                }
+                if (min == posINF) {
+                    min = 0;
+                }
+                totalRowMin += min;
+            }
+            
+            // reduced column
+            int totalColumnMin = 0;
+            for (int k = 0; k < totalVertices; k++) {
+                int cols[] = new int[totalVertices];
+                for (int j = 0; j < totalVertices; j++) {
+                    cols[j] = matrixTemp[j][k];
+                }
+                int min = Func.getMinimumInteger(cols);
+                if (min != 0 && min != posINF) {
+                    for (int j = 0; j < totalVertices; j++) {
+                        if (matrixTemp[j][k] != posINF) {
+                            matrixTemp[j][k] -= min;
+                        }
+                    }
+                }
+                if (min == posINF) {
+                    min = 0;
+                }
+                totalColumnMin += min;
+            }
+            
+            // total reduced
+            int totalReduced = reducedCost + (totalRowMin + totalColumnMin) + box[lastNode][i];
+            totalReduced = (totalReduced > posINF) ? (posINF) : (totalReduced);
+            
+            if (totalReduced < theBestCost) {
+                theBestCost = totalReduced;
+                theBestNode = i;
+                for (int j = 0; j < totalVertices; j++) {
+                    for (int k = 0; k < totalVertices; k++) {
+                        theBestMatrix[j][k] = matrixTemp[j][k];
+                    }
+                }
+            }
+        }
+        
+        storage.add(theBestNode+1);
+        
+        // to stop the recursive loop if looping on the same node.
+        if (storage.size() > 1) {
+            if (storage.get(storage.size()-1) == storage.get(storage.size()-2)) {
+                theBestCost = reducedCost;
+                storage.remove(storage.size()-1);
+                return storage;
+            }
+        }
+        
+        // to stop the recursive loop if already go through all nodes.
+        if (storage.size() == totalVertices) {
+            return storage;
+        }
+        
+        BranchBoundAlgo bba = new BranchBoundAlgo();
+        storage = bba.getCost(theBestMatrix, theBestCost, storage);
+        
+        return storage;
+    }
+    
     public static Properties calcPRA01(int numberOfPath) {
         
         TestSuiteController ts = new TestSuiteController(prevMatrix);
         Properties props = ts.generateRandomPath(numberOfPath, matrix);
+        
+//        ArrayList<Integer> storage = new ArrayList<Integer>();
+//        storage.add(1);
+//        storage = ts.getCost(matrix, negINF, storage);
+//        System.out.println(storage);
         
         return props;
     }

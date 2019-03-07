@@ -15,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +35,10 @@ public class Func {
     public static boolean DEBUG = true;
     
     public static final String TOTAL_NUMBER_PATH = "total_number_path";
+    public static final String TOTAL_ALL_TRANSITIONS = "total_all_transitions";
+    public static final String TOTAL_TRANSITIONS_PATH = "total_transitions_path";
+    
+    public static DecimalFormat df = new DecimalFormat("#,###.##");
     
     public static String getFormatInteger(String number, int numDigit) {
         String outNumber = "";
