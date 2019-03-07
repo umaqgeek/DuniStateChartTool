@@ -140,19 +140,25 @@ public class TestSuiteController {
             
             ArrayList<Integer> paths = new ArrayList<Integer>();
             
+            boolean isMatch = false; 
+            int limit = 100;
             do {
                 paths.removeAll(paths);
                 
                 paths.add(startNode);
                 paths = ts.searchDeep(matrx, paths, endNode);
                 
-                boolean isMatch = ts.matchPaths(allPaths, paths);
+                isMatch = ts.matchPaths(allPaths, paths);
                 if (!isMatch) {
                     break;
                 }
-            } while (true);
+            } while (true && limit-- > 0);
             
-            if (paths.get(paths.size()-1) == endNode) {
+//            if (paths.get(paths.size()-1) == endNode) {
+//                allPaths.add(paths);
+//            }
+
+            if (!isMatch) {
                 allPaths.add(paths);
             }
         }
