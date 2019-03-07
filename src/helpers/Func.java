@@ -37,6 +37,8 @@ public class Func {
     public static final String TOTAL_NUMBER_PATH = "total_number_path";
     public static final String TOTAL_ALL_TRANSITIONS = "total_all_transitions";
     public static final String TOTAL_TRANSITIONS_PATH = "total_transitions_path";
+    public static final String TOTAL_ALL_PAIRS = "total_all_pairs";
+    public static final String TOTAL_PAIRS_PATH = "total_pairs_path";
     
     public static DecimalFormat df = new DecimalFormat("#,###.##");
     

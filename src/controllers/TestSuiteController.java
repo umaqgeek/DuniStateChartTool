@@ -30,6 +30,7 @@ public class TestSuiteController {
     
     public static String prevMatrix;
     public static int totalTransitions = UMLController.dataListTransitions.size();
+    public static int totalPairs = 1;
     
     public TestSuiteController(String matrix) {
         prevMatrix = matrix;
@@ -118,6 +119,19 @@ public class TestSuiteController {
                     }
                 }
             }
+            
+            totalPairs = 0;
+            for (int i = 0; i < matrix.length; i++) {
+                int pairs = 0;
+                for (int j = 0; j < matrix[i].length; j++) {
+                    if (matrix[i][j] != posINF && matrix[i][j] != negINF && i != j && matrix[i][j] != 0) {
+                        pairs += 1;
+                    }
+                }
+                if (pairs >= 2) {
+                    totalPairs += pairs;
+                }
+            }
 
         } catch (Exception e) {
             if (Func.DEBUG) {
@@ -159,7 +173,9 @@ public class TestSuiteController {
 //            }
 
             if (!isMatch) {
-                allPaths.add(paths);
+                if (paths.get(paths.size()-1) == endNode) {
+                    allPaths.add(paths);
+                }
             }
         }
         
@@ -170,7 +186,7 @@ public class TestSuiteController {
             }
         });
         
-        ArrayList<String> transA2 = new ArrayList<String>();
+        ArrayList<String> trans = new ArrayList<String>();
         
         for (int index = 0; index < allPaths.size(); index++) {
             
@@ -184,17 +200,35 @@ public class TestSuiteController {
             // collect all transitions in each path.
             for (int i = 0; i < allPaths.get(index).size()-1; i++) {
                 String temp = allPaths.get(index).get(i)+","+allPaths.get(index).get(i+1);
-                transA2.add(temp);
+                trans.add(temp);
             }
         }
         
         // remove redundant transition.
-        transA2 = new ArrayList<String>(new LinkedHashSet<String>(transA2));
+        ArrayList<String> transA2 = new ArrayList<String>(new LinkedHashSet<String>(trans));
+        
+        int pairsInPath = 0;
+        for (int i = startNode; i <= endNode; i++) {
+            int countTemp = 0;
+            for (int j = startNode; j <= endNode; j++) {
+                if (i != j) {
+                    String temp = i + "," + j;
+                    if (transA2.contains(temp)) {
+                        countTemp += 1;
+                    }
+                }
+            }
+            if (countTemp >= 2) {
+                pairsInPath += countTemp;
+            }
+        }
         
         Properties props = new Properties();
         props.setProperty(Func.TOTAL_NUMBER_PATH, ""+allPaths.size());
         props.setProperty(Func.TOTAL_ALL_TRANSITIONS, ""+totalTransitions);
         props.setProperty(Func.TOTAL_TRANSITIONS_PATH, ""+transA2.size());
+        props.setProperty(Func.TOTAL_ALL_PAIRS, ""+totalPairs);
+        props.setProperty(Func.TOTAL_PAIRS_PATH, ""+pairsInPath);
         
         return props;
     }
