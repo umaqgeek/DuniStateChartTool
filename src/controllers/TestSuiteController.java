@@ -169,9 +169,9 @@ public class TestSuiteController {
             } while (true && limit-- > 0);
 
             if (!isMatch) {
-//                if (paths.get(paths.size()-1) == endNode) {
+                if (paths.get(paths.size()-1) == endNode) {
                     allPaths.add(paths);
-//                }
+                }
             }
         }
         
@@ -278,7 +278,7 @@ public class TestSuiteController {
         do {
             randomNode = rand.nextInt(totalVertices) + 1;
             
-            if (pathNodes.contains(randomNode)) {
+            if (pathNodes.contains(randomNode) && Collections.frequency(pathNodes, randomNode) > 1) {
                 continue;
             } else if (countStop <= 0) {
                 break;
