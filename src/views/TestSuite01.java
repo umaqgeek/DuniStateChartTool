@@ -135,6 +135,8 @@ public class TestSuite01 extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtNoTestSuite = new javax.swing.JTextField();
@@ -151,6 +153,12 @@ public class TestSuite01 extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtResults = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        cbTotalPath = new javax.swing.JCheckBox();
+        cbWithoutFinal = new javax.swing.JCheckBox();
+        cbTimeExec = new javax.swing.JCheckBox();
+        cbTransCoverage = new javax.swing.JCheckBox();
+        cbTransPairCoverage = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Test Suite");
@@ -198,6 +206,50 @@ public class TestSuite01 extends javax.swing.JFrame {
 
         jLabel5.setText("Results :");
 
+        cbTotalPath.setSelected(true);
+        cbTotalPath.setText("Include Total Paths.");
+
+        cbWithoutFinal.setText("Include Without Final in Path.");
+
+        cbTimeExec.setSelected(true);
+        cbTimeExec.setText("Include Time Execution.");
+
+        cbTransCoverage.setSelected(true);
+        cbTransCoverage.setText("Transitions Coverage.");
+
+        cbTransPairCoverage.setSelected(true);
+        cbTransPairCoverage.setText("Transitions Pair Coverage.");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbWithoutFinal)
+                    .addComponent(cbTotalPath)
+                    .addComponent(cbTimeExec)
+                    .addComponent(cbTransCoverage)
+                    .addComponent(cbTransPairCoverage))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cbWithoutFinal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbTotalPath)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbTimeExec)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbTransCoverage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbTransPairCoverage)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -205,6 +257,18 @@ public class TestSuite01 extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTimeExec, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 166, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -218,42 +282,38 @@ public class TestSuite01 extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNoTestCaseTo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTimeExec, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 166, Short.MAX_VALUE)))
+                                .addComponent(txtNoTestCaseTo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(txtNoTestSuite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNoTestCaseFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtNoTestCaseTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(txtNoTestSuite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtNoTestCaseFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtNoTestCaseTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
@@ -324,29 +384,37 @@ public class TestSuite01 extends javax.swing.JFrame {
 
                             Properties props = TestSuiteController.calcPRA01(numberOfPath);
                             
-                            viewText(false, "Total Paths: " + props.getProperty(Func.TOTAL_NUMBER_PATH));
+                            if (TestSuite01.cbTotalPath.isSelected()) {
+                                viewText(false, "Total Paths: " + props.getProperty(Func.TOTAL_NUMBER_PATH));
+                            }
 
                             long endTime = System.currentTimeMillis();
                             long diffTime = endTime - startTime;
 //                            lblTimeExec.setText("Exection Time: " + diffTime + " ms");
 
-                            viewText(false, "Total Exec. Time: " + diffTime + " ms");
+                            if (TestSuite01.cbTimeExec.isSelected()) {
+                                viewText(false, "Total Exec. Time: " + diffTime + " ms");
+                            }
                             
-                            float A1 = Float.parseFloat((String) props.getProperty(Func.TOTAL_ALL_TRANSITIONS));
-                            float A2 = Float.parseFloat((String) props.getProperty(Func.TOTAL_TRANSITIONS_PATH));
-                            float X = (A2 > 0.0f && A1 > 0.0f) ? (A2 * 1.0f / A1) * 100.0f : 0.0f;
+                            if (TestSuite01.cbTransCoverage.isSelected()) {
+                                float A1 = Float.parseFloat((String) props.getProperty(Func.TOTAL_ALL_TRANSITIONS));
+                                float A2 = Float.parseFloat((String) props.getProperty(Func.TOTAL_TRANSITIONS_PATH));
+                                float X = (A2 > 0.0f && A1 > 0.0f) ? (A2 * 1.0f / A1) * 100.0f : 0.0f;
+
+                                viewText(false, "Total All Transitions: " + props.getProperty(Func.TOTAL_ALL_TRANSITIONS));
+                                viewText(false, "Total Transitions in Path: " + props.getProperty(Func.TOTAL_TRANSITIONS_PATH));
+                                viewText(false, "Transition Coverage: " + Func.df.format(X) + " %");
+                            }
                             
-                            viewText(false, "Total All Transitions: " + props.getProperty(Func.TOTAL_ALL_TRANSITIONS));
-                            viewText(false, "Total Transitions in Path: " + props.getProperty(Func.TOTAL_TRANSITIONS_PATH));
-                            viewText(false, "Transition Coverage: " + Func.df.format(X) + " %");
-                            
-                            float B1 = Float.parseFloat((String) props.getProperty(Func.TOTAL_ALL_PAIRS));
-                            float B2 = Float.parseFloat((String) props.getProperty(Func.TOTAL_PAIRS_PATH));
-                            float Y = (B2 > 0.0f && B1 > 0.0f) ? (B2 * 1.0f / B1) * 100.0f : 0.0f;
-                            
-                            viewText(false, "Total All Pairs: " + props.getProperty(Func.TOTAL_ALL_PAIRS));
-                            viewText(false, "Total Pairs in Path: " + props.getProperty(Func.TOTAL_PAIRS_PATH));
-                            viewText(false, "Transition Pair Coverage: " + Func.df.format(Y) + " %");
+                            if (TestSuite01.cbTransPairCoverage.isSelected()) {
+                                float B1 = Float.parseFloat((String) props.getProperty(Func.TOTAL_ALL_PAIRS));
+                                float B2 = Float.parseFloat((String) props.getProperty(Func.TOTAL_PAIRS_PATH));
+                                float Y = (B2 > 0.0f && B1 > 0.0f) ? (B2 * 1.0f / B1) * 100.0f : 0.0f;
+
+                                viewText(false, "Total All Pairs: " + props.getProperty(Func.TOTAL_ALL_PAIRS));
+                                viewText(false, "Total Pairs in Path: " + props.getProperty(Func.TOTAL_PAIRS_PATH));
+                                viewText(false, "Transition Pair Coverage: " + Func.df.format(Y) + " %");
+                            }
                             
                             viewText(false, "\n");
                         }
@@ -406,6 +474,13 @@ public class TestSuite01 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnQuit;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    public static javax.swing.JCheckBox cbTimeExec;
+    public static javax.swing.JCheckBox cbTotalPath;
+    public static javax.swing.JCheckBox cbTransCoverage;
+    public static javax.swing.JCheckBox cbTransPairCoverage;
+    public static javax.swing.JCheckBox cbWithoutFinal;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -413,6 +488,7 @@ public class TestSuite01 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JLabel lblTimeExec;

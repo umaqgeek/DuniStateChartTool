@@ -169,8 +169,12 @@ public class TestSuiteController {
             } while (true && limit-- > 0);
 
             if (!isMatch) {
-                if (paths.get(paths.size()-1) == endNode) {
+                if (TestSuite01.cbWithoutFinal.isSelected()) {
                     allPaths.add(paths);
+                } else {
+                    if (paths.get(paths.size()-1) == endNode) {
+                        allPaths.add(paths);
+                    }
                 }
             }
         }

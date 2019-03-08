@@ -32,7 +32,7 @@ import views.MainPage;
 public class Func {
     
     private static String FILE_NAME = "exportStateChartTool.xlsx";
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
     
     public static final String TOTAL_NUMBER_PATH = "total_number_path";
     public static final String TOTAL_ALL_TRANSITIONS = "total_all_transitions";
