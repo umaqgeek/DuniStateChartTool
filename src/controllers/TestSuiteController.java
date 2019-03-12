@@ -32,6 +32,21 @@ public class TestSuiteController {
     public static int totalTransitions = UMLController.dataListTransitions.size();
     public static int totalPairs = 1;
     
+    public static ArrayList<Properties> parents = new ArrayList<Properties>();
+    public static ArrayList<ArrayList<Object>> simpleParents = new ArrayList<ArrayList<Object>>();
+    
+    public static void clearSimpleParents() {
+        TestSuiteController.simpleParents.clear();
+    }
+    
+    public static void clearParents() {
+        TestSuiteController.parents.clear();
+    }
+    
+    public static void setParents(Properties parent) {
+        TestSuiteController.parents.add(parent);
+    }
+    
     public TestSuiteController(String matrix) {
         prevMatrix = matrix;
     }
@@ -229,6 +244,7 @@ public class TestSuiteController {
         props.setProperty(Func.TOTAL_TRANSITIONS_PATH, ""+transA2.size());
         props.setProperty(Func.TOTAL_ALL_PAIRS, ""+totalPairs);
         props.setProperty(Func.TOTAL_PAIRS_PATH, ""+pairsInPath);
+        props.put(Func.ARR_PATHS, allPaths);
         
         return props;
     }

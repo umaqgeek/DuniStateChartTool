@@ -32,15 +32,21 @@ import views.MainPage;
 public class Func {
     
     private static String FILE_NAME = "exportStateChartTool.xlsx";
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
     
     public static final String TOTAL_NUMBER_PATH = "total_number_path";
+    public static final String TOTAL_TIME_EXECUTION = "total_time_execution";
     public static final String TOTAL_ALL_TRANSITIONS = "total_all_transitions";
     public static final String TOTAL_TRANSITIONS_PATH = "total_transitions_path";
+    public static final String TOTAL_TRANS_COVERAGE = "total_trans_coverage";
     public static final String TOTAL_ALL_PAIRS = "total_all_pairs";
     public static final String TOTAL_PAIRS_PATH = "total_pairs_path";
+    public static final String TOTAL_TRANS_PAIR_COVERAGE = "total_trans_pair_coverage";
+    public static final String ARR_PATHS = "arr_paths";
     
-    public static DecimalFormat df = new DecimalFormat("#,###.##");
+    public static final String KEY_F = "key_f";
+    
+    public static DecimalFormat df = new DecimalFormat("#,###.00");
     
     public static String getFormatInteger(String number, int numDigit) {
         String outNumber = "";
