@@ -77,8 +77,8 @@ public class TestSuite02 extends javax.swing.JFrame {
         for (int i = 0; i < TestSuiteController.simpleParents.size(); i++) {
             ArrayList<Object> singleParent = TestSuiteController.simpleParents.get(i);
             
-            System.out.println("TP #" + (i+1) + ": " + singleParent + " - Rank " + singleParent.get(5));
-            viewText(false, "TP #" + (i+1) + ": Rank " + singleParent.get(5));
+            System.out.println("TS #" + (i+1) + ": " + singleParent + " - Rank " + singleParent.get(5));
+            viewText(false, "TS #" + (i+1) + ": Rank " + singleParent.get(5));
         }
     }
     

@@ -28,7 +28,7 @@ public class NSGA2Algo {
         float qz1 = Float.parseFloat((String) q.get(2));
         float qz2 = Float.parseFloat((String) q.get(3));
         
-        return ((px<=qx && py<=qy && pz1<=qz1 && pz2<=qz2) && (px<qx || py<qy || pz1<qz1 || pz2<qz2));
+        return ((px<=qx && py<=qy && pz1>=qz1 && pz2>=qz2) && (px<qx || py<qy || pz1>qz1 || pz2>qz2));
     }
     
     public static void setRanks() {
