@@ -35,9 +35,12 @@ public class TestSuiteController {
     public static ArrayList<Properties> parents = new ArrayList<Properties>();
     public static ArrayList<ArrayList<Object>> simpleParents = new ArrayList<ArrayList<Object>>();
     public static ArrayList<ArrayList<Object>> simpleOffsprings = new ArrayList<ArrayList<Object>>();
+    public static ArrayList<ArrayList<Integer>> possibleMutationPaths = new ArrayList<ArrayList<Integer>>();
     
     public static void clearSimpleParents() {
         TestSuiteController.simpleParents.clear();
+        TestSuiteController.simpleOffsprings.clear();
+        TestSuiteController.possibleMutationPaths.clear();
     }
     
     public static void clearParents() {

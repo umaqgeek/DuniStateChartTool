@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -49,6 +50,22 @@ public class Func {
     public static final String KEY_F = "key_f";
     
     public static DecimalFormat df = new DecimalFormat("#,###.00");
+    
+    // Function to remove duplicates from an ArrayList 
+    public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list) {
+        // Create a new ArrayList 
+        ArrayList<T> newList = new ArrayList<T>();
+        // Traverse through the first list 
+        for (T element : list) {
+            // If this element is not present in newList 
+            // then add it 
+            if (!newList.contains(element)) {
+                newList.add(element);
+            }
+        }
+        // return the new list 
+        return newList;
+    }
     
     public static String getFormatInteger(String number, int numDigit) {
         String outNumber = "";

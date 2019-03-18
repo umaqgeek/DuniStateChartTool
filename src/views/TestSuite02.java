@@ -9,6 +9,8 @@ import controllers.NSGA2Algo;
 import controllers.TestSuiteController;
 import helpers.Func;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Properties;
 
 /**
@@ -89,14 +91,36 @@ public class TestSuite02 extends javax.swing.JFrame {
             }
         }
         
-        viewText(true, "Parents by Ranks and Crowd Distances:");
+        System.out.println("\nParents by Ranks and Crowd Distances:");
         for (int i = 0; i < TestSuiteController.simpleParents.size(); i++) {
             ArrayList<Object> singleParent = TestSuiteController.simpleParents.get(i);
-            viewText(false, "TS #" + (i+1) + ": (R="+singleParent.get(5)+"), (CD="+singleParent.get(8)+"), " + singleParent);
+            System.out.println("TS #" + (i+1) + ": (R="+singleParent.get(5)+"), (CD="+singleParent.get(8)+"), " + singleParent);
+            
+            ArrayList<ArrayList<Integer>> parentPaths = (ArrayList<ArrayList<Integer>>) TestSuiteController.simpleParents.get(i).get(4);
+            for (int j = 0; j < parentPaths.size(); j++) {
+                TestSuiteController.possibleMutationPaths.add(parentPaths.get(j));
+            }
+        }
+        
+        // view all possible path for mutation.
+        // sorting the list.
+        Collections.sort(TestSuiteController.possibleMutationPaths, new Comparator<ArrayList<Integer>>() {
+            @Override
+            public int compare(ArrayList<Integer> o1, ArrayList<Integer> o2) {
+                return o1.size() > o2.size() ? 1 : -1;
+            }
+        });
+        // remove duplicates in the list.
+        TestSuiteController.possibleMutationPaths = Func.removeDuplicates(TestSuiteController.possibleMutationPaths);
+        // view all possible path for mutation.
+        System.out.println("\nView all possible path for mutation");
+        for (int i = 0; i < TestSuiteController.possibleMutationPaths.size(); i++) {
+            System.out.println(TestSuiteController.possibleMutationPaths.get(i));
         }
         
         // generate offspring.
         // tournament selection.
+        System.out.println("\nTournament selection");
         int rawParentSize = TestSuiteController.simpleParents.size();
         for (int i = 0; i < rawParentSize; i++) {
             int indexParent1 = Func.rand.nextInt(rawParentSize);
@@ -110,10 +134,12 @@ public class TestSuite02 extends javax.swing.JFrame {
             } while(true);
             ArrayList<Object> parent1 = TestSuiteController.simpleParents.get(indexParent1);
             ArrayList<Object> parent2 = TestSuiteController.simpleParents.get(indexParent2);
+            
             System.out.println("P #"+(i+1)+":");
             System.out.println("parent1: index "+indexParent1+" - "+parent1);
             System.out.println("vs");
             System.out.println("parent2: index "+indexParent2+" - "+parent2);
+            
             ArrayList<Object> selectedParent = new ArrayList<Object>();
             int selectedIndexParent = -1;
             if ( ((int) parent1.get(5)) < ((int) parent2.get(5)) ) {
@@ -134,11 +160,100 @@ public class TestSuite02 extends javax.swing.JFrame {
                 selectedParent.addAll(parent2);
                 selectedIndexParent = indexParent2;
             }
+            
+            // reset offsprings attributes.
+            for (int j = 0; j < selectedParent.size(); j++) {
+                if (j != 4) {
+                    selectedParent.set(j, 0.00);
+                }
+            }
             TestSuiteController.simpleOffsprings.add(selectedParent);
+            
             System.out.println("win parent: index "+selectedIndexParent+" - "+selectedParent+"\n");
         }
         
+        // before crossover.
+        System.out.println("Offsprings before crossover.");
+        for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i++) {
+            System.out.println("Offspring #"+(i+1)+": "+TestSuiteController.simpleOffsprings.get(i));
+        }
+        
         // crossover.
+        float crossoverChances = TestSuite01.sliCrossover.getValue() * 1.0f / 100;
+        for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i+=2) {
+            
+            int inext = (i+1) >= TestSuiteController.simpleOffsprings.size() ? 0 : (i+1);
+            
+            // takeout genes from chromosome parent 1.
+            ArrayList<ArrayList<Integer>> geneP1 = (ArrayList<ArrayList<Integer>>) TestSuiteController.simpleOffsprings.get(i).get(4);
+            int numGene1 = (int) (crossoverChances * geneP1.size());
+            ArrayList<ArrayList<Integer>> holdGene1 = new ArrayList<ArrayList<Integer>>();
+            for (int j = geneP1.size()-1; j >= 0 && numGene1 > 0; j--, numGene1--) {
+                holdGene1.add(geneP1.get(j));
+                geneP1.remove(j);
+            }
+            
+            // takeout genes from chromosome parent 2.
+            ArrayList<ArrayList<Integer>> geneP2 = (ArrayList<ArrayList<Integer>>) TestSuiteController.simpleOffsprings.get(inext).get(4);
+            int numGene2 = (int) (crossoverChances * geneP2.size());
+            ArrayList<ArrayList<Integer>> holdGene2 = new ArrayList<ArrayList<Integer>>();
+            for (int j = geneP2.size()-1; j >=0 && numGene2 > 0; j--, numGene2--) {
+                holdGene2.add(geneP2.get(j));
+                geneP2.remove(j);
+            }
+            
+            // insert the takeout genes from parent 1 into parent 2.
+            for (int j = 0; j < holdGene1.size(); j++) {
+                geneP2.add(holdGene1.get(j));
+            }
+            
+            // insert the takeout genes from parent 2 into parent 1.
+            for (int j = 0; j < holdGene2.size(); j++) {
+                geneP1.add(holdGene2.get(j));
+            }
+            
+            // refresh after swapping genes parent 1 and parent 2.
+            TestSuiteController.simpleOffsprings.get(i).set(4, geneP1);
+            TestSuiteController.simpleOffsprings.get(inext).set(4, geneP2);
+        }
+        
+        // after crossover and before mutation.
+        System.out.println("\nOffsprings after crossover and before mutation.");
+        for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i++) {
+            System.out.println("Offspring #"+(i+1)+": "+TestSuiteController.simpleOffsprings.get(i));
+        }
+        
+        // mutation.
+        float mutationChances = TestSuite01.sliMutation.getValue() * 1.0f / 100;
+        System.out.println("\nOffsprings after mutation");
+        for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i++) {
+            ArrayList<ArrayList<Integer>> oldOffspringPaths = (ArrayList<ArrayList<Integer>>) TestSuiteController.simpleOffsprings.get(i).get(4);
+            
+            System.out.println("#"+i+":");
+            System.out.println("oldOffspringPaths: "+oldOffspringPaths);
+            
+            int numMutatedGene = (int) (mutationChances * oldOffspringPaths.size());
+            ArrayList<Integer> chosenList = new ArrayList<Integer>();
+            while (numMutatedGene-- > 0) {
+                int randIndex = Func.rand.nextInt(oldOffspringPaths.size());
+                do {
+                    if (chosenList.contains(randIndex)) {
+                        randIndex = Func.rand.nextInt(oldOffspringPaths.size());
+                    } else {
+                        chosenList.add(randIndex);
+                        break;
+                    }
+                } while(true);
+                int randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths.size());
+                oldOffspringPaths.set(randIndex, TestSuiteController.possibleMutationPaths.get(randMutateIndex));
+            }
+            
+            System.out.println("newOffspringPaths: "+oldOffspringPaths);
+            TestSuiteController.simpleOffsprings.get(i).set(4, oldOffspringPaths);
+        }
+        
+        // after crossover and before mutation.
+        System.out.println("\nOffsprings after mutation.");
         for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i++) {
             System.out.println("Offspring #"+(i+1)+": "+TestSuiteController.simpleOffsprings.get(i));
         }
