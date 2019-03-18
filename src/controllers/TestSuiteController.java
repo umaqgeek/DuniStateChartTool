@@ -34,6 +34,7 @@ public class TestSuiteController {
     
     public static ArrayList<Properties> parents = new ArrayList<Properties>();
     public static ArrayList<ArrayList<Object>> simpleParents = new ArrayList<ArrayList<Object>>();
+    public static ArrayList<ArrayList<Object>> simpleOffsprings = new ArrayList<ArrayList<Object>>();
     
     public static void clearSimpleParents() {
         TestSuiteController.simpleParents.clear();

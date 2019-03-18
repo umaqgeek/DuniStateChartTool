@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
@@ -33,6 +34,7 @@ public class Func {
     
     private static String FILE_NAME = "exportStateChartTool.xlsx";
     public static boolean DEBUG = true;
+    public static Random rand = new Random();
     
     public static final String TOTAL_NUMBER_PATH = "total_number_path";
     public static final String TOTAL_TIME_EXECUTION = "total_time_execution";

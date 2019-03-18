@@ -394,8 +394,6 @@ public class TestSuite01 extends javax.swing.JFrame {
                             
                             if (TestSuite01.cbTotalPath.isSelected()) {
                                 viewText(false, "Total Paths: " + props.getProperty(Func.TOTAL_NUMBER_PATH));
-                            } else {
-                                props.remove(Func.TOTAL_NUMBER_PATH);
                             }
 
                             long endTime = System.currentTimeMillis();
@@ -434,6 +432,9 @@ public class TestSuite01 extends javax.swing.JFrame {
                             
                             // only take parent that at least have one path.
                             if (Integer.parseInt((String) props.getProperty(Func.TOTAL_NUMBER_PATH)) > 0) {
+                                if (!TestSuite01.cbTotalPath.isSelected()) {
+                                    props.remove(Func.TOTAL_NUMBER_PATH);
+                                }
                                 TestSuiteController.setParents(props);
                             }
                            

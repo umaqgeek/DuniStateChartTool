@@ -64,7 +64,6 @@ public class TestSuite02 extends javax.swing.JFrame {
             singleParent.add(strTransPairCoverage);
 
             singleParent.add(arrProps.get(i).get(Func.ARR_PATHS));
-//            singleParent.add("|");
 
             singleParent.add(Integer.MAX_VALUE);
             
@@ -73,12 +72,75 @@ public class TestSuite02 extends javax.swing.JFrame {
         
         NSGA2Algo.setRanks();
         
-        viewText(true, "Parents by Rank:");
         for (int i = 0; i < TestSuiteController.simpleParents.size(); i++) {
             ArrayList<Object> singleParent = TestSuiteController.simpleParents.get(i);
-            
-            System.out.println("TS #" + (i+1) + ": " + singleParent + " - Rank " + singleParent.get(5));
-            viewText(false, "TS #" + (i+1) + ": Rank " + singleParent.get(5));
+            NSGA2Algo.setMaxMinM(singleParent);
+        }
+        
+        NSGA2Algo.viewAllMaxMinM();
+        
+        NSGA2Algo.setCrowds();
+        
+        for (int i = 0; i < NSGA2Algo.Fprops.size(); i++) {
+            System.out.println("F #"+(i+1)+":");
+            ArrayList<ArrayList<Object>> F = (ArrayList<ArrayList<Object>>) NSGA2Algo.Fprops.get(Func.KEY_F + (i+1));
+            for (int j = 0; j < F.size(); j++) {
+                System.out.println(j + ": " + F.get(j));
+            }
+        }
+        
+        viewText(true, "Parents by Ranks and Crowd Distances:");
+        for (int i = 0; i < TestSuiteController.simpleParents.size(); i++) {
+            ArrayList<Object> singleParent = TestSuiteController.simpleParents.get(i);
+            viewText(false, "TS #" + (i+1) + ": (R="+singleParent.get(5)+"), (CD="+singleParent.get(8)+"), " + singleParent);
+        }
+        
+        // generate offspring.
+        // tournament selection.
+        int rawParentSize = TestSuiteController.simpleParents.size();
+        for (int i = 0; i < rawParentSize; i++) {
+            int indexParent1 = Func.rand.nextInt(rawParentSize);
+            int indexParent2 = Func.rand.nextInt(rawParentSize);
+            do {
+                if (indexParent2 == indexParent1) {
+                    indexParent2 = Func.rand.nextInt(rawParentSize);
+                } else {
+                    break;
+                }
+            } while(true);
+            ArrayList<Object> parent1 = TestSuiteController.simpleParents.get(indexParent1);
+            ArrayList<Object> parent2 = TestSuiteController.simpleParents.get(indexParent2);
+            System.out.println("P #"+(i+1)+":");
+            System.out.println("parent1: index "+indexParent1+" - "+parent1);
+            System.out.println("vs");
+            System.out.println("parent2: index "+indexParent2+" - "+parent2);
+            ArrayList<Object> selectedParent = new ArrayList<Object>();
+            int selectedIndexParent = -1;
+            if ( ((int) parent1.get(5)) < ((int) parent2.get(5)) ) {
+                selectedParent.addAll(parent1);
+                selectedIndexParent = indexParent1;
+            } else if (((int) parent1.get(5)) == ((int) parent2.get(5))) {
+                if ( ((float) parent1.get(8)) > ((float) parent2.get(8)) ) {
+                    selectedParent.addAll(parent1);
+                    selectedIndexParent = indexParent1;
+                } else if ( ((float) parent1.get(8)) == ((float) parent2.get(8)) ) {
+                    selectedParent.addAll(parent1);
+                    selectedIndexParent = indexParent1;
+                } else {
+                    selectedParent.addAll(parent2);
+                    selectedIndexParent = indexParent2;
+                }
+            } else {
+                selectedParent.addAll(parent2);
+                selectedIndexParent = indexParent2;
+            }
+            TestSuiteController.simpleOffsprings.add(selectedParent);
+            System.out.println("win parent: index "+selectedIndexParent+" - "+selectedParent+"\n");
+        }
+        
+        // crossover.
+        for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i++) {
+            System.out.println("Offspring #"+(i+1)+": "+TestSuiteController.simpleOffsprings.get(i));
         }
     }
     
