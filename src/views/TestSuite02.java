@@ -229,7 +229,7 @@ public class TestSuite02 extends javax.swing.JFrame {
         for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i++) {
             ArrayList<ArrayList<Integer>> oldOffspringPaths = (ArrayList<ArrayList<Integer>>) TestSuiteController.simpleOffsprings.get(i).get(4);
             
-            System.out.println("#"+i+":");
+            System.out.println("#"+(i+1)+":");
             System.out.println("oldOffspringPaths: "+oldOffspringPaths);
             
             int numMutatedGene = (int) (mutationChances * oldOffspringPaths.size());
@@ -244,8 +244,20 @@ public class TestSuite02 extends javax.swing.JFrame {
                         break;
                     }
                 } while(true);
+                
+                ArrayList<Integer> oldGene = oldOffspringPaths.get(randIndex);
+                
                 int randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths.size());
-                oldOffspringPaths.set(randIndex, TestSuiteController.possibleMutationPaths.get(randMutateIndex));
+                ArrayList<Integer> newGene = TestSuiteController.possibleMutationPaths.get(randMutateIndex);
+                do {
+                    if (!oldGene.equals(newGene)) {
+                        break;
+                    }
+                    randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths.size());
+                    newGene = TestSuiteController.possibleMutationPaths.get(randMutateIndex);
+                } while(true);
+                
+                oldOffspringPaths.set(randIndex, newGene);
             }
             
             System.out.println("newOffspringPaths: "+oldOffspringPaths);
