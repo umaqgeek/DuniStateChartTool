@@ -347,11 +347,31 @@ public class TestSuite02 extends javax.swing.JFrame {
         TestSuiteController.simpleParents2 = spalgo.sortObjectFunctions(TestSuiteController.simpleParents2);
         for (int i = 0; i < TestSuiteController.simpleParents2.size(); i++) {
             int iIndex = (int) TestSuiteController.simpleParents2.get(i).get(6);
-            System.out.println("p"+iIndex+": "+TestSuiteController.simpleParents2.get(i).get(7));
+            System.out.println("par #"+iIndex+": "+TestSuiteController.simpleParents2.get(i));
         }
         float rawFitness = par + arx;
         float density = (float) Math.sqrt(par + arx);
         float fitness = rawFitness + density;
+        if (par >= arc) {
+            for (int i = 0; i < TestSuiteController.simpleParents2.size() && i < arc; i++) {
+                arrArch.add(TestSuiteController.simpleParents2.get(i));
+            }
+        } else {
+            for (int i = 0, ix = 0; i < arc; i++, ix++) {
+                ix = ix >= par ? 0 : ix;
+                arrArch.add(TestSuiteController.simpleParents2.get(ix));
+            }
+        }
+        System.out.println("par:");
+        for (int i = 0; i < TestSuiteController.simpleParents2.size(); i++) {
+            int iIndex = (int) TestSuiteController.simpleParents2.get(i).get(6);
+            System.out.println("par #"+iIndex+": "+TestSuiteController.simpleParents2.get(i));
+        }
+        System.out.println("arc:");
+        for (int i = 0; i < arrArch.size(); i++) {
+            int iIndex = (int) arrArch.get(i).get(6);
+            System.out.println("arc #"+iIndex+": "+arrArch.get(i));
+        }
         
         /**
          * END SPEA

@@ -49,17 +49,17 @@ public class SPEA2Algo {
             }
             sp.get(i).set(7, data7);
         }
-        System.out.println("before dawn");
-        for (int i = 0; i < sp.size(); i++) {
-            int iIndex = (int) sp.get(i).get(6);
-            System.out.println("p"+iIndex+": "+sp.get(i).get(7));
-        }
-        System.out.println("after dawn");
         sp = sort7(sp, 0);
         return sp;
     }
     
     private static ArrayList<ArrayList<Object>> sort7(ArrayList<ArrayList<Object>> Ftemp, int c) {
+        if (Ftemp.size() <= 1) {
+            return (ArrayList<ArrayList<Object>>) Ftemp.clone();
+        }
+        if (c+1 >= ((ArrayList<Integer>) Ftemp.get(0).get(7)).size()) {
+            return (ArrayList<ArrayList<Object>>) Ftemp.clone();
+        }
         // sort
         Collections.sort(Ftemp, new Comparator<ArrayList<Object>>() {
             @Override
