@@ -6,6 +6,7 @@
 package views;
 
 import controllers.NSGA2Algo;
+import controllers.SPEA2Algo;
 import controllers.TestSuiteController;
 import helpers.Func;
 import java.util.ArrayList;
@@ -71,6 +72,42 @@ public class TestSuite02 extends javax.swing.JFrame {
             
             TestSuiteController.simpleParents.add(singleParent);
         }
+        
+        for (int i = 0; i < TestSuiteController.simpleParents.size(); i++) {
+            ArrayList<Object> singleParent = TestSuiteController.simpleParents.get(i);
+            
+            ArrayList<Object> singleParent2 = new ArrayList<Object>();
+            singleParent2.addAll(singleParent);
+            ArrayList<ArrayList<Integer>> oldArr2 = (ArrayList<ArrayList<Integer>>) singleParent2.get(4);
+            ArrayList<ArrayList<Integer>> newArr2 = new ArrayList<ArrayList<Integer>>();
+            for (int j = 0; j < oldArr2.size(); j++) {
+                ArrayList<Integer> newArrDetail = new ArrayList<Integer>();
+                for (int k = 0; k < oldArr2.get(j).size(); k++) {
+                    newArrDetail.add(oldArr2.get(j).get(k));
+                }
+                newArr2.add(newArrDetail);
+            }
+            singleParent2.set(4, newArr2);
+            TestSuiteController.simpleParents2.add(singleParent2);
+            
+            ArrayList<Object> singleParent3 = new ArrayList<Object>();
+            singleParent3.addAll(singleParent);
+            ArrayList<ArrayList<Integer>> oldArr3 = (ArrayList<ArrayList<Integer>>) singleParent3.get(4);
+            ArrayList<ArrayList<Integer>> newArr3 = new ArrayList<ArrayList<Integer>>();
+            for (int j = 0; j < oldArr3.size(); j++) {
+                ArrayList<Integer> newArrDetail = new ArrayList<Integer>();
+                for (int k = 0; k < oldArr3.get(j).size(); k++) {
+                    newArrDetail.add(oldArr3.get(j).get(k));
+                }
+                newArr3.add(newArrDetail);
+            }
+            singleParent3.set(4, newArr3);
+            TestSuiteController.simpleParents3.add(singleParent3);
+        }
+        
+        /**
+         * START NSGA2
+         */
         
         NSGA2Algo.setRanks();
         
@@ -269,6 +306,64 @@ public class TestSuite02 extends javax.swing.JFrame {
         for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i++) {
             System.out.println("Offspring #"+(i+1)+": "+TestSuiteController.simpleOffsprings.get(i));
         }
+        
+        /**
+         * END NSGA2
+         */
+        
+        /**
+         * START SPEA
+         */
+        
+        SPEA2Algo spalgo = new SPEA2Algo();
+        ArrayList<ArrayList<Object>> arrArch = new ArrayList<ArrayList<Object>>();
+        int par = TestSuiteController.simpleParents2.size();
+        int pop = 5;
+        int arc = 5;
+        int gen = 2;
+        try {
+            pop = Integer.parseInt(TestSuite01.txtPopSize.getText());
+            arc = Integer.parseInt(TestSuite01.txtArchSize.getText());
+            gen = Integer.parseInt(TestSuite01.txtNoLoop.getText());
+        } catch (Exception e) {
+            if (Func.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        int np = par;
+        int arx = arrArch.size();
+        System.out.println("\nspea");
+        System.out.println("before sort");
+        for (int i = 0; i < TestSuiteController.simpleParents2.size(); i++) {
+            ArrayList<Integer> data7 = new ArrayList<Integer>();
+            for (int j = 0; j < TestSuiteController.simpleParents2.size(); j++) {
+                data7.add(0);
+            }
+            TestSuiteController.simpleParents2.get(i).add(i);
+            TestSuiteController.simpleParents2.get(i).add(data7);
+            System.out.println("par #"+(i+1)+": "+TestSuiteController.simpleParents2.get(i));
+        }
+        System.out.println("after sort");
+        TestSuiteController.simpleParents2 = spalgo.sortObjectFunctions(TestSuiteController.simpleParents2);
+        for (int i = 0; i < TestSuiteController.simpleParents2.size(); i++) {
+            int iIndex = (int) TestSuiteController.simpleParents2.get(i).get(6);
+            System.out.println("p"+iIndex+": "+TestSuiteController.simpleParents2.get(i).get(7));
+        }
+        float rawFitness = par + arx;
+        float density = (float) Math.sqrt(par + arx);
+        float fitness = rawFitness + density;
+        
+        /**
+         * END SPEA
+         */
+        
+        /**
+         * START PSO
+         */
+        
+        /**
+         * END PSO
+         */
     }
     
     public static void viewText(boolean isClear, String text) {

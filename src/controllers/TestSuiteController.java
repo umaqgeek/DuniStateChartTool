@@ -34,6 +34,8 @@ public class TestSuiteController {
     
     public static ArrayList<Properties> parents = new ArrayList<Properties>();
     public static ArrayList<ArrayList<Object>> simpleParents = new ArrayList<ArrayList<Object>>();
+    public static ArrayList<ArrayList<Object>> simpleParents2 = new ArrayList<ArrayList<Object>>();
+    public static ArrayList<ArrayList<Object>> simpleParents3 = new ArrayList<ArrayList<Object>>();
     public static ArrayList<ArrayList<Object>> simpleOffsprings = new ArrayList<ArrayList<Object>>();
     public static ArrayList<ArrayList<Integer>> possibleMutationPaths = new ArrayList<ArrayList<Integer>>();
     
