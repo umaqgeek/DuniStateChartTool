@@ -352,6 +352,12 @@ public class TestSuite02 extends javax.swing.JFrame {
         float rawFitness = par + arx;
         float density = (float) Math.sqrt(par + arx);
         float fitness = rawFitness + density;
+        System.out.println("par before distance:");
+        for (int i = 0; i < TestSuiteController.simpleParents2.size(); i++) {
+            int iIndex = (int) TestSuiteController.simpleParents2.get(i).get(6);
+            System.out.println("par #"+iIndex+": "+TestSuiteController.simpleParents2.get(i));
+        }
+        TestSuiteController.simpleParents2 = SPEA2Algo.setNeighbourDistance(TestSuiteController.simpleParents2);
         if (par >= arc) {
             for (int i = 0; i < TestSuiteController.simpleParents2.size() && i < arc; i++) {
                 arrArch.add(TestSuiteController.simpleParents2.get(i));
@@ -362,16 +368,21 @@ public class TestSuite02 extends javax.swing.JFrame {
                 arrArch.add(TestSuiteController.simpleParents2.get(ix));
             }
         }
-        System.out.println("par:");
+        System.out.println("par after distance:");
         for (int i = 0; i < TestSuiteController.simpleParents2.size(); i++) {
             int iIndex = (int) TestSuiteController.simpleParents2.get(i).get(6);
-            System.out.println("par #"+iIndex+": "+TestSuiteController.simpleParents2.get(i));
+            System.out.println("par #"+iIndex+": ["+
+                    TestSuiteController.simpleParents2.get(i).get(9)+", "+
+                    TestSuiteController.simpleParents2.get(i).get(0)+", "+
+                    TestSuiteController.simpleParents2.get(i).get(1)+", "+
+                    TestSuiteController.simpleParents2.get(i).get(2)+", "+
+                    TestSuiteController.simpleParents2.get(i).get(3)+"]");
         }
-        System.out.println("arc:");
-        for (int i = 0; i < arrArch.size(); i++) {
-            int iIndex = (int) arrArch.get(i).get(6);
-            System.out.println("arc #"+iIndex+": "+arrArch.get(i));
-        }
+//        System.out.println("arc:");
+//        for (int i = 0; i < arrArch.size(); i++) {
+//            int iIndex = (int) arrArch.get(i).get(6);
+//            System.out.println("arc #"+iIndex+": "+arrArch.get(i));
+//        }
         
         /**
          * END SPEA

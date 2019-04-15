@@ -8,6 +8,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import views.TestSuite01;
 
 /**
  *
@@ -24,6 +25,7 @@ public class SPEA2Algo {
     public static ArrayList<ArrayList<ArrayList<Object>>> store = new ArrayList<ArrayList<ArrayList<Object>>>();
 
     public ArrayList<ArrayList<Object>> sortObjectFunctions(ArrayList<ArrayList<Object>> sp) {
+        store = new ArrayList<ArrayList<ArrayList<Object>>>();
         for (int i = 0; i < m.length; i++) {
             ArrayList<ArrayList<Object>> storeDetail = new ArrayList<ArrayList<Object>>();
             for (int j = 0; j < sp.size(); j++) {
@@ -105,5 +107,55 @@ public class SPEA2Algo {
             }
         });
         return Ftemp;
+    }
+    
+    private static ArrayList<ArrayList<Object>> sortE(ArrayList<ArrayList<Object>> Ftemp) {
+        Collections.sort(Ftemp, new Comparator<ArrayList<Object>>() {
+            @Override
+            public int compare(ArrayList<Object> o1, ArrayList<Object> o2) {
+                return Float.parseFloat(o1.get(9).toString()) > Float.parseFloat(o2.get(9).toString()) ? 1 : -1;
+            }
+        });
+        return Ftemp;
+    }
+    
+    public static ArrayList<ArrayList<Object>> setNeighbourDistance(ArrayList<ArrayList<Object>> sp) {
+        // set array of 8th and 9th
+        int totalObj = 4;
+        double minKnn = 3.00;
+        int group = 1;
+        try {
+            minKnn = Double.parseDouble(TestSuite01.txtMinKnn.getText());
+        } catch (Exception e) {
+        }
+        sp.get(0).add(0); // 8th
+        sp.get(0).add(group); // 9th
+        for (int i = 1; i < sp.size(); i++) {
+            double minD = Double.MAX_VALUE;
+            int bestGroup = -1;
+            for (int k = i-1; k >= 0; k--) {
+                float total = 0.0f;
+                for (int j = 0; j < totalObj; j++) {
+                    float prev = Float.parseFloat(sp.get(k).get(j).toString());
+                    float curr = Float.parseFloat(sp.get(i).get(j).toString());
+                    total += Math.pow((curr - prev), 2);
+                }
+                double d = Math.sqrt(total);
+                int currGroup = Integer.parseInt(sp.get(k).get(9).toString());
+                if (d <= minKnn) {
+                    minKnn = d;
+                    bestGroup = currGroup;
+                    break;
+                }
+            }
+            if (bestGroup == -1) {
+                group += 1;
+                bestGroup = group;
+            }
+            sp.get(i).add(0);
+            sp.get(i).add(bestGroup);
+        }
+//        sp = sortE(sp);
+        return sp;
     }
 }

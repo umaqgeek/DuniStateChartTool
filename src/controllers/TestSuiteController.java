@@ -41,6 +41,8 @@ public class TestSuiteController {
     
     public static void clearSimpleParents() {
         TestSuiteController.simpleParents.clear();
+        TestSuiteController.simpleParents2.clear();
+        TestSuiteController.simpleParents3.clear();
         TestSuiteController.simpleOffsprings.clear();
         TestSuiteController.possibleMutationPaths.clear();
     }
