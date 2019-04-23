@@ -131,7 +131,6 @@ public class SPEA2Algo {
         sp.get(0).add(0); // 8th
         sp.get(0).add(group); // 9th
         for (int i = 1; i < sp.size(); i++) {
-            double minD = Double.MAX_VALUE;
             int bestGroup = -1;
             for (int k = i-1; k >= 0; k--) {
                 float total = 0.0f;
@@ -143,7 +142,6 @@ public class SPEA2Algo {
                 double d = Math.sqrt(total);
                 int currGroup = Integer.parseInt(sp.get(k).get(9).toString());
                 if (d <= minKnn) {
-                    minKnn = d;
                     bestGroup = currGroup;
                     break;
                 }
@@ -155,7 +153,47 @@ public class SPEA2Algo {
             sp.get(i).add(0);
             sp.get(i).add(bestGroup);
         }
-//        sp = sortE(sp);
+        sp = sortE(sp);
+        return sp;
+    }
+    
+    public static ArrayList<ArrayList<Object>> getEliminatedArr(ArrayList<ArrayList<Object>> sp, int minSize) {
+        System.out.println("before eliminated");
+        for (int i = 0; i < sp.size(); i++) {
+            int iIndex = (int) sp.get(i).get(6);
+            System.out.println("par #"+iIndex+": ["+//TestSuiteController.simpleParents2.get(i));
+                    sp.get(i).get(9)+", "+
+                    sp.get(i).get(0)+", "+
+                    sp.get(i).get(1)+", "+
+                    sp.get(i).get(2)+", "+
+                    sp.get(i).get(3)+"]");
+        }
+        while (sp.size() > minSize) {
+            boolean isNotSame = true;
+            for (int i = 0; i < sp.size()-1; i++) {
+                if (sp.get(i).get(9) == sp.get(i+1).get(9)) {
+                    sp.remove(i+1);
+                    isNotSame = false;
+                    break;
+                }
+            }
+            if (isNotSame) {
+                for (int i = sp.size()-1; i >= 0; i--) {
+                    sp.remove(i);
+                    break;
+                }
+            }
+        }
+        System.out.println("after eliminated");
+        for (int i = 0; i < sp.size(); i++) {
+            int iIndex = (int) sp.get(i).get(6);
+            System.out.println("par #"+iIndex+": ["+//TestSuiteController.simpleParents2.get(i));
+                    sp.get(i).get(9)+", "+
+                    sp.get(i).get(0)+", "+
+                    sp.get(i).get(1)+", "+
+                    sp.get(i).get(2)+", "+
+                    sp.get(i).get(3)+"]");
+        }
         return sp;
     }
 }

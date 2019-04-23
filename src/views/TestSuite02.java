@@ -358,9 +358,27 @@ public class TestSuite02 extends javax.swing.JFrame {
             System.out.println("par #"+iIndex+": "+TestSuiteController.simpleParents2.get(i));
         }
         TestSuiteController.simpleParents2 = SPEA2Algo.setNeighbourDistance(TestSuiteController.simpleParents2);
+        System.out.println("par after kNN:");
+        for (int i = 0; i < TestSuiteController.simpleParents2.size(); i++) {
+            int iIndex = (int) TestSuiteController.simpleParents2.get(i).get(6);
+            System.out.println("par #"+iIndex+": ["+//TestSuiteController.simpleParents2.get(i));
+                    TestSuiteController.simpleParents2.get(i).get(9)+", "+
+                    TestSuiteController.simpleParents2.get(i).get(0)+", "+
+                    TestSuiteController.simpleParents2.get(i).get(1)+", "+
+                    TestSuiteController.simpleParents2.get(i).get(2)+", "+
+                    TestSuiteController.simpleParents2.get(i).get(3)+"]");
+        }
         if (par >= arc) {
-            for (int i = 0; i < TestSuiteController.simpleParents2.size() && i < arc; i++) {
-                arrArch.add(TestSuiteController.simpleParents2.get(i));
+            // TODO: copy to new sp array.
+            ArrayList<ArrayList<Object>> beforeArcArr = new ArrayList<ArrayList<Object>>();
+            beforeArcArr.addAll(TestSuiteController.simpleParents2);
+            
+            // TODO: eliminate 2nd array smpai sama size dngn arc.
+            beforeArcArr = SPEA2Algo.getEliminatedArr(beforeArcArr, arc);
+            
+            // TODO: copy eliminated array masuk dlm arc.
+            for (int i = 0; i < beforeArcArr.size() && i < arc; i++) {
+                arrArch.add(beforeArcArr.get(i));
             }
         } else {
             for (int i = 0, ix = 0; i < arc; i++, ix++) {
@@ -368,21 +386,11 @@ public class TestSuite02 extends javax.swing.JFrame {
                 arrArch.add(TestSuiteController.simpleParents2.get(ix));
             }
         }
-        System.out.println("par after distance:");
-        for (int i = 0; i < TestSuiteController.simpleParents2.size(); i++) {
-            int iIndex = (int) TestSuiteController.simpleParents2.get(i).get(6);
-            System.out.println("par #"+iIndex+": ["+
-                    TestSuiteController.simpleParents2.get(i).get(9)+", "+
-                    TestSuiteController.simpleParents2.get(i).get(0)+", "+
-                    TestSuiteController.simpleParents2.get(i).get(1)+", "+
-                    TestSuiteController.simpleParents2.get(i).get(2)+", "+
-                    TestSuiteController.simpleParents2.get(i).get(3)+"]");
+        System.out.println("arc:");
+        for (int i = 0; i < arrArch.size(); i++) {
+            int iIndex = (int) arrArch.get(i).get(6);
+            System.out.println("arc #"+iIndex+": "+arrArch.get(i));
         }
-//        System.out.println("arc:");
-//        for (int i = 0; i < arrArch.size(); i++) {
-//            int iIndex = (int) arrArch.get(i).get(6);
-//            System.out.println("arc #"+iIndex+": "+arrArch.get(i));
-//        }
         
         /**
          * END SPEA
