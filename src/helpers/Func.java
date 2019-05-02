@@ -158,4 +158,12 @@ public class Func {
         List b = Arrays.asList(ArrayUtils.toObject(arr));
         return (int) Collections.min(b);
     }
+    
+    public static void debugArrayList(ArrayList<ArrayList<Object>> arrObj) {
+        System.out.println("\nDEBUG ARRAYLIST:");
+        for (int i = 0; i < arrObj.size(); i++) {
+            System.out.println("#"+i+": "+arrObj.get(i));
+        }
+        System.out.println("\n");
+    }
 }

@@ -37,18 +37,31 @@ public class TestSuiteController {
     public static ArrayList<ArrayList<Object>> simpleParents2 = new ArrayList<ArrayList<Object>>();
     public static ArrayList<ArrayList<Object>> simpleParents3 = new ArrayList<ArrayList<Object>>();
     public static ArrayList<ArrayList<Object>> simpleOffsprings = new ArrayList<ArrayList<Object>>();
-    public static ArrayList<ArrayList<Integer>> possibleMutationPaths = new ArrayList<ArrayList<Integer>>();
+    public static ArrayList<ArrayList<Object>> simpleOffsprings2 = new ArrayList<ArrayList<Object>>();
+    public static ArrayList<ArrayList<Integer>> possibleMutationPaths1 = new ArrayList<ArrayList<Integer>>();
+    public static ArrayList<ArrayList<Integer>> possibleMutationPaths2 = new ArrayList<ArrayList<Integer>>();
     
     public static void clearSimpleParents() {
         TestSuiteController.simpleParents.clear();
         TestSuiteController.simpleParents2.clear();
         TestSuiteController.simpleParents3.clear();
         TestSuiteController.simpleOffsprings.clear();
-        TestSuiteController.possibleMutationPaths.clear();
+        TestSuiteController.simpleOffsprings2.clear();
+        TestSuiteController.possibleMutationPaths1.clear();
+        TestSuiteController.possibleMutationPaths2.clear();
+        
+        TestSuiteController.simpleParents.removeAll(TestSuiteController.simpleParents);
+        TestSuiteController.simpleParents2.removeAll(TestSuiteController.simpleParents2);
+        TestSuiteController.simpleParents3.removeAll(TestSuiteController.simpleParents3);
+        TestSuiteController.simpleOffsprings.removeAll(TestSuiteController.simpleOffsprings);
+        TestSuiteController.simpleOffsprings2.removeAll(TestSuiteController.simpleOffsprings2);
+        TestSuiteController.possibleMutationPaths1.removeAll(TestSuiteController.possibleMutationPaths1);
+        TestSuiteController.possibleMutationPaths2.removeAll(TestSuiteController.possibleMutationPaths2);
     }
     
     public static void clearParents() {
         TestSuiteController.parents.clear();
+        clearSimpleParents();
     }
     
     public static void setParents(Properties parent) {
