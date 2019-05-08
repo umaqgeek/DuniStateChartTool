@@ -38,6 +38,7 @@ public class TestSuiteController {
     public static ArrayList<ArrayList<Object>> simpleParents3 = new ArrayList<ArrayList<Object>>();
     public static ArrayList<ArrayList<Object>> simpleOffsprings = new ArrayList<ArrayList<Object>>();
     public static ArrayList<ArrayList<Object>> simpleOffsprings2 = new ArrayList<ArrayList<Object>>();
+    public static ArrayList<ArrayList<Object>> simpleOffsprings3 = new ArrayList<ArrayList<Object>>();
     public static ArrayList<ArrayList<Integer>> possibleMutationPaths1 = new ArrayList<ArrayList<Integer>>();
     public static ArrayList<ArrayList<Integer>> possibleMutationPaths2 = new ArrayList<ArrayList<Integer>>();
     
@@ -47,6 +48,7 @@ public class TestSuiteController {
         TestSuiteController.simpleParents3.clear();
         TestSuiteController.simpleOffsprings.clear();
         TestSuiteController.simpleOffsprings2.clear();
+        TestSuiteController.simpleOffsprings3.clear();
         TestSuiteController.possibleMutationPaths1.clear();
         TestSuiteController.possibleMutationPaths2.clear();
         

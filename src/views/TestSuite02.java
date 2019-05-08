@@ -6,6 +6,7 @@
 package views;
 
 import controllers.NSGA2Algo;
+import controllers.PSOAlgo;
 import controllers.SPEA2Algo;
 import controllers.TestSuiteController;
 import helpers.Func;
@@ -111,17 +112,13 @@ public class TestSuite02 extends javax.swing.JFrame {
         // run SPEA2 process
         SPEA2Algo.mainProcess();
         
-        /**
-         * START PSO
-         */
-        
-        /**
-         * END PSO
-         */
+        // run PSO process
+        PSOAlgo.mainProcess();
         
         String output = "FIR value:\n";
         output += "NSGA2: (" + NSGA2Algo.numPathParents + " - " + NSGA2Algo.numPathOffsprings + ") / " + NSGA2Algo.numPathParents + " = " + NSGA2Algo.valueFIR + "\n";
         output += "SPEA2: (" + SPEA2Algo.numPathParents + " - " + SPEA2Algo.numPathOffsprings + ") / " + SPEA2Algo.numPathParents + " = " + SPEA2Algo.valueFIR + "\n";
+        output += "PSO  : (" + PSOAlgo.numPathParents + " - " + PSOAlgo.numPathOffsprings + ") / " + PSOAlgo.numPathParents + " = " + PSOAlgo.valueFIR + "\n";
         txtMainScreen.setText(output);
     }
     
