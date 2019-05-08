@@ -101,6 +101,9 @@ public class PSOAlgo {
         
         for (int g = 0; g < T; g++) {
             ArrayList<Float> randomPosition = PSOAlgo.getRandomPosition();
+            
+            System.out.println("\nRandom Position g"+g+": "+randomPosition);
+            
             float velocity = 0.0f;
             for (int i = 0; i < numberParticle; i++) {
                 if (i == 0) {
