@@ -41,6 +41,7 @@ public class TestSuiteController {
     public static ArrayList<ArrayList<Object>> simpleOffsprings3 = new ArrayList<ArrayList<Object>>();
     public static ArrayList<ArrayList<Integer>> possibleMutationPaths1 = new ArrayList<ArrayList<Integer>>();
     public static ArrayList<ArrayList<Integer>> possibleMutationPaths2 = new ArrayList<ArrayList<Integer>>();
+    public static ArrayList<ArrayList<Integer>> possibleMutationPaths3 = new ArrayList<ArrayList<Integer>>();
     
     public static void clearSimpleParents() {
         TestSuiteController.simpleParents.clear();
@@ -51,14 +52,17 @@ public class TestSuiteController {
         TestSuiteController.simpleOffsprings3.clear();
         TestSuiteController.possibleMutationPaths1.clear();
         TestSuiteController.possibleMutationPaths2.clear();
+        TestSuiteController.possibleMutationPaths3.clear();
         
         TestSuiteController.simpleParents.removeAll(TestSuiteController.simpleParents);
         TestSuiteController.simpleParents2.removeAll(TestSuiteController.simpleParents2);
         TestSuiteController.simpleParents3.removeAll(TestSuiteController.simpleParents3);
         TestSuiteController.simpleOffsprings.removeAll(TestSuiteController.simpleOffsprings);
         TestSuiteController.simpleOffsprings2.removeAll(TestSuiteController.simpleOffsprings2);
+        TestSuiteController.simpleOffsprings3.removeAll(TestSuiteController.simpleOffsprings2);
         TestSuiteController.possibleMutationPaths1.removeAll(TestSuiteController.possibleMutationPaths1);
         TestSuiteController.possibleMutationPaths2.removeAll(TestSuiteController.possibleMutationPaths2);
+        TestSuiteController.possibleMutationPaths3.removeAll(TestSuiteController.possibleMutationPaths2);
     }
     
     public static void clearParents() {

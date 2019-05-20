@@ -106,19 +106,21 @@ public class TestSuite02 extends javax.swing.JFrame {
             TestSuiteController.simpleParents3.add(singleParent3);
         }
         
+        String output = "FIR value:\n";
+        
         // run NSGA2 process
-        NSGA2Algo.mainProcess();
+        long timeNSGA = NSGA2Algo.mainProcess();
         
         // run SPEA2 process
-        SPEA2Algo.mainProcess();
+        long timeSPEA = SPEA2Algo.mainProcess();
         
         // run PSO process
-        PSOAlgo.mainProcess();
+        long timePSO = PSOAlgo.mainProcess();
         
-        String output = "FIR value:\n";
-        output += "NSGA2: (" + NSGA2Algo.numPathParents + " - " + NSGA2Algo.numPathOffsprings + ") / " + NSGA2Algo.numPathParents + " = " + NSGA2Algo.valueFIR + "\n";
-        output += "SPEA2: (" + SPEA2Algo.numPathParents + " - " + SPEA2Algo.numPathOffsprings + ") / " + SPEA2Algo.numPathParents + " = " + SPEA2Algo.valueFIR + "\n";
-        output += "PSO  : (" + PSOAlgo.numPathParents + " - " + PSOAlgo.numPathOffsprings + ") / " + PSOAlgo.numPathParents + " = " + PSOAlgo.valueFIR + "\n";
+        output += "NSGA2: (" + NSGA2Algo.numPathParents + " - " + NSGA2Algo.numPathOffsprings + ") / " + NSGA2Algo.numPathParents + " = " + NSGA2Algo.valueFIR + " ["+(timeNSGA*1.0/1000)+"s]\n";
+        output += "SPEA2: (" + SPEA2Algo.numPathParents + " - " + SPEA2Algo.numPathOffsprings + ") / " + SPEA2Algo.numPathParents + " = " + SPEA2Algo.valueFIR + " ["+(timeSPEA*1.0/1000)+"s]\n";
+        output += "PSO  : (" + PSOAlgo.numPathParents + " - " + PSOAlgo.numPathOffsprings + ") / " + PSOAlgo.numPathParents + " = " + PSOAlgo.valueFIR + " ["+(timePSO*1.0/1000)+"s]\n";
+        
         txtMainScreen.setText(output);
     }
     

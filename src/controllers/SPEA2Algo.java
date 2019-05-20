@@ -213,7 +213,8 @@ public class SPEA2Algo {
         return total;
     }
     
-    public static void mainProcess() {
+    public static long mainProcess() {
+        long start_time = System.currentTimeMillis();
         /**
          * START SPEA
          */
@@ -500,5 +501,7 @@ public class SPEA2Algo {
         /**
          * END SPEA
          */
+        long end_time = System.currentTimeMillis();
+        return (end_time - start_time);
     }
 }

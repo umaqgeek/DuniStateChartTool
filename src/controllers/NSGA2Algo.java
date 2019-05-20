@@ -354,7 +354,8 @@ public class NSGA2Algo {
         return total;
     }
     
-    public static void mainProcess() {
+    public static long mainProcess() {
+        long start_time = System.currentTimeMillis();
         /**
          * START NSGA2
          */
@@ -568,5 +569,7 @@ public class NSGA2Algo {
         /**
          * END NSGA2
          */
+        long end_time = System.currentTimeMillis();
+        return (end_time - start_time);
     }
 }
