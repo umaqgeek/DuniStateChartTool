@@ -468,13 +468,13 @@ public class SPEA2Algo {
 
                     int randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths2.size());
                     ArrayList<Integer> newGene = TestSuiteController.possibleMutationPaths2.get(randMutateIndex);
-                    do {
-                        if (!oldGene.equals(newGene)) {
-                            break;
-                        }
-                        randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths2.size());
-                        newGene = TestSuiteController.possibleMutationPaths2.get(randMutateIndex);
-                    } while (true);
+//                    do {
+//                        if (!oldGene.equals(newGene)) {
+//                            break;
+//                        }
+//                        randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths2.size());
+//                        newGene = TestSuiteController.possibleMutationPaths2.get(randMutateIndex);
+//                    } while (true);
 
                     oldOffspringPaths.set(randIndex, newGene);
                 }

@@ -541,13 +541,13 @@ public class NSGA2Algo {
 
                 int randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths1.size());
                 ArrayList<Integer> newGene = TestSuiteController.possibleMutationPaths1.get(randMutateIndex);
-                do {
-                    if (!oldGene.equals(newGene)) {
-                        break;
-                    }
-                    randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths1.size());
-                    newGene = TestSuiteController.possibleMutationPaths1.get(randMutateIndex);
-                } while (true);
+//                do {
+//                    if (!oldGene.equals(newGene)) {
+//                        break;
+//                    }
+//                    randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths1.size());
+//                    newGene = TestSuiteController.possibleMutationPaths1.get(randMutateIndex);
+//                } while (true);
 
                 oldOffspringPaths.set(randIndex, newGene);
             }

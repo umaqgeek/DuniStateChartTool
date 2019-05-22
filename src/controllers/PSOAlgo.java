@@ -337,13 +337,13 @@ public class PSOAlgo {
 
                 int randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths3.size());
                 ArrayList<Integer> newGene = TestSuiteController.possibleMutationPaths3.get(randMutateIndex);
-                do {
-                    if (!oldGene.equals(newGene)) {
-                        break;
-                    }
-                    randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths3.size());
-                    newGene = TestSuiteController.possibleMutationPaths3.get(randMutateIndex);
-                } while (true);
+//                do {
+//                    if (!oldGene.equals(newGene)) {
+//                        break;
+//                    }
+//                    randMutateIndex = Func.rand.nextInt(TestSuiteController.possibleMutationPaths3.size());
+//                    newGene = TestSuiteController.possibleMutationPaths3.get(randMutateIndex);
+//                } while (true);
 
                 oldOffspringPaths.set(randIndex, newGene);
             }

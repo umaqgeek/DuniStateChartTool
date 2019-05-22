@@ -29,7 +29,10 @@ public class TestSuite02 extends javax.swing.JFrame {
         
         String output = "FIR value:\n";
         
-        int numberLoop = 4;
+        final int numberAlgo = 3;
+        final int numberDoors = 5;
+        final int numberWindowsPerDoor = 50;
+        int numberLoop = numberDoors * numberWindowsPerDoor / numberAlgo + 1;
         ArrayList<ArrayList<Object>> slidingWindows = new ArrayList<ArrayList<Object>>();
         
         for (int w = 0; w < numberLoop; w++) {
@@ -128,18 +131,21 @@ public class TestSuite02 extends javax.swing.JFrame {
             output += "PSO  : (" + PSOAlgo.numPathParents + " - " + PSOAlgo.numPathOffsprings + ") / " + PSOAlgo.numPathParents + " = " + PSOAlgo.valueFIR + " [" + (timePSO * 1.0 / 1000) + "s]\n";
             
             ArrayList<Object> slidingWindowNSGA2 = new ArrayList<Object>();
-            slidingWindowNSGA2.add("NSGA2");
+            slidingWindowNSGA2.add("NSGA2 ("+(w+1)+")");
             slidingWindowNSGA2.add(NSGA2Algo.valueFIR);
+            slidingWindowNSGA2.add(timeNSGA*1.0/1000);
             slidingWindows.add(slidingWindowNSGA2);
             
             ArrayList<Object> slidingWindowSPEA2 = new ArrayList<Object>();
-            slidingWindowSPEA2.add("SPEA2");
+            slidingWindowSPEA2.add("SPEA2 ("+(w+1)+")");
             slidingWindowSPEA2.add(SPEA2Algo.valueFIR);
+            slidingWindowSPEA2.add(timeSPEA*1.0/1000);
             slidingWindows.add(slidingWindowSPEA2);
             
             ArrayList<Object> slidingWindowPSO = new ArrayList<Object>();
-            slidingWindowPSO.add("PSO");
+            slidingWindowPSO.add("PSO ("+(w+1)+")");
             slidingWindowPSO.add(PSOAlgo.valueFIR);
+            slidingWindowPSO.add(timePSO*1.0/1000);
             slidingWindows.add(slidingWindowPSO);
         }
         
@@ -147,8 +153,14 @@ public class TestSuite02 extends javax.swing.JFrame {
         slidingWindows = TestSuite02.sortSlidingWindows(slidingWindows);
         
         System.out.println("\nSliding windows:");
-        for (int i = 0; i < slidingWindows.size(); i++) {
-            System.out.println(slidingWindows.get(i));
+        output += "\n\nSliding windows:";
+        for (int j = 0; j < numberDoors; j++) {
+            System.out.println("\nSliding window #"+(j+1)+":");
+            output += "\n\nSliding window #"+(j+1)+":";
+            for (int i = 0+(numberWindowsPerDoor*j); i < slidingWindows.size() && i < numberWindowsPerDoor*(j+1); i++) {
+                System.out.println((i + 1) + ": " + slidingWindows.get(i).get(0) + ", FIR: " + slidingWindows.get(i).get(1) + " [" + slidingWindows.get(i).get(2) + "s]");
+                output += "\n" + (i + 1) + ": " + slidingWindows.get(i).get(0) + ", FIR: " + slidingWindows.get(i).get(1) + " [" + slidingWindows.get(i).get(2) + "s]";
+            }
         }
         
         txtMainScreen.setText(output);
@@ -158,7 +170,7 @@ public class TestSuite02 extends javax.swing.JFrame {
         Collections.sort(sw, new Comparator<ArrayList<Object>>() {
             @Override
             public int compare(ArrayList<Object> o1, ArrayList<Object> o2) {
-                return Float.parseFloat(o1.get(1).toString()) > Float.parseFloat(o2.get(1).toString()) ? 1 : -1;
+                return Float.parseFloat(o1.get(2).toString()) > Float.parseFloat(o2.get(2).toString()) ? 1 : -1;
             }
         });
         return sw;
