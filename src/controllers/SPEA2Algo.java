@@ -20,6 +20,7 @@ public class SPEA2Algo {
     public static float numPathParents = 0.0f;
     public static float numPathOffsprings = 0.0f;
     public static float valueFIR = 0.0f;
+    public static ArrayList<Object> bestTestSuite = new ArrayList<Object>();
 
     private static int m[][] = new int[][]{
         {0, 1, -1},
@@ -497,6 +498,10 @@ public class SPEA2Algo {
         // calculate FIR
         SPEA2Algo.numPathOffsprings = SPEA2Algo.calcNumberPaths(TestSuiteController.simpleOffsprings2);
         SPEA2Algo.valueFIR = (SPEA2Algo.numPathParents - SPEA2Algo.numPathOffsprings) * 1.0f / SPEA2Algo.numPathParents;
+        
+        SPEA2Algo.bestTestSuite.removeAll(SPEA2Algo.bestTestSuite);
+        TestSuiteController.simpleOffsprings2 = SPEA2Algo.sort7(TestSuiteController.simpleOffsprings2, 0);
+        SPEA2Algo.bestTestSuite.addAll(TestSuiteController.simpleOffsprings2.get(0));
 
         /**
          * END SPEA

@@ -7,6 +7,7 @@ package views;
 
 import controllers.NSGA2Algo;
 import controllers.PSOAlgo;
+import controllers.PureRandomAlgo;
 import controllers.SPEA2Algo;
 import controllers.TestSuiteController;
 import helpers.Func;
@@ -134,45 +135,207 @@ public class TestSuite02 extends javax.swing.JFrame {
             slidingWindowNSGA2.add("NSGA2 ("+(w+1)+")");
             slidingWindowNSGA2.add(NSGA2Algo.valueFIR);
             slidingWindowNSGA2.add(timeNSGA*1.0/1000);
+            ArrayList<Object> so = new ArrayList<Object>();
+            so.addAll(NSGA2Algo.bestTestSuite);
+            slidingWindowNSGA2.add(so);
             slidingWindows.add(slidingWindowNSGA2);
             
             ArrayList<Object> slidingWindowSPEA2 = new ArrayList<Object>();
             slidingWindowSPEA2.add("SPEA2 ("+(w+1)+")");
             slidingWindowSPEA2.add(SPEA2Algo.valueFIR);
             slidingWindowSPEA2.add(timeSPEA*1.0/1000);
+            ArrayList<Object> so2 = new ArrayList<Object>();
+            so2.addAll(SPEA2Algo.bestTestSuite);
+            slidingWindowSPEA2.add(so2);
             slidingWindows.add(slidingWindowSPEA2);
             
             ArrayList<Object> slidingWindowPSO = new ArrayList<Object>();
             slidingWindowPSO.add("PSO ("+(w+1)+")");
             slidingWindowPSO.add(PSOAlgo.valueFIR);
             slidingWindowPSO.add(timePSO*1.0/1000);
+            ArrayList<Object> so3 = new ArrayList<Object>();
+            so3.addAll(PSOAlgo.bestTestSuite);
+            slidingWindowPSO.add(so3);
             slidingWindows.add(slidingWindowPSO);
         }
         
-        // sort sliding windows from small to big.
+        // sort sliding windows from fastest to slowest.
         slidingWindows = TestSuite02.sortSlidingWindows(slidingWindows);
+        
+        ArrayList<ArrayList<Object>> rewardsAll = new ArrayList<ArrayList<Object>>();
         
         System.out.println("\nSliding windows:");
         output += "\n\nSliding windows:";
         for (int j = 0; j < numberDoors; j++) {
             System.out.println("\nSliding window #"+(j+1)+":");
             output += "\n\nSliding window #"+(j+1)+":";
+            
+            ArrayList<Object> rewardsPerDoor = new ArrayList<Object>();
+            float rewardsNSGA = 0.00f;
+            float numNSGA = 0;
+            float rewardsSPEA = 0.00f;
+            float numSPEA = 0;
+            float rewardsPSO = 0.00f;
+            float numPSO = 0;
+            
             for (int i = 0+(numberWindowsPerDoor*j); i < slidingWindows.size() && i < numberWindowsPerDoor*(j+1); i++) {
-                System.out.println((i + 1) + ": " + slidingWindows.get(i).get(0) + ", FIR: " + slidingWindows.get(i).get(1) + " [" + slidingWindows.get(i).get(2) + "s]");
+                System.out.print((i + 1) + ": " + slidingWindows.get(i).get(0) + ", FIR: " + slidingWindows.get(i).get(1) + " [" + slidingWindows.get(i).get(2) + "s]");
                 output += "\n" + (i + 1) + ": " + slidingWindows.get(i).get(0) + ", FIR: " + slidingWindows.get(i).get(1) + " [" + slidingWindows.get(i).get(2) + "s]";
+                
+                if (slidingWindows.get(i).get(0).toString().toLowerCase().contains("nsga2")) {
+                    rewardsNSGA += Float.parseFloat(slidingWindows.get(i).get(1).toString());
+                    numNSGA += 1;
+                }
+                if (slidingWindows.get(i).get(0).toString().toLowerCase().contains("spea2")) {
+                    rewardsSPEA += Float.parseFloat(slidingWindows.get(i).get(1).toString());
+                    numSPEA += 1;
+                }
+                if (slidingWindows.get(i).get(0).toString().toLowerCase().contains("pso")) {
+                    rewardsPSO += Float.parseFloat(slidingWindows.get(i).get(1).toString());
+                    numPSO += 1;
+                }
+                
+                ArrayList<Object> bestTestSuite = (ArrayList<Object>) slidingWindows.get(i).get(3);
+                System.out.println(" | " + bestTestSuite.get(4));
+                output += " | " + bestTestSuite.get(4);
             }
+            
+            rewardsPerDoor.add(rewardsNSGA); // 0
+            rewardsPerDoor.add(numNSGA); // 1
+            rewardsPerDoor.add(rewardsSPEA); // 2
+            rewardsPerDoor.add(numSPEA); // 3
+            rewardsPerDoor.add(rewardsPSO); // 4
+            rewardsPerDoor.add(numPSO); // 5
+            rewardsPerDoor.add(slidingWindows.get(0+(numberWindowsPerDoor*j)).get(0)); // 6 - algo name
+            rewardsPerDoor.add(slidingWindows.get(0+(numberWindowsPerDoor*j)).get(3)); // 7 - best test suite
+            rewardsPerDoor.add(slidingWindows.get(0+(numberWindowsPerDoor*j)).get(2)); // 8 - time
+            
+            rewardsAll.add(rewardsPerDoor);
+        }
+        
+        System.out.println("\nMapped Matrix:");
+        for (int i = 0; i < PureRandomAlgo.matrix.length; i++) {
+            System.out.print("[");
+            for (int j = 0; j < PureRandomAlgo.matrix[i].length; j++) {
+                String cell = PureRandomAlgo.matrix[i][j] > 10000 ? "INF" : PureRandomAlgo.matrix[i][j]+"";
+                System.out.print(cell + ", ");
+            }
+            System.out.println("], ");
+        }
+        
+        System.out.println("\nRewards:");
+        output += "\n\nRewards:";
+        for (int i = 0; i < rewardsAll.size(); i++) {
+            float SUM = 0.0f;
+            for (int j = 0; j < rewardsAll.get(i).size() && j < 6; j+=2) {
+                SUM += Float.parseFloat(rewardsAll.get(i).get(j).toString());
+            }
+            
+            float FRR_NSGA2 = Float.parseFloat(rewardsAll.get(i).get(0).toString()) / SUM;
+            float tNSGA2 = Float.parseFloat(rewardsAll.get(i).get(1).toString());
+            float hsNSGA2 = TestSuite02.getHeuristicSelectionValue(FRR_NSGA2, tNSGA2);
+            
+            float FRR_SPEA2 = Float.parseFloat(rewardsAll.get(i).get(2).toString()) / SUM;
+            float tSPEA2 = Float.parseFloat(rewardsAll.get(i).get(3).toString());
+            float hsSPEA2 = TestSuite02.getHeuristicSelectionValue(FRR_SPEA2, tSPEA2);
+            
+            float FRR_PSO = Float.parseFloat(rewardsAll.get(i).get(4).toString()) / SUM;
+            float tPSO = Float.parseFloat(rewardsAll.get(i).get(5).toString());
+            float hsPSO = TestSuite02.getHeuristicSelectionValue(FRR_PSO, tPSO);
+            
+            System.out.println("\nWindow #"+(i+1));
+//            System.out.println("NSGA2, FIR: "+rewardsAll.get(i).get(0)+", FRR: "+FRR_NSGA2+", Appear: "+tNSGA2+" times, HSV: "+hsNSGA2);
+//            System.out.println("SPEA2, FIR: "+rewardsAll.get(i).get(2)+", FRR: "+FRR_SPEA2+", Appear: "+tSPEA2+" times, HSV: "+hsSPEA2);
+//            System.out.println("PSO, FIR: "+rewardsAll.get(i).get(4)+", FRR: "+FRR_PSO+", Appear: "+tPSO+" times, HSV: "+hsPSO);
+
+            ArrayList<Object> testSuite = (ArrayList<Object>) rewardsAll.get(i).get(7);
+            System.out.println("best TS#: "+testSuite);
+            ArrayList<ArrayList<Integer>> bestTestSuite = (ArrayList<ArrayList<Integer>>) testSuite.get(4);
+            
+            // TODO: define which one the best test path.
+            ArrayList<Integer> bestTestPath = new ArrayList<Integer>();
+            int lowestCost = Integer.MAX_VALUE;
+            for (int j = 0; j < bestTestSuite.size(); j++) {
+                int cost = calcPathCost(PureRandomAlgo.matrix, bestTestSuite.get(j));
+                if (cost < lowestCost) {
+                    lowestCost = cost;
+                    bestTestPath.addAll(bestTestSuite.get(j));
+                }
+            }
+            
+            System.out.println("1. Best test suite       : " + bestTestSuite);
+            System.out.println("2. Best test path        : " + bestTestPath + ", cost = " + lowestCost);
+            System.out.println("3. Size of test suite    : " + bestTestSuite.size());
+            System.out.println("4. Time execution        : " + rewardsAll.get(i).get(8) + "s");
+            System.out.println("5. Best running heuristic: " + rewardsAll.get(i).get(6).toString().split(" ")[0]);
+            
+            output += "\n\nWindow #" + (i+1);
+//            output += "\nNSGA2, FIR: " + rewardsAll.get(i).get(0) + ", FRR: " + FRR_NSGA2 + ", Appear: " + tNSGA2 + " times, HSV: " + hsNSGA2;
+//            output += "\nSPEA2, FIR: " + rewardsAll.get(i).get(2) + ", FRR: " + FRR_SPEA2 + ", Appear: " + tSPEA2 + " times, HSV: " + hsSPEA2;
+//            output += "\nPSO, FIR: " + rewardsAll.get(i).get(4) + ", FRR: " + FRR_PSO + ", Appear: " + tPSO + " times, HSV: " + hsPSO;
+            output += "\n1. Best test suite       : " + bestTestSuite;
+            output += "\n2. Best test path        : " + bestTestPath + ", cost = " + lowestCost;
+            output += "\n3. Size of test suite    : " + bestTestSuite.size();
+            output += "\n4. Time execution        : " + rewardsAll.get(i).get(8) + "s";
+            output += "\n5. Best running heuristic: " + rewardsAll.get(i).get(6).toString().split(" ")[0];
         }
         
         txtMainScreen.setText(output);
     }
     
-    private static ArrayList<ArrayList<Object>> sortSlidingWindows(ArrayList<ArrayList<Object>> sw) {
-        Collections.sort(sw, new Comparator<ArrayList<Object>>() {
-            @Override
-            public int compare(ArrayList<Object> o1, ArrayList<Object> o2) {
-                return Float.parseFloat(o1.get(2).toString()) > Float.parseFloat(o2.get(2).toString()) ? 1 : -1;
+    private int calcPathCost(int matrx[][], ArrayList<Integer> pathNodes) {
+        int totalCost = 0;
+        try {
+            for (int index = 0; index < pathNodes.size() - 1; index++) {
+                int currNode = pathNodes.get(index);
+                int nextNode = pathNodes.get(index + 1);
+                totalCost += (matrx[currNode-1][nextNode-1]);
             }
-        });
+        } catch (Exception e) {
+            if (Func.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        return totalCost;
+    }
+    
+    private static Float getHeuristicSelectionValue(float FRR, float t) {
+        float hs = 0.00f;
+        try {
+            
+            float C = 0.50f;
+            float upper = 2 * (float) Math.log(t);
+            float lower = t;
+            float insideSqrt = upper / lower;
+            float sqrt = (float) Math.sqrt(insideSqrt);
+            hs = t > 0.000 ? FRR + (C * sqrt) : 0.00f;
+            
+        } catch (Exception e) {
+            hs = 0.00f;
+            if (Func.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        return hs;
+    }
+    
+    private static ArrayList<ArrayList<Object>> sortSlidingWindows(ArrayList<ArrayList<Object>> sw) {
+        try {
+            Collections.sort(sw, new Comparator<ArrayList<Object>>() {
+                @Override
+                public int compare(ArrayList<Object> o1, ArrayList<Object> o2) {
+                    return Float.parseFloat(o1.get(2).toString()) > Float.parseFloat(o2.get(2).toString()) ? 1 : -1;
+                }
+            });
+        } catch (Exception e) {
+            if (Func.DEBUG) {
+//                for (int i = 0; i < sw.size(); i++) {
+//                    System.out.println("ERR #"+i+": "+sw.get(i));
+//                }
+//                e.printStackTrace();
+                System.out.println("Error Tim: "+e.getLocalizedMessage());
+            }
+        }
         return sw;
     }
     

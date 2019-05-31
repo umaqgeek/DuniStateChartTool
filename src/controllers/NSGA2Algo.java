@@ -30,6 +30,7 @@ public class NSGA2Algo {
     public static float numPathParents = 0.0f;
     public static float numPathOffsprings = 0.0f;
     public static float valueFIR = 0.0f;
+    public static ArrayList<Object> bestTestSuite = new ArrayList<Object>();
     
     private static void setMaxMinM(ArrayList<Object> sp) {
         fmx[0] = Float.parseFloat((String) sp.get(0)) > fmx[0] ? Float.parseFloat((String) sp.get(0)) : fmx[0];
@@ -454,11 +455,11 @@ public class NSGA2Algo {
             }
 
             // reset offsprings attributes.
-            for (int j = 0; j < selectedParent.size(); j++) {
-                if (j != 4) {
-                    selectedParent.set(j, 0.00);
-                }
-            }
+//            for (int j = 0; j < selectedParent.size(); j++) {
+//                if (j != 4) {
+//                    selectedParent.set(j, 0.00);
+//                }
+//            }
             TestSuiteController.simpleOffsprings.add(selectedParent);
 
             System.out.println("win parent: index " + selectedIndexParent + " - " + selectedParent + "\n");
@@ -565,6 +566,21 @@ public class NSGA2Algo {
         // calculate FIR
         NSGA2Algo.numPathOffsprings = NSGA2Algo.calcNumberPaths(TestSuiteController.simpleOffsprings);
         NSGA2Algo.valueFIR = (NSGA2Algo.numPathParents - NSGA2Algo.numPathOffsprings) * 1.0f / NSGA2Algo.numPathParents;
+        
+        NSGA2Algo.bestTestSuite.removeAll(NSGA2Algo.bestTestSuite);
+        for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i++) {
+            if (i == 0) {
+                NSGA2Algo.bestTestSuite.addAll(TestSuiteController.simpleOffsprings.get(i));
+            } else {
+                int currRank = Integer.parseInt(TestSuiteController.simpleOffsprings.get(i).get(5).toString());
+                float currCrowd = Float.parseFloat(TestSuiteController.simpleOffsprings.get(i).get(8).toString());
+                int bestRank = Integer.parseInt(NSGA2Algo.bestTestSuite.get(5).toString());
+                float bestCrowd = Float.parseFloat(NSGA2Algo.bestTestSuite.get(8).toString());
+                if (currRank < bestRank || (currRank == bestRank && currCrowd < bestCrowd)) {
+                    NSGA2Algo.bestTestSuite.addAll(TestSuiteController.simpleOffsprings.get(i));
+                }
+            }
+        }
 
         /**
          * END NSGA2

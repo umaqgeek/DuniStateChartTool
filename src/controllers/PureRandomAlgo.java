@@ -20,6 +20,7 @@ import views.TestCaseGeneration02Page;
 public class PureRandomAlgo {
     
     public static int totalVertices = UMLController.dataListStates.size();
+    public static String rawMatrix = "";
     public static int matrix[][] = new int[totalVertices][totalVertices];
     public static int posINF = 99999; //Integer.MAX_VALUE;
     public static int negINF = -99999; //Integer.MIN_VALUE;

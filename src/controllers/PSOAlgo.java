@@ -27,6 +27,7 @@ public class PSOAlgo {
     public static float numPathParents = 0.0f;
     public static float numPathOffsprings = 0.0f;
     public static float valueFIR = 0.0f;
+    public static ArrayList<Object> bestTestSuite = new ArrayList<Object>();
     
     private static void setMaxMin() {
         for (int i = 0; i < TestSuiteController.simpleParents3.size(); i++) {
@@ -351,9 +352,19 @@ public class PSOAlgo {
             TestSuiteController.simpleOffsprings3.get(i).set(4, oldOffspringPaths);
         }
         
+        TestSuiteController.simpleOffsprings3 = PSOAlgo.sortDistance(TestSuiteController.simpleOffsprings3);
+        
+        System.out.println("\nAfter mutation and sorted");
+        for (int i = 0; i < TestSuiteController.simpleOffsprings3.size(); i++) {
+            System.out.println(i+": "+TestSuiteController.simpleOffsprings3.get(i));
+        }
+        
         // calculate FIR
         PSOAlgo.numPathOffsprings = PSOAlgo.calcNumberPaths(TestSuiteController.simpleOffsprings3);
         PSOAlgo.valueFIR = (PSOAlgo.numPathParents - PSOAlgo.numPathOffsprings) * 1.0f / PSOAlgo.numPathParents;
+        
+        PSOAlgo.bestTestSuite.removeAll(PSOAlgo.bestTestSuite);
+        PSOAlgo.bestTestSuite.addAll(TestSuiteController.simpleOffsprings3.get(0));
         
         /**
          * END PSO

@@ -611,6 +611,7 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
         try {
             
             String matrix = txtMatrix.getText();
+            PureRandomAlgo.rawMatrix = matrix;
             boolean isValidMatrix = new PureRandomAlgo().isValidMatrix(matrix);
             if (isValidMatrix) {
 
@@ -639,7 +640,15 @@ public class TestCaseGeneration02Page extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        new TestSuite01(txtMatrix.getText()).setVisible(true);
+        String matrix = txtMatrix.getText();
+        PureRandomAlgo.rawMatrix = matrix;
+        boolean isValidMatrix = new PureRandomAlgo().isValidMatrix(PureRandomAlgo.rawMatrix);
+        if (isValidMatrix) {
+            new TestSuite01(txtMatrix.getText()).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid matrix!", "Invalid Matrix", 0);
+            clearPage();
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
