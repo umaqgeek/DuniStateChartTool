@@ -267,10 +267,10 @@ public class TestSuiteController {
         
         Properties props = new Properties();
         props.setProperty(Func.TOTAL_NUMBER_PATH, ""+allPaths.size());
-        props.setProperty(Func.TOTAL_ALL_TRANSITIONS, ""+totalTransitions);
-        props.setProperty(Func.TOTAL_TRANSITIONS_PATH, ""+transA2.size());
-        props.setProperty(Func.TOTAL_ALL_PAIRS, ""+totalPairs);
-        props.setProperty(Func.TOTAL_PAIRS_PATH, ""+pairsInPath);
+        props.setProperty(Func.TOTAL_ALL_TRANSITIONS, ""+totalTransitions); // A1
+        props.setProperty(Func.TOTAL_TRANSITIONS_PATH, ""+transA2.size()); // A2
+        props.setProperty(Func.TOTAL_ALL_PAIRS, ""+totalPairs); // B1
+        props.setProperty(Func.TOTAL_PAIRS_PATH, ""+pairsInPath); // B2
         props.put(Func.ARR_PATHS, allPaths);
         
         return props;

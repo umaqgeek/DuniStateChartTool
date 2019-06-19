@@ -3,15 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/controllers/ThreadController.java</file>
             <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/helpers/Func.java</file>
             <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/controllers/TestSuiteController.java</file>
+            <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/views/TestProgressBar.java</file>
             <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/views/TestCaseGeneration02Page.java</file>
-            <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/controllers/PSOAlgo.java</file>
-            <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/controllers/PureRandomAlgo.java</file>
+            <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/views/ProgressBar.java</file>
             <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/views/TestSuite02.java</file>
-            <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/controllers/NSGA2Algo.java</file>
             <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/views/TestSuite01.java</file>
-            <file>file:/home/umar/softwareProjects/DuniStateChartTool/src/controllers/SPEA2Algo.java</file>
         </group>
     </open-files>
 </project-private>

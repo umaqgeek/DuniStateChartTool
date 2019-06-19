@@ -27,7 +27,8 @@ public class PSOAlgo {
     public static float numPathParents = 0.0f;
     public static float numPathOffsprings = 0.0f;
     public static float valueFIR = 0.0f;
-    public static ArrayList<Object> bestTestSuite = new ArrayList<Object>();
+    public static ArrayList<Object> bestTestSuiteParent = new ArrayList<Object>();
+    public static ArrayList<Object> bestTestSuiteOffspring = new ArrayList<Object>();
     
     private static void setMaxMin() {
         for (int i = 0; i < TestSuiteController.simpleParents3.size(); i++) {
@@ -363,8 +364,13 @@ public class PSOAlgo {
         PSOAlgo.numPathOffsprings = PSOAlgo.calcNumberPaths(TestSuiteController.simpleOffsprings3);
         PSOAlgo.valueFIR = (PSOAlgo.numPathParents - PSOAlgo.numPathOffsprings) * 1.0f / PSOAlgo.numPathParents;
         
-        PSOAlgo.bestTestSuite.removeAll(PSOAlgo.bestTestSuite);
-        PSOAlgo.bestTestSuite.addAll(TestSuiteController.simpleOffsprings3.get(0));
+        // find best offspring among offsprings.
+        PSOAlgo.bestTestSuiteOffspring.removeAll(PSOAlgo.bestTestSuiteOffspring);
+        PSOAlgo.bestTestSuiteOffspring.addAll(TestSuiteController.simpleOffsprings3.get(0));
+        
+        // find best parent among parents.
+        PSOAlgo.bestTestSuiteParent.removeAll(PSOAlgo.bestTestSuiteParent);
+        PSOAlgo.bestTestSuiteParent.addAll(TestSuiteController.simpleParents3.get(0));
         
         /**
          * END PSO

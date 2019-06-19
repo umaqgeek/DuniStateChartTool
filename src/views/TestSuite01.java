@@ -6,6 +6,7 @@
 package views;
 
 import controllers.TestSuiteController;
+import controllers.ThreadController;
 import controllers.UMLController;
 import helpers.Func;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.Comparator;
 import java.util.Properties;
 import java.util.Random;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -144,7 +146,7 @@ public class TestSuite01 extends javax.swing.JFrame {
         txtNoTestCaseFrom = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtNoTestCaseTo = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnGenerateParOff = new javax.swing.JButton();
         btnQuit = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtBoxOutput = new javax.swing.JTextArea();
@@ -173,10 +175,11 @@ public class TestSuite01 extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         txtNoIteration = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        btnQuit1 = new javax.swing.JButton();
+        pb = new javax.swing.JProgressBar();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Test Suite");
-        setAlwaysOnTop(true);
 
         jLabel1.setText("No. of Test Suite : ");
 
@@ -190,10 +193,10 @@ public class TestSuite01 extends javax.swing.JFrame {
 
         txtNoTestCaseTo.setText("12");
 
-        jButton1.setText("Generate Parents & Offsprings");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnGenerateParOff.setText("Generate Parents & Offsprings");
+        btnGenerateParOff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnGenerateParOffActionPerformed(evt);
             }
         });
 
@@ -297,7 +300,7 @@ public class TestSuite01 extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sliCrossover, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -354,6 +357,13 @@ public class TestSuite01 extends javax.swing.JFrame {
             }
         });
 
+        btnQuit1.setText("Back");
+        btnQuit1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuit1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -378,7 +388,8 @@ public class TestSuite01 extends javax.swing.JFrame {
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pb, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGenerateParOff, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -390,7 +401,9 @@ public class TestSuite01 extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnQuit1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -404,16 +417,23 @@ public class TestSuite01 extends javax.swing.JFrame {
                                 .addComponent(jLabel1)
                                 .addComponent(txtNoTestSuite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtNoTestCaseFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtNoTestCaseTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(txtNoTestCaseFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(txtNoTestCaseTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(26, 26, 26)
+                                .addComponent(btnGenerateParOff, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(9, 9, 9)
+                                .addComponent(pb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addComponent(btnQuit1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -433,9 +453,7 @@ public class TestSuite01 extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -454,116 +472,17 @@ public class TestSuite01 extends javax.swing.JFrame {
         System.exit(1);
     }//GEN-LAST:event_btnQuitActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnGenerateParOffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateParOffActionPerformed
         // TODO add your handling code here:
         
-        TestSuiteController.clearParents();
-        int numberOfTestSuite = 0;
-        try {
-            
-            numberOfTestSuite = Integer.parseInt(txtNoTestSuite.getText());
-            
-            viewTitle(true, "Generating Test Suites / Parents");
-            
-            for (int i = 0; i < numberOfTestSuite; i++) {
-                
-                viewText(false, "Test Suite #" + (i+1));
-                
-                int numberOfPath = 0;
-                try {
-
-                    String matrix = prevMatrix;
-                    boolean isValidMatrix = TestSuiteController.isValidMatrix(matrix);
-                    if (isValidMatrix) {
-
-                        Random rand = new Random();
-                        int from = Integer.parseInt(txtNoTestCaseFrom.getText());
-                        int to = Integer.parseInt(txtNoTestCaseTo.getText());
-
-                        numberOfPath = rand.nextInt(to - from + 1) + from;
-
-                        if (numberOfPath <= 0 || numberOfPath >= totalMaximumPath) {
-                            throw new Exception();
-                        } else {
-
-                            long startTime = System.currentTimeMillis();
-
-                            Properties props = TestSuiteController.calcPRA01(numberOfPath);
-                            
-                            if (TestSuite01.cbTotalPath.isSelected()) {
-                                viewText(false, "Total Paths: " + props.getProperty(Func.TOTAL_NUMBER_PATH));
-                            }
-
-                            long endTime = System.currentTimeMillis();
-                            long diffTime = endTime - startTime;
-//                            lblTimeExec.setText("Exection Time: " + diffTime + " ms");
-
-                            if (TestSuite01.cbTimeExec.isSelected()) {
-                                props.setProperty(Func.TOTAL_TIME_EXECUTION, ""+diffTime);
-                                
-                                viewText(false, "Total Exec. Time: " + diffTime + " ms");
-                            }
-                            
-                            if (TestSuite01.cbTransCoverage.isSelected()) {
-                                float A1 = Float.parseFloat((String) props.getProperty(Func.TOTAL_ALL_TRANSITIONS));
-                                float A2 = Float.parseFloat((String) props.getProperty(Func.TOTAL_TRANSITIONS_PATH));
-                                float X = (A2 > 0.0f && A1 > 0.0f) ? (A2 * 1.0f / A1) * 100.0f : 0.0f;
-                                
-                                props.setProperty(Func.TOTAL_TRANS_COVERAGE, ""+X);
-
-                                viewText(false, "Total All Transitions: " + props.getProperty(Func.TOTAL_ALL_TRANSITIONS));
-                                viewText(false, "Total Transitions in Path: " + props.getProperty(Func.TOTAL_TRANSITIONS_PATH));
-                                viewText(false, "Transition Coverage: " + Func.df.format(X) + " %");
-                            }
-                            
-                            if (TestSuite01.cbTransPairCoverage.isSelected()) {
-                                float B1 = Float.parseFloat((String) props.getProperty(Func.TOTAL_ALL_PAIRS));
-                                float B2 = Float.parseFloat((String) props.getProperty(Func.TOTAL_PAIRS_PATH));
-                                float Y = (B2 > 0.0f && B1 > 0.0f) ? (B2 * 1.0f / B1) * 100.0f : 0.0f;
-                                
-                                props.setProperty(Func.TOTAL_TRANS_PAIR_COVERAGE, ""+Y);
-
-                                viewText(false, "Total All Pairs: " + props.getProperty(Func.TOTAL_ALL_PAIRS));
-                                viewText(false, "Total Pairs in Path: " + props.getProperty(Func.TOTAL_PAIRS_PATH));
-                                viewText(false, "Transition Pair Coverage: " + Func.df.format(Y) + " %");
-                            }
-                            
-                            // only take parent that at least have one path.
-                            if (Integer.parseInt((String) props.getProperty(Func.TOTAL_NUMBER_PATH)) > 0) {
-                                if (!TestSuite01.cbTotalPath.isSelected()) {
-                                    props.remove(Func.TOTAL_NUMBER_PATH);
-                                }
-                                TestSuiteController.setParents(props);
-                            }
-                           
-                            viewText(false, "\n");
-                        }
-
-                    }
-
-                } catch (Exception e) {
-                    if (Func.DEBUG) {
-                        e.printStackTrace();
-                    }
-                    JOptionPane.showMessageDialog(null, "Invalid number of path!", "Invalid Number of Path", 0);
-                }
-            }
-            
-        } catch (Exception e) {
-            if (Func.DEBUG) {
-                e.printStackTrace();
-            }
-            JOptionPane.showMessageDialog(null, "Invalid number of test suite!", "Invalid Number of Test Suite", 0);
-        }
+        TestSuite01.btnGenerateParOff.setEnabled(false);
         
-        if (TestSuiteController.parents.size() > 0) {
-            
-            new TestSuite02().setVisible(true);
-            
-        } else {
-            JOptionPane.showMessageDialog(null, "Generate parents first!", "Parent Not Found", 0);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        ThreadController tcProgress = new ThreadController();
+        tcProgress.start();
+        
+        ThreadController tcTestSuite01 = new ThreadController("ts1");
+        tcTestSuite01.start();
+    }//GEN-LAST:event_btnGenerateParOffActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -575,6 +494,11 @@ public class TestSuite01 extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Generate parents first!", "Parent Not Found", 0);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnQuit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuit1ActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnQuit1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -612,7 +536,9 @@ public class TestSuite01 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JButton btnGenerateParOff;
     public static javax.swing.JButton btnQuit;
+    public static javax.swing.JButton btnQuit1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     public static javax.swing.JCheckBox cbTimeExec;
@@ -620,7 +546,6 @@ public class TestSuite01 extends javax.swing.JFrame {
     public static javax.swing.JCheckBox cbTransCoverage;
     public static javax.swing.JCheckBox cbTransPairCoverage;
     public static javax.swing.JCheckBox cbWithoutFinal;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -638,6 +563,7 @@ public class TestSuite01 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    public static javax.swing.JProgressBar pb;
     public static javax.swing.JSlider sliCrossover;
     public static javax.swing.JSlider sliMutation;
     public static javax.swing.JTextField txtArchSize;

@@ -5,6 +5,7 @@
  */
 package helpers;
 
+import controllers.TestSuiteController;
 import java.awt.Desktop;
 import java.io.File;
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,9 +20,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.lang.ArrayUtils;
@@ -165,5 +169,94 @@ public class Func {
             System.out.println("#"+i+": "+arrObj.get(i));
         }
         System.out.println("\n");
+    }
+    
+    public static void setProgressBar(JProgressBar pb, int value) {
+        final int currentValue = value;
+        try {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    pb.setValue(currentValue);
+                }
+            });
+            java.lang.Thread.sleep(100);
+        } catch (InterruptedException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error Progress Bar", 0);
+        }
+    }
+    
+    private static int getA2(ArrayList<ArrayList<Integer>> ar) {
+        TestSuiteController ts = new TestSuiteController(TestSuiteController.prevMatrix);
+        ArrayList<String> trans = new ArrayList<String>();
+        for (int index = 0; index < ar.size(); index++) {   
+            int totalCost = ts.calcPathCost(TestSuiteController.matrix, ar.get(index));   
+            // collect all transitions in each path.
+            for (int i = 0; i < ar.get(index).size()-1; i++) {
+                String temp = ar.get(index).get(i)+","+ar.get(index).get(i+1);
+                trans.add(temp);
+            }
+        }
+        // remove redundant transition.
+        ArrayList<String> transA2 = new ArrayList<String>(new LinkedHashSet<String>(trans));
+        return transA2.size();
+    }
+    
+    private static int getB2(ArrayList<ArrayList<Integer>> ar) {
+        TestSuiteController ts = new TestSuiteController(TestSuiteController.prevMatrix);
+        ArrayList<String> trans = new ArrayList<String>();
+        for (int index = 0; index < ar.size(); index++) {   
+            int totalCost = ts.calcPathCost(TestSuiteController.matrix, ar.get(index));   
+            // collect all transitions in each path.
+            for (int i = 0; i < ar.get(index).size()-1; i++) {
+                String temp = ar.get(index).get(i)+","+ar.get(index).get(i+1);
+                trans.add(temp);
+            }
+        }
+        // remove redundant transition.
+        ArrayList<String> transA2 = new ArrayList<String>(new LinkedHashSet<String>(trans));
+        int startNode = 1;
+        int endNode = TestSuiteController.totalVertices;
+        int pairsInPath = 0;
+        for (int i = startNode; i <= endNode; i++) {
+            int countTemp = 0;
+            for (int j = startNode; j <= endNode; j++) {
+                if (i != j) {
+                    String temp = i + "," + j;
+                    if (transA2.contains(temp)) {
+                        countTemp += 1;
+                    }
+                }
+            }
+            if (countTemp >= 2) {
+                pairsInPath += countTemp;
+            }
+        }
+        return pairsInPath;
+    }
+    
+    public static ArrayList<Object> reCalculateFitness(ArrayList<Object> arr, float time) {
+        
+        // x = number of paths.
+        float x = ((ArrayList<ArrayList<Integer>>) arr.get(4)).size();
+        
+        // y = execution time.
+        float y = time;
+        
+        // z1 = transaction coverage.
+        int A1 = TestSuiteController.totalTransitions;
+        int A2 = Func.getA2((ArrayList<ArrayList<Integer>>) arr.get(4));
+        float z1 = (A2 > 0 && A1 > 0) ? (A2 * 1.0f / A1) * 100.0f : 0.0f;
+        
+        // z2 = transaction pair coverage.
+        int B1 = TestSuiteController.totalPairs;
+        int B2 = Func.getB2((ArrayList<ArrayList<Integer>>) arr.get(4));
+        float z2 = (B2 > 0 && B1 > 0) ? (B2 * 1.0f / B1) * 100.0f : 0.0f;
+        
+        arr.set(0, x);
+        arr.set(1, y);
+        arr.set(2, z1);
+        arr.set(3, z2);
+        
+        return arr;
     }
 }

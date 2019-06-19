@@ -30,7 +30,8 @@ public class NSGA2Algo {
     public static float numPathParents = 0.0f;
     public static float numPathOffsprings = 0.0f;
     public static float valueFIR = 0.0f;
-    public static ArrayList<Object> bestTestSuite = new ArrayList<Object>();
+    public static ArrayList<Object> bestTestSuiteParent = new ArrayList<Object>();
+    public static ArrayList<Object> bestTestSuiteOffspring = new ArrayList<Object>();
     
     private static void setMaxMinM(ArrayList<Object> sp) {
         fmx[0] = Float.parseFloat((String) sp.get(0)) > fmx[0] ? Float.parseFloat((String) sp.get(0)) : fmx[0];
@@ -567,17 +568,36 @@ public class NSGA2Algo {
         NSGA2Algo.numPathOffsprings = NSGA2Algo.calcNumberPaths(TestSuiteController.simpleOffsprings);
         NSGA2Algo.valueFIR = (NSGA2Algo.numPathParents - NSGA2Algo.numPathOffsprings) * 1.0f / NSGA2Algo.numPathParents;
         
-        NSGA2Algo.bestTestSuite.removeAll(NSGA2Algo.bestTestSuite);
+        // find best offspring among offsprings.
+        NSGA2Algo.bestTestSuiteOffspring.removeAll(NSGA2Algo.bestTestSuiteOffspring);
         for (int i = 0; i < TestSuiteController.simpleOffsprings.size(); i++) {
             if (i == 0) {
-                NSGA2Algo.bestTestSuite.addAll(TestSuiteController.simpleOffsprings.get(i));
+                NSGA2Algo.bestTestSuiteOffspring.addAll(TestSuiteController.simpleOffsprings.get(i));
             } else {
                 int currRank = Integer.parseInt(TestSuiteController.simpleOffsprings.get(i).get(5).toString());
                 float currCrowd = Float.parseFloat(TestSuiteController.simpleOffsprings.get(i).get(8).toString());
-                int bestRank = Integer.parseInt(NSGA2Algo.bestTestSuite.get(5).toString());
-                float bestCrowd = Float.parseFloat(NSGA2Algo.bestTestSuite.get(8).toString());
+                int bestRank = Integer.parseInt(NSGA2Algo.bestTestSuiteOffspring.get(5).toString());
+                float bestCrowd = Float.parseFloat(NSGA2Algo.bestTestSuiteOffspring.get(8).toString());
                 if (currRank < bestRank || (currRank == bestRank && currCrowd < bestCrowd)) {
-                    NSGA2Algo.bestTestSuite.addAll(TestSuiteController.simpleOffsprings.get(i));
+                    NSGA2Algo.bestTestSuiteOffspring.removeAll(NSGA2Algo.bestTestSuiteOffspring);
+                    NSGA2Algo.bestTestSuiteOffspring.addAll(TestSuiteController.simpleOffsprings.get(i));
+                }
+            }
+        }
+        
+        // find best parent among parents.
+        NSGA2Algo.bestTestSuiteParent.removeAll(NSGA2Algo.bestTestSuiteParent);
+        for (int i = 0; i < TestSuiteController.simpleParents.size(); i++) {
+            if (i == 0) {
+                NSGA2Algo.bestTestSuiteParent.addAll(TestSuiteController.simpleParents.get(i));
+            } else {
+                int currRank = Integer.parseInt(TestSuiteController.simpleParents.get(i).get(5).toString());
+                float currCrowd = Float.parseFloat(TestSuiteController.simpleParents.get(i).get(8).toString());
+                int bestRank = Integer.parseInt(NSGA2Algo.bestTestSuiteParent.get(5).toString());
+                float bestCrowd = Float.parseFloat(NSGA2Algo.bestTestSuiteParent.get(8).toString());
+                if (currRank < bestRank || (currRank == bestRank && currCrowd < bestCrowd)) {
+                    NSGA2Algo.bestTestSuiteParent.removeAll(NSGA2Algo.bestTestSuiteParent);
+                    NSGA2Algo.bestTestSuiteParent.addAll(TestSuiteController.simpleParents.get(i));
                 }
             }
         }

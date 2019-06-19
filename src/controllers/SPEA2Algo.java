@@ -20,7 +20,8 @@ public class SPEA2Algo {
     public static float numPathParents = 0.0f;
     public static float numPathOffsprings = 0.0f;
     public static float valueFIR = 0.0f;
-    public static ArrayList<Object> bestTestSuite = new ArrayList<Object>();
+    public static ArrayList<Object> bestTestSuiteParent = new ArrayList<Object>();
+    public static ArrayList<Object> bestTestSuiteOffspring = new ArrayList<Object>();
 
     private static int m[][] = new int[][]{
         {0, 1, -1},
@@ -499,9 +500,15 @@ public class SPEA2Algo {
         SPEA2Algo.numPathOffsprings = SPEA2Algo.calcNumberPaths(TestSuiteController.simpleOffsprings2);
         SPEA2Algo.valueFIR = (SPEA2Algo.numPathParents - SPEA2Algo.numPathOffsprings) * 1.0f / SPEA2Algo.numPathParents;
         
-        SPEA2Algo.bestTestSuite.removeAll(SPEA2Algo.bestTestSuite);
+        // find best offspring among offsprings.
+        SPEA2Algo.bestTestSuiteOffspring.removeAll(SPEA2Algo.bestTestSuiteOffspring);
         TestSuiteController.simpleOffsprings2 = SPEA2Algo.sort7(TestSuiteController.simpleOffsprings2, 0);
-        SPEA2Algo.bestTestSuite.addAll(TestSuiteController.simpleOffsprings2.get(0));
+        SPEA2Algo.bestTestSuiteOffspring.addAll(TestSuiteController.simpleOffsprings2.get(0));
+        
+        // find best parent among parents.
+        SPEA2Algo.bestTestSuiteParent.removeAll(SPEA2Algo.bestTestSuiteParent);
+        TestSuiteController.simpleParents2 = SPEA2Algo.sort7(TestSuiteController.simpleParents2, 0);
+        SPEA2Algo.bestTestSuiteParent.addAll(TestSuiteController.simpleParents2.get(0));
 
         /**
          * END SPEA
