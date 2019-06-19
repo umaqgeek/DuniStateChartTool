@@ -31,7 +31,6 @@ public class TestSuite02 extends javax.swing.JFrame {
         initComponents();
         
         String output = "";
-        String output2 = "";
         
         final int numberAlgo = 3;
         final int numberDoors = 5;
@@ -270,10 +269,11 @@ public class TestSuite02 extends javax.swing.JFrame {
         float SPEATimeAll = 0.00f;
         float PSOTimeAll = 0.00f;
         
+        String output2 = "";
+        
         System.out.println("\n----------------------");
         System.out.println("Rewards:");
-        output2 += "\n\n----------------------"; 
-        output2 += "\nRewards:";
+        output2 += "Rewards:";
         for (int i = 0; i < rewardsAll.size(); i++) {
             
             NSGAFIRAll += Float.parseFloat(rewardsAll.get(i).get(0).toString());
@@ -319,7 +319,7 @@ public class TestSuite02 extends javax.swing.JFrame {
             output2 += "\n5. Best running heuristic: " + rewardsAll.get(i).get(6).toString().split(" ")[0];
         }
         
-        float alpha = 0.5f;
+        float alpha = 0.99f;
         
         /**
          * START Calculate F1
@@ -353,33 +353,42 @@ public class TestSuite02 extends javax.swing.JFrame {
         
         int NSGAPathSizeParent = (int) Float.parseFloat(nsgaParent.get(0).toString());
         int NSGAPathSizeOffspring = (int) Float.parseFloat(nsgaOffspring.get(0).toString());
-        float NSGAF1PathSize = Math.abs(NSGAPathSizeParent - NSGAPathSizeOffspring) / nsgaTime * alpha;
+        float NSGAAlphaPath = (NSGAPathSizeParent - NSGAPathSizeOffspring) >= 0 ? alpha : alpha - 0.01f;
+        float NSGAF1PathSize = Math.abs(NSGAPathSizeParent - NSGAPathSizeOffspring) / nsgaTime * NSGAAlphaPath;
         float NSGAtransCoverParent = Float.parseFloat(nsgaParent.get(2).toString());
         float NSGAtransCoverOffspring = Float.parseFloat(nsgaOffspring.get(2).toString());
-        float NSGAF1TransCover = Math.abs(NSGAtransCoverParent - NSGAtransCoverOffspring) / nsgaTime * alpha;
+        float NSGAAlphaTransCover = (NSGAtransCoverParent - NSGAtransCoverOffspring) >= 0 ? alpha : alpha - 0.01f;
+        float NSGAF1TransCover = Math.abs(NSGAtransCoverParent - NSGAtransCoverOffspring) / nsgaTime * NSGAAlphaTransCover;
         float NSGAtransCoverPairParent = Float.parseFloat(nsgaParent.get(3).toString());
         float NSGAtransCoverPairOffspring = Float.parseFloat(nsgaOffspring.get(3).toString());
-        float NSGAF1TransCoverPairNSGA = Math.abs(NSGAtransCoverPairParent - NSGAtransCoverPairOffspring) / nsgaTime * alpha;
+        float NSGAAlphaTransPairCover = (NSGAtransCoverPairParent - NSGAtransCoverPairOffspring) >= 0 ? alpha : alpha - 0.01f;
+        float NSGAF1TransCoverPairNSGA = Math.abs(NSGAtransCoverPairParent - NSGAtransCoverPairOffspring) / nsgaTime * NSGAAlphaTransPairCover;
         
         int SPEAPathSizeParent = (int) Float.parseFloat(speaParent.get(0).toString());
         int SPEAPathSizeOffspring = (int) Float.parseFloat(speaOffspring.get(0).toString());
-        float SPEAF1PathSize = Math.abs(SPEAPathSizeParent - SPEAPathSizeOffspring) / nsgaTime * alpha;
+        float SPEAAlphaPath = (SPEAPathSizeParent - SPEAPathSizeOffspring) >= 0 ? alpha : alpha - 0.01f;
+        float SPEAF1PathSize = Math.abs(SPEAPathSizeParent - SPEAPathSizeOffspring) / nsgaTime * SPEAAlphaPath;
         float SPEAtransCoverParent = Float.parseFloat(speaParent.get(2).toString());
         float SPEAtransCoverOffspring = Float.parseFloat(speaOffspring.get(2).toString());
-        float SPEAF1TransCover = Math.abs(SPEAtransCoverParent - SPEAtransCoverOffspring) / nsgaTime * alpha;
+        float SPEAAlphaTransCover = (SPEAtransCoverParent - SPEAtransCoverOffspring) >= 0 ? alpha : alpha - 0.01f;
+        float SPEAF1TransCover = Math.abs(SPEAtransCoverParent - SPEAtransCoverOffspring) / nsgaTime * SPEAAlphaTransCover;
         float SPEAtransCoverPairParent = Float.parseFloat(speaParent.get(3).toString());
         float SPEAtransCoverPairOffspring = Float.parseFloat(speaOffspring.get(3).toString());
-        float SPEAF1TransCoverPairSPEA = Math.abs(SPEAtransCoverPairParent - SPEAtransCoverPairOffspring) / nsgaTime * alpha;
+        float SPEAAlphaTransPairCover = (SPEAtransCoverPairParent - SPEAtransCoverPairOffspring) >= 0 ? alpha : alpha - 0.01f;
+        float SPEAF1TransCoverPairSPEA = Math.abs(SPEAtransCoverPairParent - SPEAtransCoverPairOffspring) / nsgaTime * SPEAAlphaTransPairCover;
         
         int PSOPathSizeParent = (int) Float.parseFloat(psoParent.get(0).toString());
         int PSOPathSizeOffspring = (int) Float.parseFloat(psoOffspring.get(0).toString());
-        float PSOF1PathSize = Math.abs(PSOPathSizeParent - PSOPathSizeOffspring) / nsgaTime * alpha;
+        float PSOAlphaPath = (PSOPathSizeParent - PSOPathSizeOffspring) >= 0 ? alpha : alpha - 0.01f;
+        float PSOF1PathSize = Math.abs(PSOPathSizeParent - PSOPathSizeOffspring) / nsgaTime * PSOAlphaPath;
         float PSOtransCoverParent = Float.parseFloat(psoParent.get(2).toString());
         float PSOtransCoverOffspring = Float.parseFloat(psoOffspring.get(2).toString());
-        float PSOF1TransCover = Math.abs(PSOtransCoverParent - PSOtransCoverOffspring) / nsgaTime * alpha;
+        float PSOAlphaTransCover = (PSOtransCoverParent - PSOtransCoverOffspring) >= 0 ? alpha : alpha - 0.01f;
+        float PSOF1TransCover = Math.abs(PSOtransCoverParent - PSOtransCoverOffspring) / nsgaTime * PSOAlphaTransCover;
         float PSOtransCoverPairParent = Float.parseFloat(psoParent.get(3).toString());
         float PSOtransCoverPairOffspring = Float.parseFloat(psoOffspring.get(3).toString());
-        float PSOF1TransCoverPairPSO = Math.abs(PSOtransCoverPairParent - PSOtransCoverPairOffspring) / nsgaTime * alpha;
+        float PSOAlphaTransPairCover = (PSOtransCoverPairParent - PSOtransCoverPairOffspring) >= 0 ? alpha : alpha - 0.01f;
+        float PSOF1TransCoverPairPSO = Math.abs(PSOtransCoverPairParent - PSOtransCoverPairOffspring) / nsgaTime * PSOAlphaTransPairCover;
         
         System.out.println("\n--------------------------------------------");
         System.out.println("F1 results:");
@@ -388,31 +397,31 @@ public class TestSuite02 extends javax.swing.JFrame {
         outputF1 += "Formula: (Parent - Offspring) / Time * Alpha\n";
         
         System.out.println("\nNSGA:");
-        System.out.println("Path Size: (" + NSGAPathSizeParent + " - " + NSGAPathSizeOffspring + ") / " + nsgaTime + " * " + alpha + " = " + NSGAF1PathSize);
-        System.out.println("Transition Coverage: (" + NSGAtransCoverParent + " - " + NSGAtransCoverOffspring + ") / " + nsgaTime + " * " + alpha + " = " + NSGAF1TransCover);
-        System.out.println("Transition Pair Coverage: (" + NSGAtransCoverPairParent + " - " + NSGAtransCoverPairOffspring + ") / " + nsgaTime + " * " + alpha + " = " + NSGAF1TransCoverPairNSGA);
+        System.out.println("Path Size: (" + NSGAPathSizeParent + " - " + NSGAPathSizeOffspring + ") / " + nsgaTime + " * " + NSGAAlphaPath + " = " + NSGAF1PathSize);
+        System.out.println("Transition Coverage: (" + NSGAtransCoverParent + " - " + NSGAtransCoverOffspring + ") / " + nsgaTime + " * " + NSGAAlphaTransCover + " = " + NSGAF1TransCover);
+        System.out.println("Transition Pair Coverage: (" + NSGAtransCoverPairParent + " - " + NSGAtransCoverPairOffspring + ") / " + nsgaTime + " * " + NSGAAlphaTransPairCover + " = " + NSGAF1TransCoverPairNSGA);
         outputF1 += "\nNSGA:\n";
-        outputF1 += "Path Size: (" + NSGAPathSizeParent + " - " + NSGAPathSizeOffspring + ") / " + nsgaTime + " * " + alpha + " = " + NSGAF1PathSize + "\n";
-        outputF1 += "Transition Coverage: (" + NSGAtransCoverParent + " - " + NSGAtransCoverOffspring + ") / " + nsgaTime + " * " + alpha + " = " + NSGAF1TransCover + "\n";
-        outputF1 += "Transition Pair Coverage: (" + NSGAtransCoverPairParent + " - " + NSGAtransCoverPairOffspring + ") / " + nsgaTime + " * " + alpha + " = " + NSGAF1TransCoverPairNSGA + "\n";
+        outputF1 += "Path Size: (" + NSGAPathSizeParent + " - " + NSGAPathSizeOffspring + ") / " + nsgaTime + " * " + NSGAAlphaPath + " = " + NSGAF1PathSize + "\n";
+        outputF1 += "Transition Coverage: (" + NSGAtransCoverParent + " - " + NSGAtransCoverOffspring + ") / " + nsgaTime + " * " + NSGAAlphaTransCover + " = " + NSGAF1TransCover + "\n";
+        outputF1 += "Transition Pair Coverage: (" + NSGAtransCoverPairParent + " - " + NSGAtransCoverPairOffspring + ") / " + nsgaTime + " * " + NSGAAlphaTransPairCover + " = " + NSGAF1TransCoverPairNSGA + "\n";
         
         System.out.println("\nSPEA:");
-        System.out.println("Path Size: (" + SPEAPathSizeParent + " - " + SPEAPathSizeOffspring + ") / " + nsgaTime + " * " + alpha + " = " + SPEAF1PathSize);
-        System.out.println("Transition Coverage: (" + SPEAtransCoverParent + " - " + SPEAtransCoverOffspring + ") / " + nsgaTime + " * " + alpha + " = " + SPEAF1TransCover);
-        System.out.println("Transition Pair Coverage: (" + SPEAtransCoverPairParent + " - " + SPEAtransCoverPairOffspring + ") / " + nsgaTime + " * " + alpha + " = " + SPEAF1TransCoverPairSPEA);
+        System.out.println("Path Size: (" + SPEAPathSizeParent + " - " + SPEAPathSizeOffspring + ") / " + nsgaTime + " * " + SPEAAlphaPath + " = " + SPEAF1PathSize);
+        System.out.println("Transition Coverage: (" + SPEAtransCoverParent + " - " + SPEAtransCoverOffspring + ") / " + nsgaTime + " * " + SPEAAlphaTransCover + " = " + SPEAF1TransCover);
+        System.out.println("Transition Pair Coverage: (" + SPEAtransCoverPairParent + " - " + SPEAtransCoverPairOffspring + ") / " + nsgaTime + " * " + SPEAAlphaTransPairCover + " = " + SPEAF1TransCoverPairSPEA);
         outputF1 += "\nSPEA:\n";
-        outputF1 += "Path Size: (" + SPEAPathSizeParent + " - " + SPEAPathSizeOffspring + ") / " + nsgaTime + " * " + alpha + " = " + SPEAF1PathSize + "\n";
-        outputF1 += "Transition Coverage: (" + SPEAtransCoverParent + " - " + SPEAtransCoverOffspring + ") / " + nsgaTime + " * " + alpha + " = " + SPEAF1TransCover + "\n";
-        outputF1 += "Transition Pair Coverage: (" + SPEAtransCoverPairParent + " - " + SPEAtransCoverPairOffspring + ") / " + nsgaTime + " * " + alpha + " = " + SPEAF1TransCoverPairSPEA + "\n";
+        outputF1 += "Path Size: (" + SPEAPathSizeParent + " - " + SPEAPathSizeOffspring + ") / " + nsgaTime + " * " + SPEAAlphaPath + " = " + SPEAF1PathSize + "\n";
+        outputF1 += "Transition Coverage: (" + SPEAtransCoverParent + " - " + SPEAtransCoverOffspring + ") / " + nsgaTime + " * " + SPEAAlphaTransCover + " = " + SPEAF1TransCover + "\n";
+        outputF1 += "Transition Pair Coverage: (" + SPEAtransCoverPairParent + " - " + SPEAtransCoverPairOffspring + ") / " + nsgaTime + " * " + SPEAAlphaTransPairCover + " = " + SPEAF1TransCoverPairSPEA + "\n";
         
         System.out.println("\nPSO:");
-        System.out.println("Path Size: (" + PSOPathSizeParent + " - " + PSOPathSizeOffspring + ") / " + nsgaTime + " * " + alpha + " = " + PSOF1PathSize);
-        System.out.println("Transition Coverage: (" + PSOtransCoverParent + " - " + PSOtransCoverOffspring + ") / " + nsgaTime + " * " + alpha + " = " + PSOF1TransCover);
-        System.out.println("Transition Pair Coverage: (" + PSOtransCoverPairParent + " - " + PSOtransCoverPairOffspring + ") / " + nsgaTime + " * " + alpha + " = " + PSOF1TransCoverPairPSO);
+        System.out.println("Path Size: (" + PSOPathSizeParent + " - " + PSOPathSizeOffspring + ") / " + nsgaTime + " * " + PSOAlphaPath + " = " + PSOF1PathSize);
+        System.out.println("Transition Coverage: (" + PSOtransCoverParent + " - " + PSOtransCoverOffspring + ") / " + nsgaTime + " * " + PSOAlphaTransCover + " = " + PSOF1TransCover);
+        System.out.println("Transition Pair Coverage: (" + PSOtransCoverPairParent + " - " + PSOtransCoverPairOffspring + ") / " + nsgaTime + " * " + PSOAlphaTransPairCover + " = " + PSOF1TransCoverPairPSO);
         outputF1 += "\nPSO:\n";
-        outputF1 += "Path Size: (" + PSOPathSizeParent + " - " + PSOPathSizeOffspring + ") / " + nsgaTime + " * " + alpha + " = " + PSOF1PathSize + "\n";
-        outputF1 += "Transition Coverage: (" + PSOtransCoverParent + " - " + PSOtransCoverOffspring + ") / " + nsgaTime + " * " + alpha + " = " + PSOF1TransCover + "\n";
-        outputF1 += "Transition Pair Coverage: (" + PSOtransCoverPairParent + " - " + PSOtransCoverPairOffspring + ") / " + nsgaTime + " * " + alpha + " = " + PSOF1TransCoverPairPSO + "\n";
+        outputF1 += "Path Size: (" + PSOPathSizeParent + " - " + PSOPathSizeOffspring + ") / " + nsgaTime + " * " + PSOAlphaPath + " = " + PSOF1PathSize + "\n";
+        outputF1 += "Transition Coverage: (" + PSOtransCoverParent + " - " + PSOtransCoverOffspring + ") / " + nsgaTime + " * " + PSOAlphaTransCover + " = " + PSOF1TransCover + "\n";
+        outputF1 += "Transition Pair Coverage: (" + PSOtransCoverPairParent + " - " + PSOtransCoverPairOffspring + ") / " + nsgaTime + " * " + PSOAlphaTransPairCover + " = " + PSOF1TransCoverPairPSO + "\n";
         
         /**
          * END Calculate F1
@@ -426,15 +435,18 @@ public class TestSuite02 extends javax.swing.JFrame {
         
         float NSGAFIRAvg = NSGAFIRAll / NSGACountAll;
         float NSGATimeAvg = NSGATimeAll / NSGACountAll;
-        float NSGAAvgFIR = NSGAFIRAvg / NSGATimeAvg * alpha;
+        float NSGAAlpha = NSGAFIRAvg >= 0 ? alpha : alpha - 0.01f;
+        float NSGAAvgFIR = NSGAFIRAvg / NSGATimeAvg * NSGAAlpha;
         
         float SPEAFIRAvg = SPEAFIRAll / SPEACountAll;
         float SPEATimeAvg = SPEATimeAll / SPEACountAll;
-        float SPEAAvgFIR = SPEAFIRAvg / SPEATimeAvg * alpha;
+        float SPEAAlpha = SPEAFIRAvg >= 0 ? alpha : alpha - 0.01f;
+        float SPEAAvgFIR = SPEAFIRAvg / SPEATimeAvg * SPEAAlpha;
         
         float PSOFIRAvg = PSOFIRAll / PSOCountAll;
         float PSOTimeAvg = PSOTimeAll / PSOCountAll;
-        float PSOAvgFIR = PSOFIRAvg / PSOTimeAvg * alpha;
+        float PSOAlpha = PSOFIRAvg >= 0 ? alpha : alpha - 0.01f;
+        float PSOAvgFIR = PSOFIRAvg / PSOTimeAvg * PSOAlpha;
         
         System.out.println("\n--------------------------------------------");
         System.out.println("F2 results:");
