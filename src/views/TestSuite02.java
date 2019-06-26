@@ -366,6 +366,7 @@ public class TestSuite02 extends javax.swing.JFrame {
         float NSGAtransCoverPairOffspring = Float.parseFloat(nsgaOffspring.get(3).toString());
         float NSGAAlphaTransPairCover = (NSGAtransCoverPairParent - NSGAtransCoverPairOffspring) >= 0 ? alpha : alpha - 0.01f;
         float NSGAF1TransCoverPairNSGA = Math.abs(NSGAtransCoverPairParent - NSGAtransCoverPairOffspring) / nsgaTime * NSGAAlphaTransPairCover;
+        float NSGAF1Avg = (NSGAF1PathSize + NSGAF1TransCover + NSGAF1TransCoverPairNSGA) / 3;
         
         int SPEAPathSizeParent = (int) Float.parseFloat(speaParent.get(0).toString());
         int SPEAPathSizeOffspring = (int) Float.parseFloat(speaOffspring.get(0).toString());
@@ -379,6 +380,7 @@ public class TestSuite02 extends javax.swing.JFrame {
         float SPEAtransCoverPairOffspring = Float.parseFloat(speaOffspring.get(3).toString());
         float SPEAAlphaTransPairCover = (SPEAtransCoverPairParent - SPEAtransCoverPairOffspring) >= 0 ? alpha : alpha - 0.01f;
         float SPEAF1TransCoverPairSPEA = Math.abs(SPEAtransCoverPairParent - SPEAtransCoverPairOffspring) / speaTime * SPEAAlphaTransPairCover;
+        float SPEAF1Avg = (SPEAF1PathSize + SPEAF1TransCover + SPEAF1TransCoverPairSPEA) / 3;
         
         int PSOPathSizeParent = (int) Float.parseFloat(psoParent.get(0).toString());
         int PSOPathSizeOffspring = (int) Float.parseFloat(psoOffspring.get(0).toString());
@@ -392,6 +394,7 @@ public class TestSuite02 extends javax.swing.JFrame {
         float PSOtransCoverPairOffspring = Float.parseFloat(psoOffspring.get(3).toString());
         float PSOAlphaTransPairCover = (PSOtransCoverPairParent - PSOtransCoverPairOffspring) >= 0 ? alpha : alpha - 0.01f;
         float PSOF1TransCoverPairPSO = Math.abs(PSOtransCoverPairParent - PSOtransCoverPairOffspring) / psoTime * PSOAlphaTransPairCover;
+        float PSOF1Avg = (PSOF1PathSize + PSOF1TransCover + PSOF1TransCoverPairPSO) / 3;
         
         System.out.println("\n--------------------------------------------");
         System.out.println("F1 results:");
@@ -403,28 +406,34 @@ public class TestSuite02 extends javax.swing.JFrame {
         System.out.println("Path Size: (" + NSGAPathSizeParent + " - " + NSGAPathSizeOffspring + ") / " + nsgaTime + " * " + NSGAAlphaPath + " = " + NSGAF1PathSize);
         System.out.println("Transition Coverage: (" + NSGAtransCoverParent + " - " + NSGAtransCoverOffspring + ") / " + nsgaTime + " * " + NSGAAlphaTransCover + " = " + NSGAF1TransCover);
         System.out.println("Transition Pair Coverage: (" + NSGAtransCoverPairParent + " - " + NSGAtransCoverPairOffspring + ") / " + nsgaTime + " * " + NSGAAlphaTransPairCover + " = " + NSGAF1TransCoverPairNSGA);
+        System.out.println("TOTAL Average: " + NSGAF1Avg);
         outputF1 += "\nNSGA:\n";
         outputF1 += "Path Size: (" + NSGAPathSizeParent + " - " + NSGAPathSizeOffspring + ") / " + nsgaTime + " * " + NSGAAlphaPath + " = " + NSGAF1PathSize + "\n";
         outputF1 += "Transition Coverage: (" + NSGAtransCoverParent + " - " + NSGAtransCoverOffspring + ") / " + nsgaTime + " * " + NSGAAlphaTransCover + " = " + NSGAF1TransCover + "\n";
         outputF1 += "Transition Pair Coverage: (" + NSGAtransCoverPairParent + " - " + NSGAtransCoverPairOffspring + ") / " + nsgaTime + " * " + NSGAAlphaTransPairCover + " = " + NSGAF1TransCoverPairNSGA + "\n";
+        outputF1 += "TOTAL Average: " + NSGAF1Avg + "\n";
         
         System.out.println("\nSPEA:");
         System.out.println("Path Size: (" + SPEAPathSizeParent + " - " + SPEAPathSizeOffspring + ") / " + speaTime + " * " + SPEAAlphaPath + " = " + SPEAF1PathSize);
         System.out.println("Transition Coverage: (" + SPEAtransCoverParent + " - " + SPEAtransCoverOffspring + ") / " + speaTime + " * " + SPEAAlphaTransCover + " = " + SPEAF1TransCover);
         System.out.println("Transition Pair Coverage: (" + SPEAtransCoverPairParent + " - " + SPEAtransCoverPairOffspring + ") / " + speaTime + " * " + SPEAAlphaTransPairCover + " = " + SPEAF1TransCoverPairSPEA);
+        System.out.println("TOTAL Average: " + SPEAF1Avg);
         outputF1 += "\nSPEA:\n";
         outputF1 += "Path Size: (" + SPEAPathSizeParent + " - " + SPEAPathSizeOffspring + ") / " + speaTime + " * " + SPEAAlphaPath + " = " + SPEAF1PathSize + "\n";
         outputF1 += "Transition Coverage: (" + SPEAtransCoverParent + " - " + SPEAtransCoverOffspring + ") / " + speaTime + " * " + SPEAAlphaTransCover + " = " + SPEAF1TransCover + "\n";
         outputF1 += "Transition Pair Coverage: (" + SPEAtransCoverPairParent + " - " + SPEAtransCoverPairOffspring + ") / " + speaTime + " * " + SPEAAlphaTransPairCover + " = " + SPEAF1TransCoverPairSPEA + "\n";
+        outputF1 += "TOTAL Average: " + SPEAF1Avg + "\n";
         
         System.out.println("\nPSO:");
         System.out.println("Path Size: (" + PSOPathSizeParent + " - " + PSOPathSizeOffspring + ") / " + psoTime + " * " + PSOAlphaPath + " = " + PSOF1PathSize);
         System.out.println("Transition Coverage: (" + PSOtransCoverParent + " - " + PSOtransCoverOffspring + ") / " + psoTime + " * " + PSOAlphaTransCover + " = " + PSOF1TransCover);
         System.out.println("Transition Pair Coverage: (" + PSOtransCoverPairParent + " - " + PSOtransCoverPairOffspring + ") / " + psoTime + " * " + PSOAlphaTransPairCover + " = " + PSOF1TransCoverPairPSO);
+        System.out.println("TOTAL Average: " + PSOF1Avg);
         outputF1 += "\nPSO:\n";
         outputF1 += "Path Size: (" + PSOPathSizeParent + " - " + PSOPathSizeOffspring + ") / " + psoTime + " * " + PSOAlphaPath + " = " + PSOF1PathSize + "\n";
         outputF1 += "Transition Coverage: (" + PSOtransCoverParent + " - " + PSOtransCoverOffspring + ") / " + psoTime + " * " + PSOAlphaTransCover + " = " + PSOF1TransCover + "\n";
         outputF1 += "Transition Pair Coverage: (" + PSOtransCoverPairParent + " - " + PSOtransCoverPairOffspring + ") / " + psoTime + " * " + PSOAlphaTransPairCover + " = " + PSOF1TransCoverPairPSO + "\n";
+        outputF1 += "TOTAL Average: " + PSOF1Avg + "\n";
         
         /**
          * END Calculate F1
@@ -475,6 +484,25 @@ public class TestSuite02 extends javax.swing.JFrame {
          */
         
         String outputF3 = "";
+        
+        float NSGAF3 = (1 - alpha) * NSGATimeAll;
+        float SPEAF3 = (1 - alpha) * SPEATimeAll;
+        float PSOF3 = (1 - alpha) * PSOTimeAll;
+        
+        System.out.println("\n--------------------------------------------");
+        System.out.println("F3 results:");
+        System.out.println("Formula F3: (1 - alpha) * Time_All");
+        outputF3 += "F3 results:\n";
+        outputF3 += "Formula F3: (1 - alpha) * Time_All\n";
+        
+        System.out.println("");
+        System.out.println("NSGA: (1 - " + alpha + ") * " + NSGATimeAll + " = " + NSGAF3);
+        System.out.println("SPEA: (1 - " + alpha + ") * " + SPEATimeAll + " = " + SPEAF3);
+        System.out.println("PSO: (1 - " + alpha + ") * " + PSOTimeAll + " = " + PSOF3);
+        outputF3 += "\n";
+        outputF3 += "NSGA: (1 - " + alpha + ") * " + NSGATimeAll + " = " + NSGAF3 + "\n";
+        outputF3 += "SPEA: (1 - " + alpha + ") * " + SPEATimeAll + " = " + SPEAF3 + "\n";
+        outputF3 += "PSO: (1 - " + alpha + ") * " + PSOTimeAll + " = " + PSOF3 + "\n";
         
         /**
          * END Calculate F3
