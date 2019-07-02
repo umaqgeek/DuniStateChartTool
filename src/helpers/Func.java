@@ -54,6 +54,7 @@ public class Func {
     public static final String KEY_F = "key_f";
     
     public static DecimalFormat df = new DecimalFormat("#,###.00");
+    public static DecimalFormat float_df = new DecimalFormat("#,##0.000");
     
     // Function to remove duplicates from an ArrayList 
     public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list) {

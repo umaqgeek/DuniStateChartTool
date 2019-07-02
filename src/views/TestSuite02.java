@@ -543,6 +543,12 @@ public class TestSuite02 extends javax.swing.JFrame {
         txtFAll.setText(outputFAll);
         
         TestSuite01.btnGenerateParOff.setEnabled(true);
+        
+        // go to dissimilarity
+        if (!bestNSGA2.isEmpty() && bestNSGA2.size() > 0) { 
+            DissimilarityPage.bestNSGA2.addAll(bestNSGA2);
+            TestSuite02.btnDissimilarity.setEnabled(true);
+        }
     }
     
     private int calcPathCost(int matrx[][], ArrayList<Integer> pathNodes) {
@@ -658,6 +664,7 @@ public class TestSuite02 extends javax.swing.JFrame {
         txtF3Screen = new javax.swing.JTextArea();
         jScrollPane6 = new javax.swing.JScrollPane();
         txtFAll = new javax.swing.JTextArea();
+        btnDissimilarity = new javax.swing.JButton();
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -727,6 +734,14 @@ public class TestSuite02 extends javax.swing.JFrame {
         txtFAll.setRows(5);
         jScrollPane6.setViewportView(txtFAll);
 
+        btnDissimilarity.setText("Dissimilarity >>");
+        btnDissimilarity.setEnabled(false);
+        btnDissimilarity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDissimilarityActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -754,7 +769,8 @@ public class TestSuite02 extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnDissimilarity, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(253, 253, 253)
@@ -775,9 +791,11 @@ public class TestSuite02 extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnQuit1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnQuit1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDissimilarity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -817,6 +835,11 @@ public class TestSuite02 extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnQuit1ActionPerformed
 
+    private void btnDissimilarityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDissimilarityActionPerformed
+        // TODO add your handling code here:
+        new DissimilarityPage().setVisible(true);
+    }//GEN-LAST:event_btnDissimilarityActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -853,6 +876,7 @@ public class TestSuite02 extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JButton btnDissimilarity;
     public static javax.swing.JButton btnQuit;
     public static javax.swing.JButton btnQuit1;
     private javax.swing.JLabel jLabel1;
