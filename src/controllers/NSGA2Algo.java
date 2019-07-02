@@ -401,7 +401,7 @@ public class NSGA2Algo {
         Collections.sort(TestSuiteController.possibleMutationPaths1, new Comparator<ArrayList<Integer>>() {
             @Override
             public int compare(ArrayList<Integer> o1, ArrayList<Integer> o2) {
-                return o1.size() > o2.size() ? 1 : -1;
+                return o1.size() > o2.size() ? 1 : (o1.size() == o2.size() ? 0 : -1);
             }
         });
         // remove duplicates in the list.

@@ -16,6 +16,8 @@ public class JaccardDistanceAlgo {
     
     public static String getResult(ArrayList<ArrayList<Integer>> testCases) {
         String output = "";
+        System.out.println("LOLOLOL");
+        System.out.println(testCases);
         try {
             
             // init and reset.
@@ -32,9 +34,12 @@ public class JaccardDistanceAlgo {
             for (int i = 0; i < testCases.size(); i++) {
                 for (int j = 0; j < testCases.size(); j++) {
                     if (i != j) {
-                        ArrayList<Integer> T1 = testCases.get(i);
-                        ArrayList<Integer> T1x = testCases.get(i);
-                        ArrayList<Integer> T2 = testCases.get(j);
+                        ArrayList<Integer> T1 = new ArrayList<Integer>();
+                        T1.addAll(testCases.get(i));
+                        ArrayList<Integer> T1x = new ArrayList<Integer>();
+                        T1x.addAll(testCases.get(i));
+                        ArrayList<Integer> T2 = new ArrayList<Integer>();
+                        T2.addAll(testCases.get(j));
                         T1x.retainAll(T2);
                         int c = T1x.size();
                         int eT1 = T1.size();
