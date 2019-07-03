@@ -50,6 +50,7 @@ public class DissimilarityPage extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResult = new javax.swing.JTextArea();
+        cbxAlgo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dissimilarity Module");
@@ -87,12 +88,17 @@ public class DissimilarityPage extends javax.swing.JFrame {
         txtResult.setRows(5);
         jScrollPane1.setViewportView(txtResult);
 
+        cbxAlgo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Select Algorithm -", "Jaccard Distance", "Hamming Distance", "Jaro Wrinkler", "Dice & Anti Dice", "Jaro Hybrid Hamming" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -107,12 +113,11 @@ public class DissimilarityPage extends javax.swing.JFrame {
                                 .addComponent(cbxPrioritization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cbxSimMeasure, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbxAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -128,7 +133,8 @@ public class DissimilarityPage extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxPrioritization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxSimMeasure, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
                 .addContainerGap())
@@ -153,15 +159,14 @@ public class DissimilarityPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         int indexCbxPrio = DissimilarityPage.cbxPrioritization.getSelectedIndex();
         int indexCbxSimM = DissimilarityPage.cbxSimMeasure.getSelectedIndex();
+        int indexCbxAlgo = DissimilarityPage.cbxAlgo.getSelectedIndex();
         String output = "";
         if (indexCbxPrio == 1) {
             if (indexCbxSimM == 1) {
                 // nsga2 && local
-                
-                output += JaccardDistanceAlgo.getResult(DissimilarityPage.testCases);
-                output += "\n";
-                
-                
+                if (indexCbxAlgo == 1) { // jaccard distance
+                    output += JaccardDistanceAlgo.getResult(DissimilarityPage.testCases);
+                }
             } else if (indexCbxSimM == 2) {
                 // nsga2 && global
             }
@@ -213,6 +218,7 @@ public class DissimilarityPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btnQuit;
     public static javax.swing.JButton btnQuit1;
+    public static javax.swing.JComboBox<String> cbxAlgo;
     public static javax.swing.JComboBox<String> cbxPrioritization;
     public static javax.swing.JComboBox<String> cbxSimMeasure;
     private javax.swing.JButton jButton1;

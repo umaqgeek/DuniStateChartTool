@@ -16,8 +16,6 @@ public class JaccardDistanceAlgo {
     
     public static String getResult(ArrayList<ArrayList<Integer>> testCases) {
         String output = "";
-        System.out.println("LOLOLOL");
-        System.out.println(testCases);
         try {
             
             // init and reset.
@@ -45,7 +43,6 @@ public class JaccardDistanceAlgo {
                         int eT1 = T1.size();
                         int eT2 = T2.size();
                         float d = 1 - (c * 1.0f / ((eT1+eT2)*1.0f/2.0f));
-                        System.out.println(i+""+j+":c="+c+",eT1="+eT1+",eT2="+eT2+",d="+d);
                         jaccards.get(i).set(j, d);
                     }
                 }
@@ -54,10 +51,25 @@ public class JaccardDistanceAlgo {
             // view matrix
             output += "Jaccard Distance:\n";
             for (int i = 0; i < jaccards.size(); i++) {
-                output += "T"+(i+1)+": ";
+                output += "TP"+Func.getFormatInteger((i+1)+"", 2)+": ";
                 for (int j = 0; j < jaccards.get(i).size(); j++) {
                     output += Func.float_df.format(jaccards.get(i).get(j));
                     if (j != jaccards.get(i).size()-1) {
+                        output += ", ";
+                    }
+                }
+                output += "\n";
+            }
+            
+            // view path
+            output += "\nPaths:\n";
+            for (int i = 0; i < testCases.size(); i++) {
+                output += "TP" + Func.getFormatInteger((i+1)+"", 2)+": ";
+                for (int j = 0; j < testCases.get(i).size(); j++) {
+                    String name = UMLController.getStateName("s"+testCases.get(i).get(j));
+//                    String name = testCases.get(i).get(j).toString();
+                    output += name;
+                    if (j != testCases.get(i).size()-1) {
                         output += ", ";
                     }
                 }
