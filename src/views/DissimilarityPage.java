@@ -5,6 +5,7 @@
  */
 package views;
 
+import controllers.HammingDistanceAlgo;
 import controllers.JaccardDistanceAlgo;
 import java.util.ArrayList;
 
@@ -166,6 +167,8 @@ public class DissimilarityPage extends javax.swing.JFrame {
                 // nsga2 && local
                 if (indexCbxAlgo == 1) { // jaccard distance
                     output += JaccardDistanceAlgo.getResult(DissimilarityPage.testCases);
+                } else if (indexCbxAlgo == 2) { // hamming distance
+                    output += HammingDistanceAlgo.getResult(DissimilarityPage.testCases);
                 }
             } else if (indexCbxSimM == 2) {
                 // nsga2 && global
