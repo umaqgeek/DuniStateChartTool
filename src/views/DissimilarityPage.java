@@ -5,8 +5,10 @@
  */
 package views;
 
+import controllers.DiceAndAntidiceAlgo;
 import controllers.HammingDistanceAlgo;
 import controllers.JaccardDistanceAlgo;
+import controllers.JaroWrinklerAlgo;
 import java.util.ArrayList;
 
 /**
@@ -169,6 +171,10 @@ public class DissimilarityPage extends javax.swing.JFrame {
                     output += JaccardDistanceAlgo.getResult(DissimilarityPage.testCases);
                 } else if (indexCbxAlgo == 2) { // hamming distance
                     output += HammingDistanceAlgo.getResult(DissimilarityPage.testCases);
+                } else if (indexCbxAlgo == 3) { // jaro wrinkler
+                    output += JaroWrinklerAlgo.getResult(DissimilarityPage.testCases);
+                } else if (indexCbxAlgo == 4) { // dice and anti-dice
+                    output += DiceAndAntidiceAlgo.getResult(DissimilarityPage.testCases);
                 }
             } else if (indexCbxSimM == 2) {
                 // nsga2 && global

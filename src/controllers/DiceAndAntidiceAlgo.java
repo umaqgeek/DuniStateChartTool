@@ -12,64 +12,36 @@ import java.util.ArrayList;
  *
  * @author umar
  */
-public class HammingDistanceAlgo {
-    
-    public ArrayList<Integer> getNotSame(ArrayList<Integer> T1, ArrayList<Integer> T2) {
-        ArrayList<Integer> output = new ArrayList<Integer>();
-        try {
-            
-            for (int i = 0; i < T1.size(); i++) {
-                boolean notFound = true;
-                for (int j = 0; j < T2.size(); j++) {
-                    if (T1.get(i) == T2.get(j)) {
-                        notFound = false;
-                        break;
-                    }
-                }
-                if (notFound) {
-                    output.add(T1.get(i));
-                }
-            }
-            
-            for (int i = 0; i < T2.size(); i++) {
-                boolean notFound = true;
-                for (int j = 0; j < T1.size(); j++) {
-                    if (T2.get(i) == T1.get(j)) {
-                        notFound = false;
-                        break;
-                    }
-                }
-                if (notFound) {
-                    output.add(T2.get(i));
-                }
-            }
-            
-        } catch (Exception e) {
-            if (Func.DEBUG) {
-                e.printStackTrace();
-            }
-        }
-        return output;
-    }
+public class DiceAndAntidiceAlgo {
     
     public static String getResult(ArrayList<ArrayList<Integer>> testCases) {
         String output = "";
         try {
             
             // init and reset.
-            ArrayList<ArrayList<Float>> hammings = new ArrayList<ArrayList<Float>>();
+            ArrayList<ArrayList<Float>> dices = new ArrayList<ArrayList<Float>>();
             for (int i = 0; i < testCases.size(); i++) {
-                ArrayList<Float> hamming = new ArrayList<Float>();
+                ArrayList<Float> dice = new ArrayList<Float>();
                 for (int j = 0; j < testCases.size(); j++) {
-                    hamming.add(0.0f);
+                    dice.add(0.0f);
                 }
-                hammings.add(hamming);
+                dices.add(dice);
+            }
+            ArrayList<ArrayList<Float>> antidices = new ArrayList<ArrayList<Float>>();
+            for (int i = 0; i < testCases.size(); i++) {
+                ArrayList<Float> antidice = new ArrayList<Float>();
+                for (int j = 0; j < testCases.size(); j++) {
+                    antidice.add(0.0f);
+                }
+                antidices.add(antidice);
             }
             
             // calculate
+            float w_dice = 0.5f;
+            float w_antidice = 2.0f;
             for (int i = 0; i < testCases.size(); i++) {
                 for (int j = 0; j < testCases.size(); j++) {
-                    if (i != j) {
+                    if (i != j) { 
                         ArrayList<Integer> T1 = new ArrayList<Integer>();
                         T1.addAll(testCases.get(i));
                         ArrayList<Integer> T1x = new ArrayList<Integer>();
@@ -77,24 +49,34 @@ public class HammingDistanceAlgo {
                         ArrayList<Integer> T2 = new ArrayList<Integer>();
                         T2.addAll(testCases.get(j));
                         T1x.retainAll(T2);
-                        HammingDistanceAlgo hma = new HammingDistanceAlgo();
-                        ArrayList<Integer> T2x = hma.getNotSame(T1, T2);
-                        int cTotalF = T1.size() + T2.size();
-                        int c_sama = T1x.size();
-                        int c_tak_sama = T2x.size();
-                        float h = 1 - ((c_sama + c_tak_sama) * 1.0f / cTotalF);
-                        hammings.get(i).set(j, h);
+                        int ttn = T1x.size();
+                        int ttu = T1.size() + T2.size();
+                        float dice = 1 - (ttn * 1.0f / (ttn + (w_dice * (ttu - ttn))));
+                        dices.get(i).set(j, dice);
+                        float antidice = 1 - (ttn * 1.0f / (ttn + (w_antidice * (ttu - ttn))));
+                        antidices.get(i).set(j, antidice);
                     }
                 }
             }
             
             // view matrix
-            output += "Hamming Distance:\n";
-            for (int i = 0; i < hammings.size(); i++) {
+            output += "Dice:\n";
+            for (int i = 0; i < dices.size(); i++) {
                 output += "TP"+Func.getFormatInteger((i+1)+"", 2)+": ";
-                for (int j = 0; j < hammings.get(i).size(); j++) {
-                    output += Func.float_df.format(hammings.get(i).get(j));
-                    if (j != hammings.get(i).size()-1) {
+                for (int j = 0; j < dices.get(i).size(); j++) {
+                    output += Func.float_df.format(dices.get(i).get(j));
+                    if (j != dices.get(i).size()-1) {
+                        output += ", ";
+                    }
+                }
+                output += "\n";
+            }
+            output += "Anti-Dice:\n";
+            for (int i = 0; i < antidices.size(); i++) {
+                output += "TP"+Func.getFormatInteger((i+1)+"", 2)+": ";
+                for (int j = 0; j < antidices.get(i).size(); j++) {
+                    output += Func.float_df.format(antidices.get(i).get(j));
+                    if (j != antidices.get(i).size()-1) {
                         output += ", ";
                     }
                 }

@@ -12,35 +12,17 @@ import java.util.ArrayList;
  *
  * @author umar
  */
-public class HammingDistanceAlgo {
+public class JaroWrinklerAlgo {
     
-    public ArrayList<Integer> getNotSame(ArrayList<Integer> T1, ArrayList<Integer> T2) {
-        ArrayList<Integer> output = new ArrayList<Integer>();
+    private int getNumberTranspositions(ArrayList<Integer> t1, ArrayList<Integer> t2) {
+        int total = 0;
         try {
             
-            for (int i = 0; i < T1.size(); i++) {
-                boolean notFound = true;
-                for (int j = 0; j < T2.size(); j++) {
-                    if (T1.get(i) == T2.get(j)) {
-                        notFound = false;
-                        break;
-                    }
-                }
-                if (notFound) {
-                    output.add(T1.get(i));
-                }
-            }
-            
-            for (int i = 0; i < T2.size(); i++) {
-                boolean notFound = true;
-                for (int j = 0; j < T1.size(); j++) {
-                    if (T2.get(i) == T1.get(j)) {
-                        notFound = false;
-                        break;
-                    }
-                }
-                if (notFound) {
-                    output.add(T2.get(i));
+            for (int i = 0; i < t1.size() && i < t2.size(); i++) {
+                if (t1.get(i) != t2.get(i)) {
+                    HammingDistanceAlgo hda = new HammingDistanceAlgo();
+                    ArrayList<Integer> notSameArr = hda.getNotSame(t1, t2);
+                    total += notSameArr.size();
                 }
             }
             
@@ -49,7 +31,7 @@ public class HammingDistanceAlgo {
                 e.printStackTrace();
             }
         }
-        return output;
+        return total;
     }
     
     public static String getResult(ArrayList<ArrayList<Integer>> testCases) {
@@ -57,13 +39,13 @@ public class HammingDistanceAlgo {
         try {
             
             // init and reset.
-            ArrayList<ArrayList<Float>> hammings = new ArrayList<ArrayList<Float>>();
+            ArrayList<ArrayList<Float>> jaros = new ArrayList<ArrayList<Float>>();
             for (int i = 0; i < testCases.size(); i++) {
-                ArrayList<Float> hamming = new ArrayList<Float>();
+                ArrayList<Float> jaro = new ArrayList<Float>();
                 for (int j = 0; j < testCases.size(); j++) {
-                    hamming.add(0.0f);
+                    jaro.add(0.0f);
                 }
-                hammings.add(hamming);
+                jaros.add(jaro);
             }
             
             // calculate
@@ -77,24 +59,36 @@ public class HammingDistanceAlgo {
                         ArrayList<Integer> T2 = new ArrayList<Integer>();
                         T2.addAll(testCases.get(j));
                         T1x.retainAll(T2);
-                        HammingDistanceAlgo hma = new HammingDistanceAlgo();
-                        ArrayList<Integer> T2x = hma.getNotSame(T1, T2);
-                        int cTotalF = T1.size() + T2.size();
-                        int c_sama = T1x.size();
-                        int c_tak_sama = T2x.size();
-                        float h = 1 - ((c_sama + c_tak_sama) * 1.0f / cTotalF);
-                        hammings.get(i).set(j, h);
+                        int m = T1x.size();
+                        int t1 = T1.size();
+                        int t2 = T2.size();
+                        JaroWrinklerAlgo jw = new JaroWrinklerAlgo();
+                        int t = jw.getNumberTranspositions(T1, T2);
+                        float dj = (1.0f/3.0f) * ((m * 1.0f / t1) + (m * 1.0f / t2) + ((m - t) * 1.0f / m));
+                        int l = 0;
+                        int limitCommon = 4;
+                        for (int k = 0; k < limitCommon && k < T1.size() && k < T2.size(); k++) {
+                            if (T1.get(k) == T2.get(k)) {
+                                l += 1;
+                            } else {
+                                break;
+                            }
+                        }
+                        float p = 0.1f;
+                        float djw = dj + ((l * 1.0f * p) * (1 - dj));
+                        float simjw = 1 - djw;
+                        jaros.get(i).set(j, simjw);
                     }
                 }
             }
             
             // view matrix
-            output += "Hamming Distance:\n";
-            for (int i = 0; i < hammings.size(); i++) {
+            output += "Jaro Wrinkler:\n";
+            for (int i = 0; i < jaros.size(); i++) {
                 output += "TP"+Func.getFormatInteger((i+1)+"", 2)+": ";
-                for (int j = 0; j < hammings.get(i).size(); j++) {
-                    output += Func.float_df.format(hammings.get(i).get(j));
-                    if (j != hammings.get(i).size()-1) {
+                for (int j = 0; j < jaros.get(i).size(); j++) {
+                    output += Func.float_df.format(jaros.get(i).get(j));
+                    if (j != jaros.get(i).size()-1) {
                         output += ", ";
                     }
                 }
