@@ -40,12 +40,16 @@ public class JaroWrinklerAlgo {
             
             // init and reset.
             ArrayList<ArrayList<Float>> jaros = new ArrayList<ArrayList<Float>>();
+            ArrayList<ArrayList<Float>> jarosTemp = new ArrayList<ArrayList<Float>>();
             for (int i = 0; i < testCases.size(); i++) {
                 ArrayList<Float> jaro = new ArrayList<Float>();
+                ArrayList<Float> jaroTemp = new ArrayList<Float>();
                 for (int j = 0; j < testCases.size(); j++) {
                     jaro.add(0.0f);
+                    jaroTemp.add(0.0f);
                 }
                 jaros.add(jaro);
+                jarosTemp.add(jaroTemp);
             }
             
             // calculate
@@ -78,6 +82,7 @@ public class JaroWrinklerAlgo {
                         float djw = dj + ((l * 1.0f * p) * (1 - dj));
                         float simjw = 1 - djw;
                         jaros.get(i).set(j, simjw);
+                        jarosTemp.get(i).set(j, simjw);
                     }
                 }
             }
@@ -95,8 +100,47 @@ public class JaroWrinklerAlgo {
                 output += "\n";
             }
             
+            // process to prior list
+            ArrayList<Integer> prior = new ArrayList<Integer>();
+            for (int t = 0; t < testCases.size(); t++) {
+                int best1 = -1;
+                int best2 = -1;
+                float maxLocal = 0.00f;
+                for (int i = 0; i < jarosTemp.size(); i++) {
+                    for (int j = i; j < jarosTemp.get(i).size(); j++) {
+                        if (jarosTemp.get(i).get(j) > maxLocal) {
+                            if (!prior.contains(i) && !prior.contains(j)) {
+                                maxLocal = jarosTemp.get(i).get(j);
+                                best1 = i;
+                                best2 = j;
+                                jarosTemp.get(i).set(j, 0.00f);
+                                jarosTemp.get(j).set(i, 0.00f);
+                            }
+                        }
+                    }
+                }
+                if (best1 != -1) {
+                    prior.add(best1);
+                    if (prior.size() < testCases.size()) {
+                        prior.add(best2);
+                    }
+                }
+                System.out.println("\nProcess #"+(t+1));
+                for (int i = 0; i < jarosTemp.size(); i++) {
+                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
+                    for (int j = 0; j < jarosTemp.get(i).size(); j++) {
+                        System.out.print(Func.float_df.format(jarosTemp.get(i).get(j)));
+                        if (j != jarosTemp.get(i).size() - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.println("");
+                }
+            }
+            System.out.println("\nPrior List: " + prior);
+            
             // view path
-            output += "\nPaths:\n";
+            output += "\nOriginal Path List:\n";
             for (int i = 0; i < testCases.size(); i++) {
                 output += "TP" + Func.getFormatInteger((i+1)+"", 2)+": ";
                 for (int j = 0; j < testCases.get(i).size(); j++) {
@@ -104,6 +148,19 @@ public class JaroWrinklerAlgo {
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
                     if (j != testCases.get(i).size()-1) {
+                        output += ", ";
+                    }
+                }
+                output += "\n";
+            }
+            output += "\nPriority Path List:\n";
+            for (int i = 0; i < prior.size(); i++) {
+                output += "TP" + Func.getFormatInteger((prior.get(i)+1)+"", 2)+": ";
+                for (int j = 0; j < testCases.get(prior.get(i)).size(); j++) {
+                    String name = UMLController.getStateName("s"+testCases.get(prior.get(i)).get(j));
+//                    String name = testCases.get(i).get(j).toString();
+                    output += name;
+                    if (j != testCases.get(prior.get(i)).size()-1) {
                         output += ", ";
                     }
                 }

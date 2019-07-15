@@ -167,14 +167,23 @@ public class DissimilarityPage extends javax.swing.JFrame {
         if (indexCbxPrio == 1) {
             if (indexCbxSimM == 1) {
                 // nsga2 && local
-                if (indexCbxAlgo == 1) { // jaccard distance
-                    output += JaccardDistanceAlgo.getResult(DissimilarityPage.testCases);
-                } else if (indexCbxAlgo == 2) { // hamming distance
-                    output += HammingDistanceAlgo.getResult(DissimilarityPage.testCases);
-                } else if (indexCbxAlgo == 3) { // jaro wrinkler
-                    output += JaroWrinklerAlgo.getResult(DissimilarityPage.testCases);
-                } else if (indexCbxAlgo == 4) { // dice and anti-dice
-                    output += DiceAndAntidiceAlgo.getResult(DissimilarityPage.testCases);
+                switch (indexCbxAlgo) {
+                    case 1:
+                        // jaccard distance
+                        output += JaccardDistanceAlgo.getResult(DissimilarityPage.testCases);
+                        break;
+                    case 2:
+                        // hamming distance
+                        output += HammingDistanceAlgo.getResult(DissimilarityPage.testCases);
+                        break;
+                    case 3:
+                        // jaro wrinkler
+                        output += JaroWrinklerAlgo.getResult(DissimilarityPage.testCases);
+                        break;
+                    case 4:
+                        // dice and anti-dice
+                        output += DiceAndAntidiceAlgo.getResult(DissimilarityPage.testCases);
+                        break;
                 }
             } else if (indexCbxSimM == 2) {
                 // nsga2 && global

@@ -20,12 +20,16 @@ public class JaccardDistanceAlgo {
             
             // init and reset.
             ArrayList<ArrayList<Float>> jaccards = new ArrayList<ArrayList<Float>>();
+            ArrayList<ArrayList<Float>> jaccardsTemp = new ArrayList<ArrayList<Float>>();
             for (int i = 0; i < testCases.size(); i++) {
                 ArrayList<Float> jaccard = new ArrayList<Float>();
+                ArrayList<Float> jaccardTemp = new ArrayList<Float>();
                 for (int j = 0; j < testCases.size(); j++) {
                     jaccard.add(0.0f);
+                    jaccardTemp.add(0.0f);
                 }
                 jaccards.add(jaccard);
+                jaccardsTemp.add(jaccardTemp);
             }
             
             // calculate
@@ -44,6 +48,7 @@ public class JaccardDistanceAlgo {
                         int eT2 = T2.size();
                         float d = 1 - (c * 1.0f / ((eT1+eT2)*1.0f/2.0f));
                         jaccards.get(i).set(j, d);
+                        jaccardsTemp.get(i).set(j, d);
                     }
                 }
             }
@@ -61,8 +66,47 @@ public class JaccardDistanceAlgo {
                 output += "\n";
             }
             
+            // process to prior list
+            ArrayList<Integer> prior = new ArrayList<Integer>();
+            for (int t = 0; t < testCases.size(); t++) {
+                int best1 = -1;
+                int best2 = -1;
+                float maxLocal = 0.00f;
+                for (int i = 0; i < jaccardsTemp.size(); i++) {
+                    for (int j = i; j < jaccardsTemp.get(i).size(); j++) {
+                        if (jaccardsTemp.get(i).get(j) > maxLocal) {
+                            if (!prior.contains(i) && !prior.contains(j)) {
+                                maxLocal = jaccardsTemp.get(i).get(j);
+                                best1 = i;
+                                best2 = j;
+                                jaccardsTemp.get(i).set(j, 0.00f);
+                                jaccardsTemp.get(j).set(i, 0.00f);
+                            }
+                        }
+                    }
+                }
+                if (best1 != -1) {
+                    prior.add(best1);
+                    if (prior.size() < testCases.size()) {
+                        prior.add(best2);
+                    }
+                }
+                System.out.println("\nProcess #"+(t+1));
+                for (int i = 0; i < jaccardsTemp.size(); i++) {
+                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
+                    for (int j = 0; j < jaccardsTemp.get(i).size(); j++) {
+                        System.out.print(Func.float_df.format(jaccardsTemp.get(i).get(j)));
+                        if (j != jaccardsTemp.get(i).size() - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.println("");
+                }
+            }
+            System.out.println("\nPrior List: " + prior);
+            
             // view path
-            output += "\nPaths:\n";
+            output += "\nOriginal Path List:\n";
             for (int i = 0; i < testCases.size(); i++) {
                 output += "TP" + Func.getFormatInteger((i+1)+"", 2)+": ";
                 for (int j = 0; j < testCases.get(i).size(); j++) {
@@ -70,6 +114,19 @@ public class JaccardDistanceAlgo {
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
                     if (j != testCases.get(i).size()-1) {
+                        output += ", ";
+                    }
+                }
+                output += "\n";
+            }
+            output += "\nPriority Path List:\n";
+            for (int i = 0; i < prior.size(); i++) {
+                output += "TP" + Func.getFormatInteger((prior.get(i)+1)+"", 2)+": ";
+                for (int j = 0; j < testCases.get(prior.get(i)).size(); j++) {
+                    String name = UMLController.getStateName("s"+testCases.get(prior.get(i)).get(j));
+//                    String name = testCases.get(i).get(j).toString();
+                    output += name;
+                    if (j != testCases.get(prior.get(i)).size()-1) {
                         output += ", ";
                     }
                 }

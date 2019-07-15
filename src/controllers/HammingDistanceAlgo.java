@@ -58,12 +58,16 @@ public class HammingDistanceAlgo {
             
             // init and reset.
             ArrayList<ArrayList<Float>> hammings = new ArrayList<ArrayList<Float>>();
+            ArrayList<ArrayList<Float>> hammingsTemp = new ArrayList<ArrayList<Float>>();
             for (int i = 0; i < testCases.size(); i++) {
                 ArrayList<Float> hamming = new ArrayList<Float>();
+                ArrayList<Float> hammingTemp = new ArrayList<Float>();
                 for (int j = 0; j < testCases.size(); j++) {
                     hamming.add(0.0f);
+                    hammingTemp.add(0.0f);
                 }
                 hammings.add(hamming);
+                hammingsTemp.add(hammingTemp);
             }
             
             // calculate
@@ -84,6 +88,7 @@ public class HammingDistanceAlgo {
                         int c_tak_sama = T2x.size();
                         float h = 1 - ((c_sama + c_tak_sama) * 1.0f / cTotalF);
                         hammings.get(i).set(j, h);
+                        hammingsTemp.get(i).set(j, h);
                     }
                 }
             }
@@ -101,8 +106,47 @@ public class HammingDistanceAlgo {
                 output += "\n";
             }
             
+            // process to prior list
+            ArrayList<Integer> prior = new ArrayList<Integer>();
+            for (int t = 0; t < testCases.size(); t++) {
+                int best1 = -1;
+                int best2 = -1;
+                float maxLocal = 0.00f;
+                for (int i = 0; i < hammingsTemp.size(); i++) {
+                    for (int j = i; j < hammingsTemp.get(i).size(); j++) {
+                        if (hammingsTemp.get(i).get(j) > maxLocal) {
+                            if (!prior.contains(i) && !prior.contains(j)) {
+                                maxLocal = hammingsTemp.get(i).get(j);
+                                best1 = i;
+                                best2 = j;
+                                hammingsTemp.get(i).set(j, 0.00f);
+                                hammingsTemp.get(j).set(i, 0.00f);
+                            }
+                        }
+                    }
+                }
+                if (best1 != -1) {
+                    prior.add(best1);
+                    if (prior.size() < testCases.size()) {
+                        prior.add(best2);
+                    }
+                }
+                System.out.println("\nProcess #"+(t+1));
+                for (int i = 0; i < hammingsTemp.size(); i++) {
+                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
+                    for (int j = 0; j < hammingsTemp.get(i).size(); j++) {
+                        System.out.print(Func.float_df.format(hammingsTemp.get(i).get(j)));
+                        if (j != hammingsTemp.get(i).size() - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.println("");
+                }
+            }
+            System.out.println("\nPrior List: " + prior);
+            
             // view path
-            output += "\nPaths:\n";
+            output += "\nOriginal Path List:\n";
             for (int i = 0; i < testCases.size(); i++) {
                 output += "TP" + Func.getFormatInteger((i+1)+"", 2)+": ";
                 for (int j = 0; j < testCases.get(i).size(); j++) {
@@ -110,6 +154,19 @@ public class HammingDistanceAlgo {
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
                     if (j != testCases.get(i).size()-1) {
+                        output += ", ";
+                    }
+                }
+                output += "\n";
+            }
+            output += "\nPriority Path List:\n";
+            for (int i = 0; i < prior.size(); i++) {
+                output += "TP" + Func.getFormatInteger((prior.get(i)+1)+"", 2)+": ";
+                for (int j = 0; j < testCases.get(prior.get(i)).size(); j++) {
+                    String name = UMLController.getStateName("s"+testCases.get(prior.get(i)).get(j));
+//                    String name = testCases.get(i).get(j).toString();
+                    output += name;
+                    if (j != testCases.get(prior.get(i)).size()-1) {
                         output += ", ";
                     }
                 }
