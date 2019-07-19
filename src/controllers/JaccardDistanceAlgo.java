@@ -21,15 +21,19 @@ public class JaccardDistanceAlgo {
             // init and reset.
             ArrayList<ArrayList<Float>> jaccards = new ArrayList<ArrayList<Float>>();
             ArrayList<ArrayList<Float>> jaccardsTemp = new ArrayList<ArrayList<Float>>();
+            ArrayList<ArrayList<Float>> jaccardsTempGlobal = new ArrayList<ArrayList<Float>>();
             for (int i = 0; i < testCases.size(); i++) {
                 ArrayList<Float> jaccard = new ArrayList<Float>();
                 ArrayList<Float> jaccardTemp = new ArrayList<Float>();
+                ArrayList<Float> jaccardTempGlobal = new ArrayList<Float>();
                 for (int j = 0; j < testCases.size(); j++) {
                     jaccard.add(0.0f);
                     jaccardTemp.add(0.0f);
+                    jaccardTempGlobal.add(0.0f);
                 }
                 jaccards.add(jaccard);
                 jaccardsTemp.add(jaccardTemp);
+                jaccardsTempGlobal.add(jaccardTempGlobal);
             }
             
             // calculate
@@ -49,6 +53,7 @@ public class JaccardDistanceAlgo {
                         float d = 1 - (c * 1.0f / ((eT1+eT2)*1.0f/2.0f));
                         jaccards.get(i).set(j, d);
                         jaccardsTemp.get(i).set(j, d);
+                        jaccardsTempGlobal.get(i).set(j, d);
                     }
                 }
             }
@@ -66,7 +71,7 @@ public class JaccardDistanceAlgo {
                 output += "\n";
             }
             
-            // process to prior list
+            // process to local prior list
             ArrayList<Integer> prior = new ArrayList<Integer>();
             for (int t = 0; t < testCases.size(); t++) {
                 int best1 = -1;
@@ -79,19 +84,25 @@ public class JaccardDistanceAlgo {
                                 maxLocal = jaccardsTemp.get(i).get(j);
                                 best1 = i;
                                 best2 = j;
-                                jaccardsTemp.get(i).set(j, 0.00f);
-                                jaccardsTemp.get(j).set(i, 0.00f);
                             }
                         }
                     }
                 }
                 if (best1 != -1) {
                     prior.add(best1);
+                    for (int i = 0; i < testCases.size(); i++) {
+                        jaccardsTemp.get(best1).set(i, 0.00f);
+                        jaccardsTemp.get(i).set(best1, 0.00f);
+                    }
                     if (prior.size() < testCases.size()) {
                         prior.add(best2);
+                        for (int i = 0; i < testCases.size(); i++) {
+                            jaccardsTemp.get(best2).set(i, 0.00f);
+                            jaccardsTemp.get(i).set(best2, 0.00f);
+                        }
                     }
                 }
-                System.out.println("\nProcess #"+(t+1));
+                System.out.println("\nProcess Prior Local #"+(t+1));
                 for (int i = 0; i < jaccardsTemp.size(); i++) {
                     System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
                     for (int j = 0; j < jaccardsTemp.get(i).size(); j++) {
@@ -103,7 +114,62 @@ public class JaccardDistanceAlgo {
                     System.out.println("");
                 }
             }
-            System.out.println("\nPrior List: " + prior);
+            System.out.println("\nLocal Prior List: " + prior);
+            
+            // process to global prior list
+            ArrayList<Integer> gpriornot = new ArrayList<Integer>();
+            for (int i = 0; i < testCases.size(); i++) {
+                gpriornot.add(i);
+            }
+            ArrayList<Integer> gprior = new ArrayList<Integer>();
+            for (int t = 0; t < testCases.size(); t++) {
+                int best1 = -1;
+                int best2 = -1;
+                float maxLocal = 0.00f;
+                for (int i = 0; i < jaccardsTempGlobal.size(); i++) {
+                    for (int j = i; j < jaccardsTempGlobal.get(i).size(); j++) {
+                        if (jaccardsTempGlobal.get(i).get(j) > maxLocal) {
+                            if (!gprior.contains(i) && !gprior.contains(j)) {
+                                maxLocal = jaccardsTempGlobal.get(i).get(j);
+                                best1 = i;
+                                best2 = j;
+                            }
+                        }
+                    }
+                }
+                if (t == 0) {
+                    if (best1 != -1) {
+                        gprior.add(best1);
+                        gpriornot.remove((Object) best1);
+                        jaccardsTempGlobal.get(best1).set(best2, 0.00f);
+                        if (gprior.size() < testCases.size()) {
+                            gprior.add(best2);
+                            gpriornot.remove((Object) best2);
+                            jaccardsTempGlobal.get(best2).set(best1, 0.00f);
+                        }
+                    }
+                } else {
+                    if (gpriornot.size() > 0) {
+                        float maxTotal = 0.00f;
+                        int bestGpriornot = gpriornot.get(0);
+                        for (int i = 0; i < gpriornot.size(); i++) {
+                            float total = 0.00f;
+                            for (int j = 0; j < gprior.size(); j++) {
+                                int x = gpriornot.get(i);
+                                int y = gprior.get(j);
+                                total += jaccardsTempGlobal.get(x).get(y);
+                            }
+                            if (total > maxTotal) {
+                                maxTotal = total;
+                                bestGpriornot = gpriornot.get(i);
+                            }
+                        }
+                        gprior.add(bestGpriornot);
+                        gpriornot.remove((Object) bestGpriornot);
+                    }
+                }
+            }
+            System.out.println("\nGlobal Prior List: " + gprior);
             
             // view path
             output += "\nOriginal Path List:\n";
@@ -119,7 +185,7 @@ public class JaccardDistanceAlgo {
                 }
                 output += "\n";
             }
-            output += "\nPriority Path List:\n";
+            output += "\nLocal Priority Path List:\n";
             for (int i = 0; i < prior.size(); i++) {
                 output += "TP" + Func.getFormatInteger((prior.get(i)+1)+"", 2)+": ";
                 for (int j = 0; j < testCases.get(prior.get(i)).size(); j++) {
@@ -127,6 +193,19 @@ public class JaccardDistanceAlgo {
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
                     if (j != testCases.get(prior.get(i)).size()-1) {
+                        output += ", ";
+                    }
+                }
+                output += "\n";
+            }
+            output += "\nGlobal Priority Path List:\n";
+            for (int i = 0; i < gprior.size(); i++) {
+                output += "TP" + Func.getFormatInteger((gprior.get(i)+1)+"", 2)+": ";
+                for (int j = 0; j < testCases.get(gprior.get(i)).size(); j++) {
+                    String name = UMLController.getStateName("s"+testCases.get(gprior.get(i)).get(j));
+//                    String name = testCases.get(i).get(j).toString();
+                    output += name;
+                    if (j != testCases.get(gprior.get(i)).size()-1) {
                         output += ", ";
                     }
                 }
