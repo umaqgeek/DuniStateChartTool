@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class DiceAndAntidiceAlgo {
     
-    public static String getResult(ArrayList<ArrayList<Integer>> testCases) {
+    public static String getResult(ArrayList<ArrayList<Integer>> testCases, boolean isSaved) {
         String output = "";
         try {
             
@@ -303,6 +303,11 @@ public class DiceAndAntidiceAlgo {
             }
             System.out.println("\nGlobal Prior Anti-Dice List: " + gpriorAntiDice);
             
+            String outfileLocalDice = "";
+            String outfileGlobalDice = "";
+            String outfileLocalAntiDice = "";
+            String outfileGlobalAntiDice = "";
+            
             // view path
             output += "\nOriginal Path List:\n";
             for (int i = 0; i < testCases.size(); i++) {
@@ -318,56 +323,83 @@ public class DiceAndAntidiceAlgo {
                 output += "\n";
             }
             output += "\nDice Local Priority Path List:\n";
+            outfileLocalDice += "# Dice Local Priority Path List:\n";
             for (int i = 0; i < priorDice.size(); i++) {
                 output += "TP" + Func.getFormatInteger((priorDice.get(i)+1)+"", 2)+": ";
+                outfileLocalDice += priorDice.get(i) + ":";
                 for (int j = 0; j < testCases.get(priorDice.get(i)).size(); j++) {
                     String name = UMLController.getStateName("s"+testCases.get(priorDice.get(i)).get(j));
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
+                    outfileLocalDice += testCases.get(priorDice.get(i)).get(j);
                     if (j != testCases.get(priorDice.get(i)).size()-1) {
                         output += ", ";
+                        outfileLocalDice += "-";
                     }
                 }
                 output += "\n";
+                outfileLocalDice += "\n";
             }
             output += "\nDice Global Priority Path List:\n";
+            outfileGlobalDice += "# Dice Glocal Priority Path List:\n";
             for (int i = 0; i < gpriorDice.size(); i++) {
                 output += "TP" + Func.getFormatInteger((gpriorDice.get(i)+1)+"", 2)+": ";
+                outfileGlobalDice += gpriorDice.get(i) + ":";
                 for (int j = 0; j < testCases.get(gpriorDice.get(i)).size(); j++) {
                     String name = UMLController.getStateName("s"+testCases.get(gpriorDice.get(i)).get(j));
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
+                    outfileGlobalDice += testCases.get(gpriorDice.get(i)).get(j);
                     if (j != testCases.get(gpriorDice.get(i)).size()-1) {
                         output += ", ";
+                        outfileGlobalDice += "-";
                     }
                 }
                 output += "\n";
+                outfileGlobalDice += "\n";
             }
             output += "\nAnti-Dice Local Priority Path List:\n";
+            outfileLocalAntiDice += "# Anti-Dice Local Priority Path List:\n";
             for (int i = 0; i < priorAntiDice.size(); i++) {
                 output += "TP" + Func.getFormatInteger((priorAntiDice.get(i)+1)+"", 2)+": ";
+                outfileLocalAntiDice += priorAntiDice.get(i) + ":";
                 for (int j = 0; j < testCases.get(priorAntiDice.get(i)).size(); j++) {
                     String name = UMLController.getStateName("s"+testCases.get(priorAntiDice.get(i)).get(j));
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
+                    outfileLocalAntiDice += testCases.get(priorAntiDice.get(i)).get(j);
                     if (j != testCases.get(priorAntiDice.get(i)).size()-1) {
                         output += ", ";
+                        outfileLocalAntiDice += "-";
                     }
                 }
                 output += "\n";
+                outfileLocalAntiDice += "\n";
             }
             output += "\nAnti-Dice Global Priority Path List:\n";
+            outfileGlobalAntiDice += "# Anti-Dice Glocal Priority Path List:\n";
             for (int i = 0; i < gpriorAntiDice.size(); i++) {
                 output += "TP" + Func.getFormatInteger((gpriorAntiDice.get(i)+1)+"", 2)+": ";
+                outfileGlobalAntiDice += gpriorAntiDice.get(i) + ":";
                 for (int j = 0; j < testCases.get(gpriorAntiDice.get(i)).size(); j++) {
                     String name = UMLController.getStateName("s"+testCases.get(gpriorAntiDice.get(i)).get(j));
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
+                    outfileGlobalAntiDice += testCases.get(gpriorAntiDice.get(i)).get(j);
                     if (j != testCases.get(gpriorAntiDice.get(i)).size()-1) {
                         output += ", ";
+                        outfileGlobalAntiDice += "-";
                     }
                 }
                 output += "\n";
+                outfileGlobalAntiDice += "\n";
+            }
+            
+            if (isSaved) {
+                Func.saveToTxt("dice_local.txt", outfileLocalDice, false);
+                Func.saveToTxt("dice_global.txt", outfileGlobalDice, false);
+                Func.saveToTxt("antidice_local.txt", outfileLocalAntiDice, false);
+                Func.saveToTxt("antidice_global.txt", outfileGlobalAntiDice, false);
             }
             
         } catch (Exception e) {

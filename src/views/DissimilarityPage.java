@@ -49,11 +49,12 @@ public class DissimilarityPage extends javax.swing.JFrame {
         btnQuit1 = new javax.swing.JButton();
         btnQuit = new javax.swing.JButton();
         cbxPrioritization = new javax.swing.JComboBox<>();
-        cbxSimMeasure = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResult = new javax.swing.JTextArea();
         cbxAlgo = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dissimilarity Module");
@@ -77,9 +78,7 @@ public class DissimilarityPage extends javax.swing.JFrame {
 
         cbxPrioritization.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Select Prioritization -", "NSGA2", "HYBRID" }));
 
-        cbxSimMeasure.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Select Similarity Measure -", "Local Maximum Distance", "Global Maximum Distance" }));
-
-        jButton1.setText("Result");
+        jButton1.setText("View Result");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -92,6 +91,20 @@ public class DissimilarityPage extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txtResult);
 
         cbxAlgo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "- Select Algorithm -", "Jaccard Distance", "Hamming Distance", "Jaro Wrinkler", "Dice & Anti Dice", "Jaro Hybrid Hamming" }));
+
+        jButton2.setText("View & Save Result");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Calculate APFD");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,15 +126,20 @@ public class DissimilarityPage extends javax.swing.JFrame {
                                 .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(cbxPrioritization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbxSimMeasure, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbxAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cbxPrioritization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cbxAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,14 +150,17 @@ public class DissimilarityPage extends javax.swing.JFrame {
                         .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnQuit1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1))
-                .addGap(54, 54, 54)
+                .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxPrioritization, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxSimMeasure, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -158,45 +179,49 @@ public class DissimilarityPage extends javax.swing.JFrame {
         System.exit(1);
     }//GEN-LAST:event_btnQuitActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    private static void runAlgo(boolean isSaved) {
         int indexCbxPrio = DissimilarityPage.cbxPrioritization.getSelectedIndex();
-        int indexCbxSimM = DissimilarityPage.cbxSimMeasure.getSelectedIndex();
         int indexCbxAlgo = DissimilarityPage.cbxAlgo.getSelectedIndex();
         String output = "";
         if (indexCbxPrio == 1) {
-            if (indexCbxSimM == 1) {
-                // nsga2 && local
-                switch (indexCbxAlgo) {
-                    case 1:
-                        // jaccard distance
-                        output += JaccardDistanceAlgo.getResult(DissimilarityPage.testCases);
-                        break;
-                    case 2:
-                        // hamming distance
-                        output += HammingDistanceAlgo.getResult(DissimilarityPage.testCases);
-                        break;
-                    case 3:
-                        // jaro wrinkler
-                        output += JaroWrinklerAlgo.getResult(DissimilarityPage.testCases);
-                        break;
-                    case 4:
-                        // dice and anti-dice
-                        output += DiceAndAntidiceAlgo.getResult(DissimilarityPage.testCases);
-                        break;
-                }
-            } else if (indexCbxSimM == 2) {
-                // nsga2 && global
+            // nsga2
+            switch (indexCbxAlgo) {
+                case 1:
+                    // jaccard distance
+                    output += JaccardDistanceAlgo.getResult(DissimilarityPage.testCases, isSaved);
+                    break;
+                case 2:
+                    // hamming distance
+                    output += HammingDistanceAlgo.getResult(DissimilarityPage.testCases, isSaved);
+                    break;
+                case 3:
+                    // jaro wrinkler
+                    output += JaroWrinklerAlgo.getResult(DissimilarityPage.testCases, isSaved);
+                    break;
+                case 4:
+                    // dice and anti-dice
+                    output += DiceAndAntidiceAlgo.getResult(DissimilarityPage.testCases, isSaved);
+                    break;
             }
         } else if (indexCbxPrio == 2) {
-            if (indexCbxSimM == 1) {
-                // hybrid && local
-            } else if (indexCbxSimM == 2) {
-                // hybrid && global
-            }
+            // hybrid
         }
         DissimilarityPage.txtResult.setText(output);
+    }
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        DissimilarityPage.runAlgo(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        DissimilarityPage.runAlgo(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -238,8 +263,9 @@ public class DissimilarityPage extends javax.swing.JFrame {
     public static javax.swing.JButton btnQuit1;
     public static javax.swing.JComboBox<String> cbxAlgo;
     public static javax.swing.JComboBox<String> cbxPrioritization;
-    public static javax.swing.JComboBox<String> cbxSimMeasure;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTextArea txtResult;

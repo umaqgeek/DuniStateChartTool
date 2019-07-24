@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class JaccardDistanceAlgo {
     
-    public static String getResult(ArrayList<ArrayList<Integer>> testCases) {
+    public static String getResult(ArrayList<ArrayList<Integer>> testCases, boolean isSaved) {
         String output = "";
         try {
             
@@ -171,6 +171,9 @@ public class JaccardDistanceAlgo {
             }
             System.out.println("\nGlobal Prior List: " + gprior);
             
+            String outfileLocal = "";
+            String outfileGlobal = "";
+            
             // view path
             output += "\nOriginal Path List:\n";
             for (int i = 0; i < testCases.size(); i++) {
@@ -186,30 +189,45 @@ public class JaccardDistanceAlgo {
                 output += "\n";
             }
             output += "\nLocal Priority Path List:\n";
+            outfileLocal += "# Local Priority Path List:\n";
             for (int i = 0; i < prior.size(); i++) {
                 output += "TP" + Func.getFormatInteger((prior.get(i)+1)+"", 2)+": ";
+                outfileLocal += prior.get(i) + ":";
                 for (int j = 0; j < testCases.get(prior.get(i)).size(); j++) {
                     String name = UMLController.getStateName("s"+testCases.get(prior.get(i)).get(j));
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
+                    outfileLocal += testCases.get(prior.get(i)).get(j);
                     if (j != testCases.get(prior.get(i)).size()-1) {
                         output += ", ";
+                        outfileLocal += "-";
                     }
                 }
                 output += "\n";
+                outfileLocal += "\n";
             }
             output += "\nGlobal Priority Path List:\n";
+            outfileGlobal += "# Glocal Priority Path List:\n";
             for (int i = 0; i < gprior.size(); i++) {
                 output += "TP" + Func.getFormatInteger((gprior.get(i)+1)+"", 2)+": ";
+                outfileGlobal += gprior.get(i) + ":";
                 for (int j = 0; j < testCases.get(gprior.get(i)).size(); j++) {
                     String name = UMLController.getStateName("s"+testCases.get(gprior.get(i)).get(j));
 //                    String name = testCases.get(i).get(j).toString();
                     output += name;
+                    outfileGlobal += testCases.get(gprior.get(i)).get(j);
                     if (j != testCases.get(gprior.get(i)).size()-1) {
                         output += ", ";
+                        outfileGlobal += "-";
                     }
                 }
                 output += "\n";
+                outfileGlobal += "\n";
+            }
+            
+            if (isSaved) {
+                Func.saveToTxt("jaccard_local.txt", outfileLocal, false);
+                Func.saveToTxt("jaccard_global.txt", outfileGlobal, false);
             }
             
         } catch (Exception e) {

@@ -7,6 +7,7 @@ package helpers;
 
 import controllers.TestSuiteController;
 import java.awt.Desktop;
+import java.io.BufferedWriter;
 import java.io.File;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -259,5 +261,32 @@ public class Func {
         arr.set(3, z2);
         
         return arr;
+    }
+    
+    public static void saveToTxt(String filename, String content, boolean isAppend) {
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+
+        try {
+            
+            content += "\n";
+
+            fw = new FileWriter(filename, isAppend);
+            bw = new BufferedWriter(fw);
+            bw.write(content);
+
+        } catch (IOException e) {
+            System.err.format("IOException: %s%n", e);
+        } finally {
+            try {
+                if (bw != null)
+                    bw.close();
+
+                if (fw != null)
+                    fw.close();
+            } catch (IOException ex) {
+                System.err.format("IOException: %s%n", ex);
+            }
+        }
     }
 }
