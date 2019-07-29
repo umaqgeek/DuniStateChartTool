@@ -274,10 +274,9 @@ public class Func {
             
             content += "\n";
             
-            Path path = Paths.get(filename);
+            Path path = Paths.get("APFD");
             
             if (!Files.exists(path)) {
-                System.out.println("LOL!");
                 Files.createDirectory(path);
             }
 
