@@ -260,8 +260,8 @@ public class JaroWrinklerAlgo {
             }
             
             if (isSaved) {
-                Func.saveToTxt("jarowrinkler_local.txt", outfileLocal, false);
-                Func.saveToTxt("jarowrinkler_global.txt", outfileGlobal, false);
+                Func.saveToTxt("APFD/jarowrinkler_local.txt", outfileLocal, false);
+                Func.saveToTxt("APFD/jarowrinkler_global.txt", outfileGlobal, false);
             }
             
         } catch (Exception e) {

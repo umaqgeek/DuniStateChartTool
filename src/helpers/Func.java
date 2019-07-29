@@ -18,6 +18,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -270,6 +273,13 @@ public class Func {
         try {
             
             content += "\n";
+            
+            Path path = Paths.get(filename);
+            
+            if (!Files.exists(path)) {
+                System.out.println("LOL!");
+                Files.createDirectory(path);
+            }
 
             fw = new FileWriter(filename, isAppend);
             bw = new BufferedWriter(fw);

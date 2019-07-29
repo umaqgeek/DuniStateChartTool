@@ -226,8 +226,8 @@ public class JaccardDistanceAlgo {
             }
             
             if (isSaved) {
-                Func.saveToTxt("jaccard_local.txt", outfileLocal, false);
-                Func.saveToTxt("jaccard_global.txt", outfileGlobal, false);
+                Func.saveToTxt("APFD/jaccard_local.txt", outfileLocal, false);
+                Func.saveToTxt("APFD/jaccard_global.txt", outfileGlobal, false);
             }
             
         } catch (Exception e) {

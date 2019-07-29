@@ -266,8 +266,8 @@ public class HammingDistanceAlgo {
             }
             
             if (isSaved) {
-                Func.saveToTxt("hamming_local.txt", outfileLocal, false);
-                Func.saveToTxt("hamming_global.txt", outfileGlobal, false);
+                Func.saveToTxt("APFD/hamming_local.txt", outfileLocal, false);
+                Func.saveToTxt("APFD/hamming_global.txt", outfileGlobal, false);
             }
             
         } catch (Exception e) {

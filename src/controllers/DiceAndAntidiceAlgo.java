@@ -396,10 +396,10 @@ public class DiceAndAntidiceAlgo {
             }
             
             if (isSaved) {
-                Func.saveToTxt("dice_local.txt", outfileLocalDice, false);
-                Func.saveToTxt("dice_global.txt", outfileGlobalDice, false);
-                Func.saveToTxt("antidice_local.txt", outfileLocalAntiDice, false);
-                Func.saveToTxt("antidice_global.txt", outfileGlobalAntiDice, false);
+                Func.saveToTxt("APFD/dice_local.txt", outfileLocalDice, false);
+                Func.saveToTxt("APFD/dice_global.txt", outfileGlobalDice, false);
+                Func.saveToTxt("APFD/antidice_local.txt", outfileLocalAntiDice, false);
+                Func.saveToTxt("APFD/antidice_global.txt", outfileGlobalAntiDice, false);
             }
             
         } catch (Exception e) {
