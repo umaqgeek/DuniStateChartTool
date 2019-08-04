@@ -7,6 +7,7 @@ package helpers;
 
 import controllers.TestSuiteController;
 import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,6 +27,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
@@ -269,33 +272,75 @@ public class Func {
     public static void saveToTxt(String filename, String content, boolean isAppend) {
         BufferedWriter bw = null;
         FileWriter fw = null;
-
         try {
-            
             content += "\n";
-            
             Path path = Paths.get("APFD");
-            
             if (!Files.exists(path)) {
                 Files.createDirectory(path);
             }
-
             fw = new FileWriter(filename, isAppend);
             bw = new BufferedWriter(fw);
             bw.write(content);
-
         } catch (IOException e) {
             System.err.format("IOException: %s%n", e);
         } finally {
             try {
                 if (bw != null)
                     bw.close();
-
                 if (fw != null)
                     fw.close();
             } catch (IOException ex) {
                 System.err.format("IOException: %s%n", ex);
             }
         }
+    }
+    
+    public ArrayList<ArrayList<Integer>> getPathsFromTxt(String filename) {
+        ArrayList<ArrayList<Integer>> paths = new ArrayList<ArrayList<Integer>>();
+        try {
+            File f = new File(filename);
+            BufferedReader b = new BufferedReader(new FileReader(f));
+            String readLine = "";
+            while ((readLine = b.readLine()) != null) {
+                if (readLine.length() > 0) {
+                    if (readLine.charAt(0) != '#' && readLine.charAt(0) != ' ') {
+                        String line[] = readLine.split(":");
+                        if (line.length == 2) {
+                            int index = Integer.parseInt(line[0]);
+                            String path[] = line[1].split("-");
+                            if (path.length > 0) {
+                                ArrayList<Integer> pa = new ArrayList<Integer>();
+                                for (String p: path) {
+                                    pa.add(Integer.parseInt(p));
+                                }
+                                pa.add(index);
+                                paths.add(pa);
+                            }
+                        }
+                    }
+                }
+            }
+            if (paths.size() <= 0) {
+                JOptionPane.showMessageDialog(null, "No data in the file " + filename + "!", "No Data", 0);
+            } else {
+                Func func = new Func();
+                paths = func.sortTc(paths);
+            }
+        } catch (Exception e) {
+            paths.removeAll(paths);
+            JOptionPane.showMessageDialog(null, "No file of " + filename + " found!", "Invalid File", 0);
+            e.printStackTrace();
+        }
+        return paths;
+    }
+    
+    private ArrayList<ArrayList<Integer>> sortTc(ArrayList<ArrayList<Integer>> tc) {
+        Collections.sort(tc, new Comparator<ArrayList<Integer>>() {
+            @Override
+            public int compare(ArrayList<Integer> o1, ArrayList<Integer> o2) {
+                return o1.get(o1.size()-1) > o2.get(o2.size()-1) ? 1 : (o1.get(o1.size()-1) == o2.get(o2.size()-1) ? 0 : -1);
+            }
+        });
+        return tc;
     }
 }

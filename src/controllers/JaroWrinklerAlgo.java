@@ -14,6 +14,9 @@ import java.util.ArrayList;
  */
 public class JaroWrinklerAlgo {
     
+    private static String FILE_LOCAL = "APFD/jarowrinkler_local.txt";
+    private static String FILE_GLOBAL = "APFD/jarowrinkler_global.txt";
+    
     private int getNumberTranspositions(ArrayList<Integer> t1, ArrayList<Integer> t2) {
         int total = 0;
         try {
@@ -34,7 +37,7 @@ public class JaroWrinklerAlgo {
         return total;
     }
     
-    public static String getResult(ArrayList<ArrayList<Integer>> testCases, boolean isSaved) {
+    public static String getResult(boolean isLocal, ArrayList<ArrayList<Integer>> testCases, boolean isSaved, boolean isCompared) {
         String output = "";
         try {
             
@@ -260,8 +263,11 @@ public class JaroWrinklerAlgo {
             }
             
             if (isSaved) {
-                Func.saveToTxt("APFD/jarowrinkler_local.txt", outfileLocal, false);
-                Func.saveToTxt("APFD/jarowrinkler_global.txt", outfileGlobal, false);
+                if (isLocal) {
+                    Func.saveToTxt(JaroWrinklerAlgo.FILE_LOCAL, outfileLocal, false);
+                } else {
+                    Func.saveToTxt(JaroWrinklerAlgo.FILE_GLOBAL, outfileGlobal, false);
+                }
             }
             
         } catch (Exception e) {

@@ -14,6 +14,9 @@ import java.util.ArrayList;
  */
 public class HammingDistanceAlgo {
     
+    private static String FILE_LOCAL = "APFD/hamming_local.txt";
+    private static String FILE_GLOBAL = "APFD/hamming_global.txt";
+    
     public ArrayList<Integer> getNotSame(ArrayList<Integer> T1, ArrayList<Integer> T2) {
         ArrayList<Integer> output = new ArrayList<Integer>();
         try {
@@ -52,7 +55,7 @@ public class HammingDistanceAlgo {
         return output;
     }
     
-    public static String getResult(ArrayList<ArrayList<Integer>> testCases, boolean isSaved) {
+    public static String getResult(boolean isLocal, ArrayList<ArrayList<Integer>> testCases, boolean isSaved, boolean isCompared) {
         String output = "";
         try {
             
@@ -266,8 +269,11 @@ public class HammingDistanceAlgo {
             }
             
             if (isSaved) {
-                Func.saveToTxt("APFD/hamming_local.txt", outfileLocal, false);
-                Func.saveToTxt("APFD/hamming_global.txt", outfileGlobal, false);
+                if (isLocal) {
+                    Func.saveToTxt(HammingDistanceAlgo.FILE_LOCAL, outfileLocal, false);
+                } else {
+                    Func.saveToTxt(HammingDistanceAlgo.FILE_GLOBAL, outfileGlobal, false);
+                }
             }
             
         } catch (Exception e) {

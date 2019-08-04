@@ -14,7 +14,12 @@ import java.util.ArrayList;
  */
 public class DiceAndAntidiceAlgo {
     
-    public static String getResult(ArrayList<ArrayList<Integer>> testCases, boolean isSaved) {
+    private static String FILE_LOCAL_DICE = "APFD/dice_local.txt";
+    private static String FILE_GLOBAL_DICE = "APFD/dice_global.txt";
+    private static String FILE_LOCAL_ANTIDICE = "APFD/antidice_local.txt";
+    private static String FILE_GLOBAL_ANTIDICE = "APFD/antidice_global.txt";
+    
+    public static String getResult(boolean isLocal, ArrayList<ArrayList<Integer>> testCases, boolean isSaved, boolean isCompared) {
         String output = "";
         try {
             
@@ -396,10 +401,13 @@ public class DiceAndAntidiceAlgo {
             }
             
             if (isSaved) {
-                Func.saveToTxt("APFD/dice_local.txt", outfileLocalDice, false);
-                Func.saveToTxt("APFD/dice_global.txt", outfileGlobalDice, false);
-                Func.saveToTxt("APFD/antidice_local.txt", outfileLocalAntiDice, false);
-                Func.saveToTxt("APFD/antidice_global.txt", outfileGlobalAntiDice, false);
+                if (isLocal) {
+                    Func.saveToTxt(DiceAndAntidiceAlgo.FILE_LOCAL_DICE, outfileLocalDice, false);
+                    Func.saveToTxt(DiceAndAntidiceAlgo.FILE_LOCAL_ANTIDICE, outfileLocalAntiDice, false);
+                } else {
+                    Func.saveToTxt(DiceAndAntidiceAlgo.FILE_GLOBAL_DICE, outfileGlobalDice, false);
+                    Func.saveToTxt(DiceAndAntidiceAlgo.FILE_GLOBAL_ANTIDICE, outfileGlobalAntiDice, false);
+                }
             }
             
         } catch (Exception e) {
