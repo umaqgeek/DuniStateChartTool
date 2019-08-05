@@ -116,6 +116,13 @@ public class JaccardDistanceAlgo {
                             jaccardsTemp.get(i).set(best2, 0.00f);
                         }
                     }
+                } else if (prior.size() <= (testCases.size() - 1)) {
+                    for (int i = 0; i < testCases.size(); i++) {
+                        if (!prior.contains(i)) {
+                            prior.add(i);
+                            break;
+                        }
+                    }
                 }
             }
             System.out.println("\nLocal Prior List: " + prior);
@@ -320,7 +327,7 @@ public class JaccardDistanceAlgo {
                 }
                 System.out.println("---------------------------------------------");
 
-                int n = priorSize;
+                int n = priorSize < oldTestCases.size() ? priorSize : oldTestCases.size();
                 int m = 0;
                 ArrayList<Integer> foundTP = new ArrayList<Integer>();
                 for (int i = 0; i < matrixFaults.get(0).size(); i++) {
@@ -347,7 +354,12 @@ public class JaccardDistanceAlgo {
                 System.out.println("APFD = 1 - ((" + up + " / (" + m + " * " + n + ")) + (1 / (2 * " + n + ")))");
                 System.out.println("APFD = " + APFD);
 
-                DissimilarityPage.txtAPFD.setText("APFD = " + APFD);
+                String txtAPFD = "";
+                String txtIsLocal = isLocal ? "Local" : "Global";
+                txtAPFD += "Jaccard - " + txtIsLocal + " Distance\n";
+                txtAPFD += "APFD = " + Func.float_df.format(APFD) + "\n";
+                
+                DissimilarityPage.txtAPFD.setText(txtAPFD);
             }
             
         } catch (Exception e) {

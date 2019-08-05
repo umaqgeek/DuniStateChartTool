@@ -7,6 +7,7 @@ package controllers;
 
 import helpers.Func;
 import java.util.ArrayList;
+import views.DissimilarityPage;
 
 /**
  *
@@ -111,6 +112,17 @@ public class DiceAndAntidiceAlgo {
             // process to local prior dice list
             ArrayList<Integer> priorDice = new ArrayList<Integer>();
             for (int t = 0; t < testCases.size(); t++) {
+                System.out.println("\nProcess Local Prior Dice #"+(t+1));
+                for (int i = 0; i < dicesTemp.size(); i++) {
+                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
+                    for (int j = 0; j < dicesTemp.get(i).size(); j++) {
+                        System.out.print(Func.float_df.format(dicesTemp.get(i).get(j)));
+                        if (j != dicesTemp.get(i).size() - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.println("");
+                }
                 int best1 = -1;
                 int best2 = -1;
                 float maxLocal = 0.00f;
@@ -138,17 +150,13 @@ public class DiceAndAntidiceAlgo {
                             dicesTemp.get(i).set(best2, 0.00f);
                         }
                     }
-                }
-                System.out.println("\nProcess Local Prior Dice #"+(t+1));
-                for (int i = 0; i < dicesTemp.size(); i++) {
-                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
-                    for (int j = 0; j < dicesTemp.get(i).size(); j++) {
-                        System.out.print(Func.float_df.format(dicesTemp.get(i).get(j)));
-                        if (j != dicesTemp.get(i).size() - 1) {
-                            System.out.print(", ");
+                } else if (priorDice.size() <= (testCases.size() - 1)) {
+                    for (int i = 0; i < testCases.size(); i++) {
+                        if (!priorDice.contains(i)) {
+                            priorDice.add(i);
+                            break;
                         }
                     }
-                    System.out.println("");
                 }
             }
             System.out.println("\nLocal Prior Dice List: " + priorDice);
@@ -156,6 +164,17 @@ public class DiceAndAntidiceAlgo {
             // process to local prior antidice list
             ArrayList<Integer> priorAntiDice = new ArrayList<Integer>();
             for (int t = 0; t < testCases.size(); t++) {
+                System.out.println("\nProcess Local Prior Anti-Dice #"+(t+1));
+                for (int i = 0; i < antidicesTemp.size(); i++) {
+                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
+                    for (int j = 0; j < antidicesTemp.get(i).size(); j++) {
+                        System.out.print(Func.float_df.format(antidicesTemp.get(i).get(j)));
+                        if (j != antidicesTemp.get(i).size() - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.println("");
+                }
                 int best1 = -1;
                 int best2 = -1;
                 float maxLocal = 0.00f;
@@ -183,17 +202,13 @@ public class DiceAndAntidiceAlgo {
                             antidicesTemp.get(i).set(best2, 0.00f);
                         }
                     }
-                }
-                System.out.println("\nProcess Local Prior Anti-Dice #"+(t+1));
-                for (int i = 0; i < antidicesTemp.size(); i++) {
-                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
-                    for (int j = 0; j < antidicesTemp.get(i).size(); j++) {
-                        System.out.print(Func.float_df.format(antidicesTemp.get(i).get(j)));
-                        if (j != antidicesTemp.get(i).size() - 1) {
-                            System.out.print(", ");
+                } else if (priorAntiDice.size() <= (testCases.size() - 1)) {
+                    for (int i = 0; i < testCases.size(); i++) {
+                        if (!priorAntiDice.contains(i)) {
+                            priorAntiDice.add(i);
+                            break;
                         }
                     }
-                    System.out.println("");
                 }
             }
             System.out.println("\nLocal Prior Anti-Dice List: " + priorAntiDice);
@@ -410,11 +425,265 @@ public class DiceAndAntidiceAlgo {
                 }
             }
             
+            int priorDiceSize = isLocal ? priorDice.size() : gpriorDice.size();
+            int priorAntiDiceSize = isLocal ? priorAntiDice.size() : gpriorAntiDice.size();
+            ArrayList<Integer> chosenPriorDice = new ArrayList<Integer>();
+            ArrayList<Integer> chosenPriorAntiDice = new ArrayList<Integer>();
+            if (isLocal) {
+                chosenPriorDice.addAll(priorDice);
+                chosenPriorAntiDice.addAll(priorAntiDice);
+            } else {
+                chosenPriorDice.addAll(gpriorDice);
+                chosenPriorAntiDice.addAll(gpriorAntiDice);
+            }
+            
+            if (isCompared) {
+                
+                String txtAPFD = "";
+                
+                // DICE
+                System.out.println("\nDice current testCases:");
+                for (int i = 0; i < testCases.size(); i++) {
+                    System.out.print(i + ":");
+                    for (int j = 0; j < testCases.get(i).size(); j++) {
+                        System.out.print(testCases.get(i).get(j));
+                        if (j != testCases.get(i).size() - 1) {
+                            System.out.print("-");
+                        }
+                    }
+                    System.out.println("");
+                }
+                Func funcDice = new Func();
+                ArrayList<ArrayList<Integer>> oldTestCasesDice = funcDice.getPathsFromTxt(DiceAndAntidiceAlgo.FILE_LOCAL_DICE);
+                if (oldTestCasesDice.size() <= 0) {
+                    return output;
+                }
+                System.out.println("\nDice old testCases:");
+                for (int i = 0; i < oldTestCasesDice.size(); i++) {
+                    System.out.print(oldTestCasesDice.get(i).get(oldTestCasesDice.get(i).size() - 1) + ":");
+                    for (int j = 0; j < oldTestCasesDice.get(i).size() - 1; j++) {
+                        System.out.print(oldTestCasesDice.get(i).get(j));
+                        if (j != oldTestCasesDice.get(i).size() - 2) {
+                            System.out.print("-");
+                        }
+                    }
+                    System.out.println("");
+                }
+
+                // init fault matrix.
+                ArrayList<ArrayList<Boolean>> matrixFaultsDice = new ArrayList<ArrayList<Boolean>>();
+                for (int i = 0; i < priorDiceSize && i < oldTestCasesDice.size(); i++) {
+                    ArrayList<Boolean> mf = new ArrayList<Boolean>();
+                    for (int j = 0; j < 10; j++) {
+                        mf.add(false);
+                    }
+                    matrixFaultsDice.add(mf);
+                }
+
+                // calculate fault in each test path.
+                for (int i = 0; i < priorDiceSize && i < oldTestCasesDice.size(); i++) {
+                    ArrayList<Integer> T1 = new ArrayList<Integer>();
+                    T1.addAll(testCases.get(i));
+                    ArrayList<Integer> T1x = new ArrayList<Integer>();
+                    T1x.addAll(testCases.get(i));
+                    ArrayList<Integer> T2 = new ArrayList<Integer>();
+                    T2.addAll(oldTestCasesDice.get(i));
+                    T1x.retainAll(T2);
+                    DiceAndAntidiceAlgo dada = new DiceAndAntidiceAlgo();
+                    ArrayList<Integer> T2x = dada.getUnion(T1, T2);
+                    int c_sama = T1x.size();
+                    int c_union = T2x.size();
+                    int fault = (int) Math.ceil((1.0 - (c_sama * 1.0 / c_union)) * 10);
+                    fault = (fault - 1) < 1 ? 1 : fault;
+                    fault = fault > matrixFaultsDice.get(0).size() ? matrixFaultsDice.get(0).size() : fault;
+                    matrixFaultsDice.get(i).set((fault - 1), true);
+                }
+
+                System.out.println("\nDice Fault Matrix:");
+                System.out.println("---------------------------------------------");
+                System.out.println("    | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |10 |");
+                System.out.println("---------------------------------------------");
+                for (int i = 0; i < matrixFaultsDice.size(); i++) {
+                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + "|");
+                    for (int j = 0; j < matrixFaultsDice.get(i).size(); j++) {
+                        char star = matrixFaultsDice.get(i).get(j) ? '*' : ' ';
+                        System.out.print(" " + star + " |");
+                    }
+                    System.out.println("");
+                }
+                System.out.println("---------------------------------------------");
+
+                int nDice = priorDiceSize < oldTestCasesDice.size() ? priorDiceSize : oldTestCasesDice.size();
+                int mDice = 0;
+                ArrayList<Integer> foundTPDice = new ArrayList<Integer>();
+                for (int i = 0; i < matrixFaultsDice.get(0).size(); i++) {
+                    for (int j = 0; j < nDice; j++) {
+                        if (matrixFaultsDice.get(j).get(i)) {
+                            foundTPDice.add(j);
+                            mDice += 1;
+                            break;
+                        }
+                    }
+                }
+                int upDice = 0;
+                for (int i = 0; i < foundTPDice.size(); i++) {
+                    upDice += (chosenPriorDice.indexOf(foundTPDice.get(i)) + 1);
+                }
+                float APFDDice = 1.0f - ((upDice * 1.0f / (mDice * nDice)) + (1.0f / (2.0f * nDice)));
+
+                System.out.println("\nDice APFD data:");
+                System.out.println("n = " + nDice);
+                System.out.println("m = " + mDice);
+                System.out.println("found index: " + foundTPDice);
+                System.out.println("up = " + upDice);
+                System.out.println("APFD = 1 - ((up / (m * n)) + (1 / (2 * n)))");
+                System.out.println("APFD = 1 - ((" + upDice + " / (" + mDice + " * " + nDice + ")) + (1 / (2 * " + nDice + ")))");
+                System.out.println("APFD = " + APFDDice);
+                
+                String txtIsLocalDice = isLocal ? "Local" : "Global";
+                txtAPFD += "Dice - " + txtIsLocalDice + " Distance\n";
+                txtAPFD += "APFD = " + Func.float_df.format(APFDDice) + "\n";
+                
+                txtAPFD += "\n";
+                
+                // ANTI-DICE
+                System.out.println("\nAnti-Dice current testCases:");
+                for (int i = 0; i < testCases.size(); i++) {
+                    System.out.print(i + ":");
+                    for (int j = 0; j < testCases.get(i).size(); j++) {
+                        System.out.print(testCases.get(i).get(j));
+                        if (j != testCases.get(i).size() - 1) {
+                            System.out.print("-");
+                        }
+                    }
+                    System.out.println("");
+                }
+                Func funcAntiDice = new Func();
+                ArrayList<ArrayList<Integer>> oldTestCasesAntiDice = funcAntiDice.getPathsFromTxt(DiceAndAntidiceAlgo.FILE_LOCAL_ANTIDICE);
+                if (oldTestCasesAntiDice.size() <= 0) {
+                    return output;
+                }
+                System.out.println("\nAnti-Dice old testCases:");
+                for (int i = 0; i < oldTestCasesAntiDice.size(); i++) {
+                    System.out.print(oldTestCasesAntiDice.get(i).get(oldTestCasesAntiDice.get(i).size() - 1) + ":");
+                    for (int j = 0; j < oldTestCasesAntiDice.get(i).size() - 1; j++) {
+                        System.out.print(oldTestCasesAntiDice.get(i).get(j));
+                        if (j != oldTestCasesAntiDice.get(i).size() - 2) {
+                            System.out.print("-");
+                        }
+                    }
+                    System.out.println("");
+                }
+
+                // init fault matrix.
+                ArrayList<ArrayList<Boolean>> matrixFaultsAntiDice = new ArrayList<ArrayList<Boolean>>();
+                for (int i = 0; i < priorAntiDiceSize && i < oldTestCasesAntiDice.size(); i++) {
+                    ArrayList<Boolean> mf = new ArrayList<Boolean>();
+                    for (int j = 0; j < 10; j++) {
+                        mf.add(false);
+                    }
+                    matrixFaultsAntiDice.add(mf);
+                }
+
+                // calculate fault in each test path.
+                for (int i = 0; i < priorAntiDiceSize && i < oldTestCasesAntiDice.size(); i++) {
+                    ArrayList<Integer> T1 = new ArrayList<Integer>();
+                    T1.addAll(testCases.get(i));
+                    ArrayList<Integer> T1x = new ArrayList<Integer>();
+                    T1x.addAll(testCases.get(i));
+                    ArrayList<Integer> T2 = new ArrayList<Integer>();
+                    T2.addAll(oldTestCasesAntiDice.get(i));
+                    T1x.retainAll(T2);
+                    DiceAndAntidiceAlgo dada = new DiceAndAntidiceAlgo();
+                    ArrayList<Integer> T2x = dada.getUnion(T1, T2);
+                    int c_sama = T1x.size();
+                    int c_union = T2x.size();
+                    int fault = (int) Math.ceil((1.0 - (c_sama * 1.0 / c_union)) * 10);
+                    fault = (fault - 1) < 1 ? 1 : fault;
+                    fault = fault > matrixFaultsAntiDice.get(0).size() ? matrixFaultsAntiDice.get(0).size() : fault;
+                    matrixFaultsAntiDice.get(i).set((fault - 1), true);
+                }
+
+                System.out.println("\nAnti-Dice Fault Matrix:");
+                System.out.println("---------------------------------------------");
+                System.out.println("    | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |10 |");
+                System.out.println("---------------------------------------------");
+                for (int i = 0; i < matrixFaultsAntiDice.size(); i++) {
+                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + "|");
+                    for (int j = 0; j < matrixFaultsAntiDice.get(i).size(); j++) {
+                        char star = matrixFaultsAntiDice.get(i).get(j) ? '*' : ' ';
+                        System.out.print(" " + star + " |");
+                    }
+                    System.out.println("");
+                }
+                System.out.println("---------------------------------------------");
+
+                int nAntiDice = priorAntiDiceSize < oldTestCasesAntiDice.size() ? priorAntiDiceSize : oldTestCasesAntiDice.size();
+                int mAntiDice = 0;
+                ArrayList<Integer> foundTPAntiDice = new ArrayList<Integer>();
+                for (int i = 0; i < matrixFaultsAntiDice.get(0).size(); i++) {
+                    for (int j = 0; j < nAntiDice; j++) {
+                        if (matrixFaultsAntiDice.get(j).get(i)) {
+                            foundTPAntiDice.add(j);
+                            mAntiDice += 1;
+                            break;
+                        }
+                    }
+                }
+                int upAntiDice = 0;
+                for (int i = 0; i < foundTPAntiDice.size(); i++) {
+                    upAntiDice += (chosenPriorAntiDice.indexOf(foundTPAntiDice.get(i)) + 1);
+                }
+                float APFDAntiDice = 1.0f - ((upAntiDice * 1.0f / (mAntiDice * nAntiDice)) + (1.0f / (2.0f * nAntiDice)));
+
+                System.out.println("\nAPFD data:");
+                System.out.println("n = " + nAntiDice);
+                System.out.println("m = " + mAntiDice);
+                System.out.println("found index: " + foundTPAntiDice);
+                System.out.println("up = " + upAntiDice);
+                System.out.println("APFD = 1 - ((up / (m * n)) + (1 / (2 * n)))");
+                System.out.println("APFD = 1 - ((" + upAntiDice + " / (" + mAntiDice + " * " + nAntiDice + ")) + (1 / (2 * " + nAntiDice + ")))");
+                System.out.println("APFD = " + APFDAntiDice);
+                
+                String txtIsLocalAntiDice = isLocal ? "Local" : "Global";
+                txtAPFD += "Anti-Dice - " + txtIsLocalAntiDice + " Distance\n";
+                txtAPFD += "APFD = " + Func.float_df.format(APFDAntiDice) + "\n";
+
+                DissimilarityPage.txtAPFD.setText(txtAPFD);
+            }
+            
         } catch (Exception e) {
             if (Func.DEBUG) {
                 e.printStackTrace();
             }
         }
         return output;
+    }
+    
+    private ArrayList<Integer> getUnion(ArrayList<Integer> t1, ArrayList<Integer> t2) {
+        ArrayList<Integer> p = new ArrayList<Integer>();
+        try {
+            for (int i = 0; i < t1.size(); i++) {
+                p.add(t1.get(i));
+            }
+            for (int i = 0; i < t2.size(); i++) {
+                boolean isFound = false;
+                for (int j = 0; j < t1.size(); j++) {
+                    if (t2.get(i) == t1.get(j)) {
+                        isFound = true;
+                        break;
+                    }
+                }
+                if (isFound == false) {
+                    p.add(t2.get(i));
+                }
+            }
+        } catch (Exception e) {
+            p.removeAll(p);
+            if (Func.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        return p;
     }
 }

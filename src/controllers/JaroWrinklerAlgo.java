@@ -7,6 +7,7 @@ package controllers;
 
 import helpers.Func;
 import java.util.ArrayList;
+import views.DissimilarityPage;
 
 /**
  *
@@ -111,6 +112,17 @@ public class JaroWrinklerAlgo {
             // process to local prior list
             ArrayList<Integer> prior = new ArrayList<Integer>();
             for (int t = 0; t < testCases.size(); t++) {
+                System.out.println("\nProcess Prior Local #"+(t+1));
+                for (int i = 0; i < jarosTemp.size(); i++) {
+                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
+                    for (int j = 0; j < jarosTemp.get(i).size(); j++) {
+                        System.out.print(Func.float_df.format(jarosTemp.get(i).get(j)));
+                        if (j != jarosTemp.get(i).size() - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.println("");
+                }
                 int best1 = -1;
                 int best2 = -1;
                 float maxLocal = 0.00f;
@@ -138,17 +150,13 @@ public class JaroWrinklerAlgo {
                             jarosTemp.get(i).set(best2, 0.00f);
                         }
                     }
-                }
-                System.out.println("\nProcess Prior Local #"+(t+1));
-                for (int i = 0; i < jarosTemp.size(); i++) {
-                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + ": ");
-                    for (int j = 0; j < jarosTemp.get(i).size(); j++) {
-                        System.out.print(Func.float_df.format(jarosTemp.get(i).get(j)));
-                        if (j != jarosTemp.get(i).size() - 1) {
-                            System.out.print(", ");
+                } else if (prior.size() <= (testCases.size() - 1)) {
+                    for (int i = 0; i < testCases.size(); i++) {
+                        if (!prior.contains(i)) {
+                            prior.add(i);
+                            break;
                         }
                     }
-                    System.out.println("");
                 }
             }
             System.out.println("\nLocal Prior List: " + prior);
@@ -270,11 +278,153 @@ public class JaroWrinklerAlgo {
                 }
             }
             
+            int priorSize = isLocal ? prior.size() : gprior.size();
+            ArrayList<Integer> chosenPrior = new ArrayList<Integer>();
+            if (isLocal) {
+                chosenPrior.addAll(prior);
+            } else {
+                chosenPrior.addAll(gprior);
+            }
+            
+            if (isCompared) {
+                System.out.println("\ncurrent testCases:");
+                for (int i = 0; i < testCases.size(); i++) {
+                    System.out.print(i + ":");
+                    for (int j = 0; j < testCases.get(i).size(); j++) {
+                        System.out.print(testCases.get(i).get(j));
+                        if (j != testCases.get(i).size() - 1) {
+                            System.out.print("-");
+                        }
+                    }
+                    System.out.println("");
+                }
+                Func func = new Func();
+                ArrayList<ArrayList<Integer>> oldTestCases = func.getPathsFromTxt(JaroWrinklerAlgo.FILE_LOCAL);
+                if (oldTestCases.size() <= 0) {
+                    return output;
+                }
+                System.out.println("\nold testCases:");
+                for (int i = 0; i < oldTestCases.size(); i++) {
+                    System.out.print(oldTestCases.get(i).get(oldTestCases.get(i).size() - 1) + ":");
+                    for (int j = 0; j < oldTestCases.get(i).size() - 1; j++) {
+                        System.out.print(oldTestCases.get(i).get(j));
+                        if (j != oldTestCases.get(i).size() - 2) {
+                            System.out.print("-");
+                        }
+                    }
+                    System.out.println("");
+                }
+
+                // init fault matrix.
+                ArrayList<ArrayList<Boolean>> matrixFaults = new ArrayList<ArrayList<Boolean>>();
+                for (int i = 0; i < priorSize && i < oldTestCases.size(); i++) {
+                    ArrayList<Boolean> mf = new ArrayList<Boolean>();
+                    for (int j = 0; j < 10; j++) {
+                        mf.add(false);
+                    }
+                    matrixFaults.add(mf);
+                }
+
+                // calculate fault in each test path.
+                for (int i = 0; i < priorSize && i < oldTestCases.size(); i++) {
+                    ArrayList<Integer> T1 = new ArrayList<Integer>();
+                    T1.addAll(testCases.get(i));
+                    ArrayList<Integer> T1x = new ArrayList<Integer>();
+                    T1x.addAll(testCases.get(i));
+                    ArrayList<Integer> T2 = new ArrayList<Integer>();
+                    T2.addAll(oldTestCases.get(i));
+                    T1x.retainAll(T2);
+                    JaroWrinklerAlgo jwa = new JaroWrinklerAlgo();
+                    ArrayList<Integer> T2x = jwa.getUnion(T1, T2);
+                    int c_sama = T1x.size();
+                    int c_union = T2x.size();
+                    int fault = (int) Math.ceil((1.0 - (c_sama * 1.0 / c_union)) * 10);
+                    fault = (fault - 1) < 1 ? 1 : fault;
+                    fault = fault > matrixFaults.get(0).size() ? matrixFaults.get(0).size() : fault;
+                    matrixFaults.get(i).set((fault - 1), true);
+                }
+
+                System.out.println("\nFault Matrix:");
+                System.out.println("---------------------------------------------");
+                System.out.println("    | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |10 |");
+                System.out.println("---------------------------------------------");
+                for (int i = 0; i < matrixFaults.size(); i++) {
+                    System.out.print("TP" + Func.getFormatInteger((i + 1) + "", 2) + "|");
+                    for (int j = 0; j < matrixFaults.get(i).size(); j++) {
+                        char star = matrixFaults.get(i).get(j) ? '*' : ' ';
+                        System.out.print(" " + star + " |");
+                    }
+                    System.out.println("");
+                }
+                System.out.println("---------------------------------------------");
+
+                int n = priorSize < oldTestCases.size() ? priorSize : oldTestCases.size();
+                int m = 0;
+                ArrayList<Integer> foundTP = new ArrayList<Integer>();
+                for (int i = 0; i < matrixFaults.get(0).size(); i++) {
+                    for (int j = 0; j < n; j++) {
+                        if (matrixFaults.get(j).get(i)) {
+                            foundTP.add(j);
+                            m += 1;
+                            break;
+                        }
+                    }
+                }
+                int up = 0;
+                for (int i = 0; i < foundTP.size(); i++) {
+                    up += (chosenPrior.indexOf(foundTP.get(i)) + 1);
+                }
+                float APFD = 1.0f - ((up * 1.0f / (m * n)) + (1.0f / (2.0f * n)));
+
+                System.out.println("\nAPFD data:");
+                System.out.println("n = " + n);
+                System.out.println("m = " + m);
+                System.out.println("found index: " + foundTP);
+                System.out.println("up = " + up);
+                System.out.println("APFD = 1 - ((up / (m * n)) + (1 / (2 * n)))");
+                System.out.println("APFD = 1 - ((" + up + " / (" + m + " * " + n + ")) + (1 / (2 * " + n + ")))");
+                System.out.println("APFD = " + APFD);
+                
+                String txtAPFD = "";
+                String txtIsLocal = isLocal ? "Local" : "Global";
+                txtAPFD += "Jaro Wrinkler - " + txtIsLocal + " Distance\n";
+                txtAPFD += "APFD = " + Func.float_df.format(APFD) + "\n";
+
+                DissimilarityPage.txtAPFD.setText(txtAPFD);
+            }
+            
         } catch (Exception e) {
             if (Func.DEBUG) {
                 e.printStackTrace();
             }
         }
         return output;
+    }
+    
+    private ArrayList<Integer> getUnion(ArrayList<Integer> t1, ArrayList<Integer> t2) {
+        ArrayList<Integer> p = new ArrayList<Integer>();
+        try {
+            for (int i = 0; i < t1.size(); i++) {
+                p.add(t1.get(i));
+            }
+            for (int i = 0; i < t2.size(); i++) {
+                boolean isFound = false;
+                for (int j = 0; j < t1.size(); j++) {
+                    if (t2.get(i) == t1.get(j)) {
+                        isFound = true;
+                        break;
+                    }
+                }
+                if (isFound == false) {
+                    p.add(t2.get(i));
+                }
+            }
+        } catch (Exception e) {
+            p.removeAll(p);
+            if (Func.DEBUG) {
+                e.printStackTrace();
+            }
+        }
+        return p;
     }
 }
